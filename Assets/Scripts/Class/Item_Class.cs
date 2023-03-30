@@ -4,6 +4,7 @@ using BlobberEngine;
 
 public class Item_Class
 {
+    public int index;
     public string name, name_unk;
     public Enum._Item_Type item_type;
     public Enum._Alignment item_align;
@@ -13,7 +14,7 @@ public class Item_Class
     public int change_chance;
     public float price;
     public int store_stock;
-    public int spell_pwr;
+    public int spell;
     public string class_use;
     public int heal_pts;
     public Dice damage;
@@ -23,5 +24,5 @@ public class Item_Class
     public bool crit_hit;
     public string wep_vs_type;
     public string ac_vs_type;
-    public string decription, description_unk;
+    public string decription;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Game_Logic : MonoBehaviour
 {
-    public static int[] PARTY;
+    public static Party_Class PARTY;
     public static List<Character_Class> ROSTER = new List<Character_Class>();
 
 
@@ -26,7 +26,11 @@ public class Game_Logic : MonoBehaviour
 
     private void Start()
     {
-        PARTY = new int[6];
-        for (int i = 0; i < 6; i++) PARTY[i] = -1;
+        PARTY = FindObjectOfType<Party_Class>();
+        PARTY.InitParty();
+
+        Character_Class test = new Character_Class();
+        test.name = "Ethan";
+        Debug.Log(test.Save_Character());
     }
 }

@@ -12,7 +12,8 @@ namespace BlobberEngine
         public enum _Direction { none, north, east, south, west, forward, backward, left, right }
         public enum _Damage_type { physical, fire, cold }
         public enum _Status {  OK, afraid, asleep, plyze, stoned, dead, ashes, lost }
-        public enum _Item_Type { Weapon, Armor, Helmet, Gauntlets, Special, Misc }
+        public enum _Item_Type { Weapon, Armor, Helmet, Gauntlets, Special, Misc, Consumable }
+        public enum _Locaton { Roster, Dungeon, Temple }
     }
     public class Dice
     {
