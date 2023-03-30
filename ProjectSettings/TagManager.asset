@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Input_Panel
   - Display_Panel
+  - Button
+  - Temp_Button
   layers:
   - Default
   - TransparentFX

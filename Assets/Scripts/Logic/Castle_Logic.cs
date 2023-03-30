@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class Castle_Logic : MonoBehaviour
 {
-    public string townStatus;
+    public enum ts { Market, Inn_Intro, Inn, Tavern, Shop, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
+    public ts townStatus;
 
     private Display_Screen_Controller _display;
-    //private Input_Panel _input;
+    private Input_Screen_Controller _input;
 
     private void Start()
     {
         _display = FindObjectOfType<Display_Screen_Controller>();
-        townStatus = "Market"; // Inn, Tavern, Shop, Temple, Exit
+        _input = FindObjectOfType<Input_Screen_Controller>();
+        townStatus = ts.Market;
         Update_Screen();
     }
 
     public void Update_Screen()
     {
-        if(townStatus == "Market")
+        if(townStatus == ts.Market)
         {
             string[] _partyText = new string[6];
             for (int i = 0; i < 6; i++)
@@ -26,7 +28,7 @@ public class Castle_Logic : MonoBehaviour
                 _partyText[i] = "";
                 if (!Game_Logic.PARTY.EmptySlot(i))
                 {
-                    Character_Class me = Game_Logic.PARTY.LookUp_PartyMember(0);
+                    Character_Class me = Game_Logic.PARTY.LookUp_PartyMember(i);
                     
                     //Name replacement for spacing
                     string _tmpNam = me.name; while (_tmpNam.Length < 15) _tmpNam += " ";
@@ -65,12 +67,85 @@ public class Castle_Logic : MonoBehaviour
                                         _partyText[3] +
                                         _partyText[4] +
                                         _partyText[5] +
-                                        "+--------------------------------------+\n");
-            //Buttons: Adventurers Inn
-            //         Gilgamesh's tavern
-            //         Boltacs' Trading Post
-            //         Temple of CANT
-            //         Edge of Town
+                                        "+--------------------------------------+\n" +
+                                        "                                        \n" +
+                                        "               you may go to:           \n" +
+                                        "                                        \n" +
+                                        "   The adventurer's inn, gilgamesh's    \n" +
+                                        "   tavern, Boltac's Trading post, the   \n" +
+                                        "   temple of cant, or edge of town.");
+            _input.Clear_Buttons();
+            _input.Enable_Button(_input.Advntr_Inn_button);
+            _input.Enable_Button(_input.Glgmsh_Tavern_button);
+            _input.Enable_Button(_input.Bltc_TP_button);
+            _input.Enable_Button(_input.Tmpl_CANT_button);
+            _input.Enable_Button(_input.Edge_of_Town_button);
+        }
+
+        if(townStatus == ts.Inn_Intro)
+        {
+            string[] _partyText = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                _partyText[i] = "";
+                if (!Game_Logic.PARTY.EmptySlot(i))
+                {
+                    Character_Class me = Game_Logic.PARTY.LookUp_PartyMember(i);
+
+                    //Name replacement for spacing
+                    string _tmpNam = me.name; while (_tmpNam.Length < 15) _tmpNam += " ";
+
+                    //armor class replacment for spacing
+                    string _ac = me.ArmorClass.ToString();
+                    if (me.ArmorClass > 0 && me.ArmorClass < 10) _ac = " " + _ac;
+                    if (me.ArmorClass < -9) _ac = "lo";
+                    if (me.ArmorClass > 11) _ac = "hi";
+
+                    //HP replacement, for spacing                    
+                    string _hp = me.HP.ToString();
+                    if (me.HP > 9999) _hp = "lots";
+                    if (me.HP < 1000) _hp = " " + _hp;
+                    if (me.HP < 100) _hp = " " + _hp;
+                    if (me.HP < 10) _hp = " " + _hp;
+
+                    //Status replacment, for spacing
+                    string _stat = me.status.ToString();
+                    if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hp;
+
+                    _partyText[i] = " 1 " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
+                        me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
+                        _ac + " " + _hp + " " + _stat + "\n";
+                }
+            }
+
+            _display.Update_Text_Screen("+--------------------------------------+\n" +
+                                        "| Castle                           Inn |\n" +
+                                        "+----------- Current party: -----------+\n" +
+                                        "                                        \n" +
+                                        " # character name  class ac hits status \n" +
+                                        _partyText[0] +
+                                        _partyText[1] +
+                                        _partyText[2] +
+                                        _partyText[3] +
+                                        _partyText[4] +
+                                        _partyText[5] +
+                                        "+--------------------------------------+\n" +
+                                        "                                        \n" +
+                                        "                                        \n" +
+                                        "             Who will Stay?          ");
+            _input.Clear_Buttons();
+            for (int i = 0; i < 6; i++)
+            {
+                if (!Game_Logic.PARTY.EmptySlot(i))
+                {
+                    GameObject _go = Instantiate(_input.Name_button, _input.transform);
+                    _go.tag = "Temp_Button";
+                    _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = Game_Logic.PARTY.LookUp_PartyMember(i).name;
+                    _go.GetComponent<Name_Button_Controller>().String = "" + i;
+                    _go.SetActive(true);
+                }
+            }
+            _input.Enable_Button_Last(_input.Leave_button);
         }
     }
 }
