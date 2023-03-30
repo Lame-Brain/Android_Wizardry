@@ -6,11 +6,11 @@ namespace BlobberEngine
 {
     public class Enum
     {
-        public enum _Class { none, fighter, mage, priest, thief, bishop, samurai, lord, ninja }
+        public enum _Class { none, fighter, mage, priest, thief, bishop, samurai, lord, ninja, animal, demon, dragon, enchanted, giant, insect, myth, undead, were }
         public enum _Race { none, human, elf, dwarf, gnome, halfling }
         public enum _Alignment { none, good, neutral, evil }
         public enum _Direction { none, north, east, south, west, forward, backward, left, right }
-        public enum _Damage_type { physical, fire, shock }
+        public enum _Damage_type { physical, fire, cold }
         public enum _Status {  OK, afraid, asleep, plyze, stoned, dead, ashes, lost }
         public enum _Item_Type { Weapon, Armor, Helmet, Gauntlets, Special, Misc }
     }
