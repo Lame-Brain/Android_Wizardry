@@ -29,8 +29,16 @@ public class Game_Logic : MonoBehaviour
         PARTY = FindObjectOfType<Party_Class>();
         PARTY.InitParty();
 
+        
+        //Debug Character
         Character_Class test = new Character_Class();
         test.name = "Ethan";
-        Debug.Log(test.Save_Character());
+        string save = test.Save_Character();
+        Debug.Log(save);
+        test.name = "FUCKER";
+        test.Load_Character(save);
+        Debug.Log(test.name);
+        ROSTER.Add(test);
+        PARTY.AddMember(0);        
     }
 }

@@ -18,6 +18,15 @@ public class Party_Class : MonoBehaviour
                     tile_visited[x, y, z] = false;
     }
 
+    public bool EmptySlot(int _n)
+    {
+        bool _result = true;
+        if (_n < 0) _n = 0;
+        if (_n > 5) _n = 5;
+        if (Party[_n] > -1) _result = false;
+        return _result;
+    }
+
     public Character_Class LookUp_PartyMember(int _n)
     {
         Character_Class _result = Game_Logic.ROSTER[_n];
