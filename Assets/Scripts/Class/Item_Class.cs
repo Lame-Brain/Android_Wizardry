@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using BlobberEngine;
 
-public class Item_Class : MonoBehaviour
+public class Item_Class
 {
     public string name, name_unk;
     public Enum._Item_Type item_type;
@@ -24,4 +23,5 @@ public class Item_Class : MonoBehaviour
     public bool crit_hit;
     public string wep_vs_type;
     public string ac_vs_type;
+    public string decription, description_unk;
 }

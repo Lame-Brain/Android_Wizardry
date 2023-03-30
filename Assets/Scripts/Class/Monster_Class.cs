@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using BlobberEngine;
 
-public class Monster_Class : MonoBehaviour
+public class Monster_Class
 {
     public string name_unk, names_unk, name, names;
     public int pic;
