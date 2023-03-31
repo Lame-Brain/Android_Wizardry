@@ -33,6 +33,7 @@ public class Character_Class
     public bool Llylgamyn_Knight; // "G"
     public bool Descendent_of_Diamonds; // "D"
     public bool Star_of_Llylgamyn; // "*"
+    public int Strength, IQ, Piety, Vitality, Agility, Luck;    
     // ">*KDG"
     public int[] mageSpells, mageSpellsCast;
     public int[] priestSpells, priestSpellsCast;
@@ -72,6 +73,7 @@ public class Character_Class
         this.Llylgamyn_Knight = false;
         this.Descendent_of_Diamonds = false;
         this.Star_of_Llylgamyn = false;
+        this.Strength = 10; this.IQ = 10; this.Piety = 10; this.Vitality = 10; this.Agility = 10; this.Luck = 10;
         this.mageSpells = new int[7];
         this.mageSpellsCast = new int[7];
         this.priestSpells = new int[7];
@@ -159,21 +161,27 @@ public class Character_Class
         _n = 46; this.Llylgamyn_Knight = _data[_n] == "1" ? true : false;
         _n = 47; this.Descendent_of_Diamonds = _data[_n] == "1" ? true : false;
         _n = 48; this.Star_of_Llylgamyn = _data[_n] == "1" ? true : false;
+        _n = 49; this.Strength = int.Parse(_data[_n]);
+        _n = 50; this.IQ = int.Parse(_data[_n]);
+        _n = 51; this.Piety = int.Parse(_data[_n]);
+        _n = 52; this.Vitality = int.Parse(_data[_n]);
+        _n = 53; this.Agility = int.Parse(_data[_n]);
+        _n = 54; this.Luck = int.Parse(_data[_n]);
 
-        _n = 49; string[] _mspells = _data[_n].Split(";");
+        _n = 55; string[] _mspells = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.mageSpells[i] = int.Parse(_mspells[i]);
 
-        _n = 50; string[] _mspellsC = _data[_n].Split(";");
+        _n = 56; string[] _mspellsC = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.mageSpellsCast[i] = int.Parse(_mspellsC[i]);
 
-        _n = 51; string[] _pspells = _data[_n].Split(";");
+        _n = 57; string[] _pspells = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.priestSpells[i] = int.Parse(_pspells[i]);
 
-        _n = 52; string[] _pspellsC = _data[_n].Split(";");
+        _n = 58; string[] _pspellsC = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.priestSpellsCast[i] = int.Parse(_pspellsC[i]);
 
-        _n = 53; string[] _allSpKn = _data[_n].Split(";");
-        for (int i = 0; i < 49; i++) this.SpellKnown[i] = _allSpKn[i] == "1" ? true : false;
+        _n = 59; string[] _allSpKn = _data[_n].Split(";");
+        for (int i = 0; i < 50; i++) this.SpellKnown[i] = _allSpKn[i] == "1" ? true : false;
     }
 
     public string Save_Character()
@@ -255,6 +263,12 @@ public class Character_Class
         _result += Llylgamyn_Knight ? "1," : "0,"; //46
         _result += Descendent_of_Diamonds ? "1," : "0,"; //47
         _result += Star_of_Llylgamyn ? "1," : "0,"; //48
+        _result += Strength;                     //49
+        _result += IQ;                           //50
+        _result += Piety;                        //51
+        _result += Vitality;                     //52
+        _result += Agility;                      //53
+        _result += Luck;                         //54
         string _ms = "", _mc = "", _ps = "", _pc = "";
         for (int i = 0; i < 7; i++)
         {
@@ -263,14 +277,14 @@ public class Character_Class
             _ps += priestSpells[i] + ";";
             _pc += priestSpellsCast[i] + ";";
         }
-        _result += _ms + ",";  //49
-        _result += _mc + ",";  //50
-        _result += _ps + ",";  //51
-        _result += _pc + ",";  //52
+        _result += _ms + ",";                    //55
+        _result += _mc + ",";                    //56
+        _result += _ps + ",";                    //57
+        _result += _pc + ",";                    //58
         string _sk = "";
         for (int i = 0; i < SpellKnown.Length; i++)
             _sk += SpellKnown[i] ? "1;" : "0;";
-        _result += _sk + ","; //53
+        _result += _sk + ",";                    //59
         return _result;
     }
 }
