@@ -10,7 +10,7 @@ public class Display_Screen_Controller : MonoBehaviour
     public RectTransform Input_Panel;
     public GameObject Button_Block_Panel, Message_Pop_Up;
 
-    private float FONT_SIZE;
+    public float FONT_SIZE;
     private void OnEnable()
     {
         RectTransform _myScreen = this.GetComponent<RectTransform>();
