@@ -33,9 +33,11 @@ public class Game_Logic : MonoBehaviour
         
         //Debug Character
         Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
-        test.name = "Ethan";
+        test.name = "Ethan Hyde duBo";
         another_test.name = "Evan";
         third_test.name = "Roberts";
+
+        test.Geld = 10000;
         //string save = test.Save_Character();
         //Debug.Log(save);
         //test.name = "FUCKER";

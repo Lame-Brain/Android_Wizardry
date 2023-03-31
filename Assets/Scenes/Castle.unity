@@ -3405,7 +3405,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Remove_Member
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &290294857
@@ -4214,7 +4214,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Add_Member
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &481654468
@@ -6645,6 +6645,8 @@ MonoBehaviour:
   EconR_button: {fileID: 1886658808}
   MerchS_button: {fileID: 1686357931}
   RoyalS_button: {fileID: 221086344}
+  AddMember_button: {fileID: 481654465}
+  RemMember_button: {fileID: 290294854}
   _selectedRoster: 0
 --- !u!1 &862489710
 GameObject:
@@ -9673,7 +9675,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Tavern_Button
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1320750346

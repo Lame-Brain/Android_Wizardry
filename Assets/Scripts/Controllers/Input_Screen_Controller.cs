@@ -13,6 +13,8 @@ public class Input_Screen_Controller : MonoBehaviour
     //Inn buttons
     public GameObject Stables_button, Cot_button, EconR_button, MerchS_button, RoyalS_button;
 
+    //Tavern buttons
+    public GameObject AddMember_button, RemMember_button;
 
     public Character_Class _selected_character;
     public int _selectedRoster;
@@ -64,6 +66,12 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
+            if (_button == "Tavern_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Tavern;
+                _castle.Update_Screen();
+                return;
+            }
         }
         //<<<<<<<<<<   INN   >>>>>>>>>>>>>>>>>>>>>>>
         if(_castle.townStatus == Castle_Logic.ts.Inn_Intro)
@@ -99,15 +107,41 @@ public class Input_Screen_Controller : MonoBehaviour
             {
                 Display_Screen_Controller _display = FindObjectOfType<Display_Screen_Controller>();
                 int _delta = _selected_character.xp_nnl - _selected_character.xp;
-                if (_delta > 0)
+                int _gpCost = 0, _hpAdd = 0;
+
+                if(_button == "Stables") { _gpCost = 0; _hpAdd = 0; }
+                if(_button == "Cots") { _gpCost = 10; _hpAdd = Random.Range(1,6); }
+                if(_button == "Economy") { _gpCost = 50; _hpAdd = Random.Range(3, 11); }
+                if(_button == "Merchant") { _gpCost = 200; _hpAdd = Random.Range(5, 16); }
+                if(_button == "Royal") { _gpCost = 500; _hpAdd = Random.Range(10, 21); }
+
+                if (_selected_character.Geld < _gpCost)
                 {
-                    _display.PopUpMessage(_selected_character.name + " needs " + _delta + " more XP to make the next level.");
+                    _display.PopUpMessage(_selected_character.name + " doesn't have enough geld!");
+                    return;
                 }
-                else
+                else 
                 {
-                    Game_Logic.instance.LevelUpCharacter(_selectedRoster);
+                    _selected_character.Geld -= _gpCost;
+                    _selected_character.HP += _hpAdd;
+                    if (_delta > 0)
+                    {
+                        string _txt = _selected_character.name + " needs " + _delta + " more XP to make the next level.";
+                        if(_hpAdd > 0) _txt = _selected_character.name + " heals " + _hpAdd + "hp.\n" + _txt;
+                        _display.PopUpMessage(_txt);
+                    }
+                    else
+                    {
+                        Game_Logic.instance.LevelUpCharacter(_selectedRoster);
+                    }
+                    return; 
                 }
             }
+        }
+        //<<<<<<<<<<   Tavern   >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.Tavern)
+        {
+
         }
     }
 }
