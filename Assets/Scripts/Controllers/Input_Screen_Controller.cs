@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class Input_Screen_Controller : MonoBehaviour
 {
-    //General buttons
-    public GameObject Leave_button, Name_button;
-
-    //Market buttons
-    public GameObject Advntr_Inn_button, Glgmsh_Tavern_button, Bltc_TP_button, Tmpl_CANT_button, Edge_of_Town_button;
-
-    //Inn buttons
-    public GameObject Stables_button, Cot_button, EconR_button, MerchS_button, RoyalS_button;
-
-    //Tavern buttons
-    public GameObject AddMember_button, RemMember_button;
+    public GameObject button_prefab;
 
     public Character_Class _selected_character;
     public int _selectedRoster;
@@ -31,22 +21,30 @@ public class Input_Screen_Controller : MonoBehaviour
 
     public void Clear_Buttons()
     {
-        foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Button")) _go.SetActive(false);
-        foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Temp_Button")) Destroy(_go);        
+        foreach (GameObject _go in GameObject.FindGameObjectsWithTag("Button")) Destroy(_go);
     }
 
-    public void Enable_Button (GameObject _go)
+    public void Create_Button (string name, string command)
     {
-        _go.SetActive(true);
+        GameObject _go = Instantiate(button_prefab, this.transform);
+        _go.tag = "Button";
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
+        _go.GetComponent<Name_Button_Controller>().String = command;
     }
-    public void Enable_Button_First (GameObject _go)
+    public void Create_Button_First (string name, string command)
     {
-        _go.SetActive(true);
+        GameObject _go = Instantiate(button_prefab, this.transform);
+        _go.tag = "Button";
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
+        _go.GetComponent<Name_Button_Controller>().String = command;
         _go.transform.SetAsFirstSibling();
     }
-    public void Enable_Button_Last (GameObject _go)
+    public void Create_Button_Last (string name, string command)
     {
-        _go.SetActive(true);
+        GameObject _go = Instantiate(button_prefab, this.transform);
+        _go.tag = "Button";
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
+        _go.GetComponent<Name_Button_Controller>().String = command;
         _go.transform.SetAsLastSibling();
     }
 
@@ -96,7 +94,7 @@ public class Input_Screen_Controller : MonoBehaviour
         if (_castle.townStatus == Castle_Logic.ts.Inn)
         {
             if (_button == "Leave_Button")
-            {
+            {                
                 _selected_character = null; _castle._selected_character = null;
                 _selectedRoster = -1; _castle._selectedRoster = -1;
                 _castle.townStatus = Castle_Logic.ts.Inn_Intro;                

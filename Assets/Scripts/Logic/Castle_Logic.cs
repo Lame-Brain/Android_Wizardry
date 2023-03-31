@@ -84,11 +84,11 @@ public class Castle_Logic : MonoBehaviour
                                         "   tavern, Boltac's Trading post, the   \n" +
                                         "   temple of cant, or edge of town.");
             _input.Clear_Buttons();
-            _input.Enable_Button(_input.Advntr_Inn_button);
-            _input.Enable_Button(_input.Glgmsh_Tavern_button);
-            _input.Enable_Button(_input.Bltc_TP_button);
-            _input.Enable_Button(_input.Tmpl_CANT_button);
-            _input.Enable_Button(_input.Edge_of_Town_button);
+            _input.Create_Button("INN", "Inn_Button");
+            _input.Create_Button("TAVERN", "Tavern_Button");
+            _input.Create_Button("TRADE POST","Boltac_Button");
+            _input.Create_Button("TEMPLE","Temple_Button");
+            _input.Create_Button_Last("EDGE OF TOWN","Edge_of_Town_Button");
         }
 
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INN INTRO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -145,17 +145,9 @@ public class Castle_Logic : MonoBehaviour
                                         "             Who will Stay?          ");
             _input.Clear_Buttons();
             for (int i = 0; i < 6; i++)
-            {
-                if (!_party.EmptySlot(i))
-                {
-                    GameObject _go = Instantiate(_input.Name_button, _input.transform);
-                    _go.tag = "Temp_Button";
-                    _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = Game_Logic.PARTY.LookUp_PartyMember(i).name;
-                    _go.GetComponent<Name_Button_Controller>().String = "" + i;
-                    _go.SetActive(true);
-                }
-            }
-            _input.Enable_Button_Last(_input.Leave_button);
+                if (!_party.EmptySlot(i)) 
+                    _input.Create_Button(_party.LookUp_PartyMember(i).name, "" + i);
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
 
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -217,12 +209,12 @@ public class Castle_Logic : MonoBehaviour
                                         "   Royal Suites. 500 g/week. \n" +
                                         "   Leave.");
             _input.Clear_Buttons();
-            _input.Enable_Button(_input.Stables_button);
-            _input.Enable_Button(_input.Cot_button);
-            _input.Enable_Button(_input.EconR_button);
-            _input.Enable_Button(_input.MerchS_button);
-            _input.Enable_Button(_input.RoyalS_button);
-            _input.Enable_Button_Last(_input.Leave_button);
+            _input.Create_Button("STABLES","Stables");
+            _input.Create_Button("COTS","Cots");
+            _input.Create_Button("ECONOMY ROOM","Economy");
+            _input.Create_Button("MERCHANT SUITE","Merchant");
+            _input.Create_Button("ROTAL SUITES","Royal");
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
 
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  TAVERN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -281,23 +273,15 @@ public class Castle_Logic : MonoBehaviour
             _display.Update_Text_Screen(_txt);
 
             _input.Clear_Buttons();
-            if(_party.EmptySlot(5)) _input.Enable_Button(_input.AddMember_button);
+            if(_party.EmptySlot(5)) _input.Create_Button("ADD MEMBER", "Add_Member");
             if (!_party.EmptySlot(0))
             {
-                _input.Enable_Button(_input.RemMember_button);
+                _input.Create_Button("REMOVE MEMBER", "Rem_Member");
                 for (int i = 0; i < 6; i++)
-                {
                     if (!_party.EmptySlot(i))
-                    {
-                        GameObject _go = Instantiate(_input.Name_button, _input.transform);
-                        _go.tag = "Temp_Button";
-                        _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = Game_Logic.PARTY.LookUp_PartyMember(i).name;
-                        _go.GetComponent<Name_Button_Controller>().String = "" + i;
-                        _go.SetActive(true);
-                    }
-                }
+                        _input.Create_Button(_party.LookUp_PartyMember(i).name, "" + i);
             }
-            _input.Enable_Button_Last(_input.Leave_button);
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
 
     }
