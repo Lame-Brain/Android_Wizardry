@@ -10,11 +10,13 @@ public class Text_Input_Panel_Controller : MonoBehaviour
     public TextMeshProUGUI InputPlaceHolder;
     public TextMeshProUGUI InputText;
 
+    private Input_Screen_Controller _input;
     private Display_Screen_Controller _display;
 
 
     private void OnEnable()
     {
+        _input = FindObjectOfType<Input_Screen_Controller>();
         _display = FindObjectOfType<Display_Screen_Controller>();
         Message.fontSize = _display.FONT_SIZE;
         InputPlaceHolder.fontSize = _display.FONT_SIZE;
@@ -27,9 +29,14 @@ public class Text_Input_Panel_Controller : MonoBehaviour
         _text = _text.ToUpper();
         Message.text = _text;
     }
+    public void Close_Text_Input_Panel()
+    {
+        this.gameObject.SetActive(false);        
+        Message.text = "";
+    }
 
     public void Accept_Input(string _S)
     {
-        Debug.Log(_S);
+        _input.Button_Clicked("TextInput:" + _S);
     }
 }

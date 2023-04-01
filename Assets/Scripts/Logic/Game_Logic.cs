@@ -33,7 +33,7 @@ public class Game_Logic : MonoBehaviour
         
         //Debug Character
         Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
-        test.name = "Ethan Hyde duBo";
+        test.name = "Ethan";
         another_test.name = "Evan";
         third_test.name = "Roberts";
 
@@ -49,13 +49,13 @@ public class Game_Logic : MonoBehaviour
         ROSTER.Add(third_test);
         PARTY.AddMember(0);        
         PARTY.AddMember(1);        
-        PARTY.AddMember(2);        
+        //PARTY.AddMember(2);        
     }
 
 
 
 
-
+    #region LEVEL_UP
     public void LevelUpCharacter(int _n)
     {
         Character_Class _me = ROSTER[_n];
@@ -296,4 +296,5 @@ public class Game_Logic : MonoBehaviour
         _levelUpMessage = _levelUpMessage.ToUpper();
         _display.PopUpMessage(_levelUpMessage);
     }
+    #endregion
 }

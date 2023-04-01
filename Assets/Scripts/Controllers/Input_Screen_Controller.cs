@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Input_Screen_Controller : MonoBehaviour
 {
-    public GameObject button_prefab;
+    public GameObject button_prefab;    
 
     public Character_Class _selected_character;
     public int _selectedRoster;
 
-
+    private Display_Screen_Controller _display;
     private Castle_Logic _castle;
 
     private void Start()
     {
+        _display = FindObjectOfType<Display_Screen_Controller>();
         _castle = FindObjectOfType<Castle_Logic>();
         _selected_character = null;
         _selectedRoster = -1;
@@ -139,7 +140,52 @@ public class Input_Screen_Controller : MonoBehaviour
         //<<<<<<<<<<   Tavern   >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Tavern)
         {
+            if(_button == "Add_Member")
+            {
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO ADD?");
+            }
 
+            if(_button.Substring(0,10) == "TextInput:")
+            {
+                string _name = _button.Replace("TextInput:", "");
+                bool _found = false;
+                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+                {
+                    if (_name.ToUpper() == Game_Logic.ROSTER[i].name.ToUpper())
+                    {
+                        //now check if the character is available
+                        if (!Game_Logic.ROSTER[i].inParty) 
+                        {
+                            _selectedRoster = i;
+                            _selected_character = Game_Logic.ROSTER[i];
+                            _found = true; 
+                        }
+                    }
+                }
+                if (_found)
+                {
+                    _selected_character.inParty = true;
+                    Game_Logic.PARTY.AddMember(_selectedRoster);
+                }
+                if (!_found) _display.PopUpMessage("Who?".ToUpper());
+
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                _castle.Update_Screen();
+                return;
+            }
+            if (_button.Substring(0, 5) == "Char:")
+            {
+                string _name = _button.Replace("TextInput:", "");
+                //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            }
+            if (_button == "Leave_Button")
+            {
+                _selected_character = null; _castle._selected_character = null;
+                _selectedRoster = -1; _castle._selectedRoster = -1;
+                _castle.townStatus = Castle_Logic.ts.Market;
+                _castle.Update_Screen();
+                return;
+            }
         }
     }
 }
