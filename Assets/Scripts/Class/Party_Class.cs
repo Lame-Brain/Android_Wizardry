@@ -29,7 +29,7 @@ public class Party_Class : MonoBehaviour
 
     public Character_Class LookUp_PartyMember(int _n)
     {
-        Character_Class _result = Game_Logic.ROSTER[_n];
+        Character_Class _result = Game_Logic.ROSTER[Party[_n]];
         return _result;
     }
     
@@ -42,10 +42,10 @@ public class Party_Class : MonoBehaviour
                 return;
             }
     }
-    public void RemoveMember(int RosterIndex)
+    public void RemoveMember(int PartyIndex)
     {
-        Party[RosterIndex] = -1;
-        for (int i = RosterIndex; i < Party.Length - 1; i++)
+        Party[PartyIndex] = -1;
+        for (int i = PartyIndex; i < Party.Length - 1; i++)
         {
             Party[i] = Party[i + 1];
             Party[i + 1] = -1;

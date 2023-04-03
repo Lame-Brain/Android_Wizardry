@@ -140,12 +140,12 @@ public class Input_Screen_Controller : MonoBehaviour
         //<<<<<<<<<<   Tavern   >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Tavern)
         {
-            if(_button == "Add_Member")
+            if (_button == "Add_Member")
             {
                 _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO ADD?");
             }
 
-            if(_button.Substring(0,10) == "TextInput:")
+            if (_button.Length > 9 && _button.Substring(0, 10) == "TextInput:")
             {
                 string _name = _button.Replace("TextInput:", "");
                 bool _found = false;
@@ -154,11 +154,11 @@ public class Input_Screen_Controller : MonoBehaviour
                     if (_name.ToUpper() == Game_Logic.ROSTER[i].name.ToUpper())
                     {
                         //now check if the character is available
-                        if (!Game_Logic.ROSTER[i].inParty) 
+                        if (!Game_Logic.ROSTER[i].inParty)
                         {
                             _selectedRoster = i;
                             _selected_character = Game_Logic.ROSTER[i];
-                            _found = true; 
+                            _found = true;
                         }
                     }
                 }
@@ -173,12 +173,47 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
+
+            if (_button == "Rem_Member")
+            {
+                _castle.townStatus = Castle_Logic.ts.Tavern_Remove;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button.Substring(0, 5) == "View:")
+            {
+                string _name = _button.Replace("View:", "");
+                int _num = int.Parse(_name);
+                _castle._selected_character = Game_Logic.PARTY.LookUp_PartyMember(_num);
+                _castle._selectedRoster = _num;
+                _castle.townStatus = Castle_Logic.ts.View_Char;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "Leave_Button")
+            {
+                _selected_character = null; _castle._selected_character = null;
+                _selectedRoster = -1; _castle._selectedRoster = -1;
+                _castle.townStatus = Castle_Logic.ts.Market;
+                _castle.Update_Screen();
+                return;
+            }
+        }
+        //<<<<<<<<<<   Tavern REMOVE   >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.Tavern_Remove)
+        {
+
             if (_button.Substring(0, 5) == "Char:")
             {
                 string _name = _button.Replace("Char:", "");
                 int _num = int.Parse(_name);
-
+                Game_Logic.PARTY.RemoveMember(_num);
+                _castle.Update_Screen();
+                return;
             }
+
             if (_button == "Leave_Button")
             {
                 _selected_character = null; _castle._selected_character = null;

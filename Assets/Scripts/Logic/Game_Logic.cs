@@ -8,6 +8,7 @@ public class Game_Logic : MonoBehaviour
     public static Party_Class PARTY;
     public static List<Character_Class> ROSTER = new List<Character_Class>();
     public static List<Spell_Class> SPELL = new List<Spell_Class>();
+    public static List<Item_Class> ITEM = new List<Item_Class>();
       
 
     //singleton
@@ -33,7 +34,10 @@ public class Game_Logic : MonoBehaviour
         
         //Debug Character
         Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
-        test.name = "Ethan";
+        test.name = "Ethan"; test.race = Enum._Race.human;  test.alignment = Enum._Alignment.good;
+        test.Strength = 14; test.Vitality = 16; test.Luck = 18;
+        test.ageInWeeks = 52 * 45; test.level = 12; test.ArmorClass = -58;
+        test.HP = 5; test.HP_MAX = 5;
         another_test.name = "Evan";
         third_test.name = "Roberts";
 
@@ -49,7 +53,7 @@ public class Game_Logic : MonoBehaviour
         ROSTER.Add(third_test);
         PARTY.AddMember(0);        
         PARTY.AddMember(1);        
-        //PARTY.AddMember(2);        
+        PARTY.AddMember(2);        
     }
 
 
