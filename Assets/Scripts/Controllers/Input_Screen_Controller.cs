@@ -175,8 +175,9 @@ public class Input_Screen_Controller : MonoBehaviour
             }
             if (_button.Substring(0, 5) == "Char:")
             {
-                string _name = _button.Replace("TextInput:", "");
-                //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                string _name = _button.Replace("Char:", "");
+                int _num = int.Parse(_name);
+
             }
             if (_button == "Leave_Button")
             {
