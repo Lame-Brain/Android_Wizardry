@@ -15,4 +15,12 @@ public class Item
         this.curse_active = _curse;
         this.identified = _id;
     }
+
+    public string ItemName()
+    {
+        string _result = "";
+        if (this.identified) _result = Game_Logic.ITEM[index].name;
+        if (!this.identified) _result = Game_Logic.ITEM[index].name_unk;
+        return _result;
+    }
 }

@@ -7,6 +7,7 @@ using BlobberEngine;
 public class Text_Input_Panel_Controller : MonoBehaviour
 {
     public TextMeshProUGUI Message;
+    public TMP_InputField input;
     public TextMeshProUGUI InputPlaceHolder;
     public TextMeshProUGUI InputText;
 
@@ -31,12 +32,15 @@ public class Text_Input_Panel_Controller : MonoBehaviour
     }
     public void Close_Text_Input_Panel()
     {
-        this.gameObject.SetActive(false);        
-        Message.text = "";
+        input.text = "";
+        input.DeactivateInputField();
+        input.ActivateInputField();
+        this.gameObject.SetActive(false);
+        Message.text = "";        
     }
 
     public void Accept_Input(string _S)
     {
-        _input.Button_Clicked("TextInput:" + _S);
+        _input.Button_Clicked("TextInput:" + _S);        
     }
 }

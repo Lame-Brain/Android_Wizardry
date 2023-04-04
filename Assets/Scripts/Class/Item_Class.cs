@@ -14,15 +14,14 @@ public class Item_Class
     public int change_chance;
     public float price;
     public int store_stock;
-    public int spell;
-    public string class_use;
+    public string spell;
+    public string class_use = "   ";
     public int heal_pts;
-    public Dice damage;
+    public Dice damage = new Dice();
     public int armor_mod;
     public int hit_mod;
     public int xtra_swings;
     public bool crit_hit;
     public string wep_vs_type;
     public string ac_vs_type;
-    public string decription;
 }

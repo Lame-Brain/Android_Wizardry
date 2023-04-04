@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Castle_Logic : MonoBehaviour
 {
-    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, Shop, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
+    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
     public ts townStatus;
     public Character_Class _selected_character;
     public int _selectedRoster;
+    public int _selectedInventorySlot;
+    public int _selectedItemIndex;
 
     private Display_Screen_Controller _display;
     private Input_Screen_Controller _input;
@@ -344,7 +347,7 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button_Last("DONE", "Leave_Button");
         }
 
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  TAVERN REMOVE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  VIEW CHARACTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.View_Char)
         {            
             string _txt = _selected_character.name + " " + _selected_character.race.ToString() + " " + _selected_character.alignment.ToString()[0] + "-" + _selected_character.character_class.ToString() + " ";
@@ -426,11 +429,21 @@ public class Castle_Logic : MonoBehaviour
                 {
                     //String displayed at start of string
                     string _addChar = " ";
-                    if (!Game_Logic.ITEM[_selected_character.Inventory[i].index].class_use.Contains(_selected_character.character_class.ToString().Substring(0, 1).ToLower())) _addChar = "#";
+
+                    //ChatGPT suggested this code:
+                    string charClass = _selected_character.character_class.ToString().Substring(0, 1);                    
+                    string itemClassUse = Game_Logic.ITEM[_selected_character.Inventory[i].index].class_use;
+                    if (itemClassUse.IndexOf(charClass, StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+                        _addChar = "#";
+                    }
+                    // Replacing this code:
+                    //if (!Game_Logic.ITEM[_selected_character.Inventory[i].index].class_use.Contains(_selected_character.character_class.ToString().Substring(0, 1).ToLower())) _addChar = "#";
+
                     if (!_selected_character.Inventory[i].identified) _addChar = "?";
                     if (_selected_character.Inventory[i].equipped) _addChar = "*";
                     if (_selected_character.Inventory[i].curse_active) _addChar = "-";
-                    _18inv[i] = i + ")" + _addChar;
+                    _18inv[i] = i + ")" + _addChar + _selected_character.Inventory[i].ItemName();
 
                     //Bound string to 20 characters, no more, no less
                     if (_18inv[i].Length > 19) _18inv[i] = _18inv[i].Substring(0, 20);
@@ -451,11 +464,90 @@ public class Castle_Logic : MonoBehaviour
                     "        Read Spell books, or leave.";
 
             _display.Update_Text_Screen(_txt);
-
+            _input.Clear_Buttons();
             _input.Create_Button("View Item", "View_Item");
             _input.Create_Button("Trade Geld", "Trade_Geld");
             _input.Create_Button("Read Spells", "Read_Magic");
             _input.Create_Button_Last("DONE", "Leave_Button");
+        }
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  VIEW ITEM <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if(townStatus == ts.View_Item)
+        {
+            string _txt = _selected_character.Inventory[_selectedInventorySlot].ItemName() + "    ";
+            switch (Game_Logic.ITEM[_selectedItemIndex].item_type)
+            {
+                //Weapon, Armor, Helmet, Gauntlets, Special, Misc, Consumable
+                case BlobberEngine.Enum._Item_Type.Weapon:
+                    _txt += "This is a Weapon.\n";
+                    break;
+                case BlobberEngine.Enum._Item_Type.Helmet:
+                    _txt += "This is a Helmet.\n";
+                    break;
+                case BlobberEngine.Enum._Item_Type.Shield:
+                    _txt += "This is a Shield.\n";
+                    break;
+                case BlobberEngine.Enum._Item_Type.Armor:
+                    _txt += "This is Armor.\n";
+                    break;
+                case BlobberEngine.Enum._Item_Type.Gauntlets:
+                    _txt += "This is a set of Gloves.\n";
+                    break;
+                case BlobberEngine.Enum._Item_Type.Special:
+                    _txt += "This is a Special Item.\n";
+                    break;
+                case BlobberEngine.Enum._Item_Type.Consumable:
+                    _txt += "This is a Consumable Item.\n";
+                    break;
+                default:
+                    _txt += "This is a Misc Item.\n";
+                    break;
+            }
+            if (_selected_character.Inventory[_selectedInventorySlot].identified)
+            {
+                _txt += "\n Value: " + Game_Logic.ITEM[_selectedItemIndex].price + "g\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].damage.num > 0)
+                {
+                    _txt += "\n";
+                    if (Game_Logic.ITEM[_selectedItemIndex].hit_mod < 0) _txt += "(ToHit " + Game_Logic.ITEM[_selectedItemIndex].hit_mod + ") ";
+                    if (Game_Logic.ITEM[_selectedItemIndex].hit_mod >= 0) _txt += "(ToHit +" + Game_Logic.ITEM[_selectedItemIndex].hit_mod + ") ";
+                    _txt += "Damage = " + Game_Logic.ITEM[_selectedItemIndex].damage.num + "d" + Game_Logic.ITEM[_selectedItemIndex].damage.sides;
+                    if (Game_Logic.ITEM[_selectedItemIndex].damage.bonus < 0) _txt += Game_Logic.ITEM[_selectedItemIndex].damage.bonus;
+                    if (Game_Logic.ITEM[_selectedItemIndex].damage.bonus > 0) _txt += "+" + Game_Logic.ITEM[_selectedItemIndex].damage.bonus;
+                    if (Game_Logic.ITEM[_selectedItemIndex].xtra_swings > 1) _txt += "x" + Game_Logic.ITEM[_selectedItemIndex].xtra_swings;
+                    _txt += "\n";
+                }
+                if (Game_Logic.ITEM[_selectedItemIndex].armor_mod > 0) _txt += "\n Armor: " + Game_Logic.ITEM[_selectedItemIndex].armor_mod + "\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].spell != "") _txt += "\n When invoked, casts: " + Game_Logic.ITEM[_selectedItemIndex].spell + ".\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.none) _txt += "\nUsable by: \n";
+                if (Game_Logic.ITEM[_selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.good) _txt += "\nUsable by: (Good Only)\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.neutral) _txt += "\nUsable by: (Neutral Only)\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.evil) _txt += "\nUsable by: (Evil Only)\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("z")) _txt += "<None>\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("f")) _txt += "Fighter\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("m")) _txt += "Mage\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("p")) _txt += "Priest\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("t")) _txt += "Thief\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("b")) _txt += "Bishop\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("s")) _txt += "Samurai\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("l")) _txt += "Lord\n";
+                if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("n")) _txt += "Ninja\n";
+
+            }
+            else
+            {
+                _txt += "\n Identify this item to learn more about it.\n\n\n";
+            }
+            _txt += "\n\nYou can Equip/Unequip Item, Trade Item,\n" +
+                         "       Trash Item, Identify Item, or Leave.";
+
+            _display.Update_Text_Screen(_txt);
+            _input.Clear_Buttons();
+            _input.Create_Button("Equip/ Unequip", "Equip_Item");
+            _input.Create_Button("Trade Item", "Trade_Item");
+            _input.Create_Button("Trash Item", "Trash_Item");
+            _input.Create_Button("Identify Item", "ID_Item");
+            _input.Create_Button_Last("Leave", "Leave_Button");
         }
     }
 }

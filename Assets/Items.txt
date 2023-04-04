@@ -1,0 +1,101 @@
+0,Broken Item,Broken Item,Misc,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+1,Long Sword,Sword,Weapon,,,-1,0,25,-1,,fsln,0,1,8,0,0,4,0,FALSE,,,
+2,Short Sword,Sword,Weapon,,,-1,0,15,-1,,ftsln,0,1,6,0,0,3,0,FALSE,,,
+3,Anointed Mace,Knobbed Stick,Weapon,,,-1,0,30,-1,,fpbsln,0,2,3,0,0,2,0,FALSE,,,
+4,Anointed Flail,Stick w/chain,Weapon,,,-1,0,150,-1,,fpsln,0,1,7,0,0,3,0,FALSE,,,
+5,Staff,Stick,Weapon,,,-1,0,10,-1,,fmptbsln,0,1,5,0,0,0,0,FALSE,,,
+6,Dagger,Dagger,Weapon,,,-1,0,5,-1,,fmtsln,0,1,4,0,0,1,0,FALSE,,,
+7,Small Shield,Shield,Shield,,,-1,0,20,-1,,fptbsln,0,0,0,0,2,0,0,FALSE,,,
+8,Large Shield,Shield,Shield,,,-1,0,40,-1,,fpsln,0,0,0,0,3,0,0,FALSE,,,
+9,Robes,Clothing,Armor,,,-1,0,15,-1,,fmptbsln,0,0,0,0,1,0,0,FALSE,,,
+10,Leather Armor,Armor,Armor,,,-1,0,50,-1,,fptbsln,0,0,0,0,2,0,0,FALSE,,,
+11,Chain Mail,Armor,Armor,,,-1,0,90,-1,,fpsln,0,0,0,0,3,0,0,FALSE,,,
+12,Breast Plate,Armor,Armor,,,-1,0,200,-1,,fpsln,0,0,0,0,4,0,0,FALSE,,,
+13,Plate Mail,Armor,Armor,,,-1,0,750,-1,,fsln,0,0,0,0,5,0,0,FALSE,,,
+14,Helm,Helm,Helmet,,,-1,0,100,-1,,fsln,0,0,0,0,1,0,0,FALSE,,,
+15,Dios Potion,Potion,Consumable,,,0,100,500,-1,dios,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(dios)
+16,Latumofis Potion,Potion,Consumable,,,0,100,300,-1,latumofis,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(latumofis)
+17,Long Sword+1,Sword,Weapon,,,-1,0,10000,0,,fsln,0,1,8,1,0,5,2,FALSE,,,
+18,Short Sword+1,Sword,Weapon,,,-1,0,15000,0,,ftsln,0,1,6,1,0,4,2,FALSE,,,
+19,Mace +1,Knobbed Stick,Weapon,,,-1,0,12500,1,,fpbsln,0,2,4,1,0,3,2,FALSE,,,
+20,Staff of Mogref,Staff,Weapon,,,0,25,3000,3,mogref,mb,0,1,6,1,0,1,0,FALSE,,,Decay 25%(mogref)
+21,Scroll/Kantino,Scroll,Consumable,,,0,100,500,4,katino,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(katino)
+22,Leather + 1,Armor,Armor,,,-1,0,1500,-1,,fptbsln,0,0,0,0,3,0,0,FALSE,,,
+23,Chain Mail + 1,Armor,Armor,,,-1,0,1500,-1,,fpsln,0,0,0,0,4,0,0,FALSE,,,
+24,Plate Mail + 1,Armor,Armor,,,-1,0,1500,0,,fsln,0,0,0,0,6,0,0,FALSE,,,
+25,Shield + 1,Shield,Shield,,,-1,0,1500,-1,,fptsln,0,0,0,0,4,0,0,FALSE,,,
+26,Breast Plate +1,Armor,Armor,,,-1,0,1500,-1,,fpsln,0,0,0,0,5,0,0,FALSE,,,
+27,Scroll/Badios,Paper,Consumable,,,0,100,500,-1,badios,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(badios)
+28,Scroll/Halito,Scroll,Consumable,,,0,100,500,27,halito,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(halito)
+29,Long Sword -1,Sword,Weapon,,TRUE,-1,0,1000,-10,,fsln,0,1,8,0,0,-1,0,FALSE,,,Cursed
+30,Short Sword -1,Sword,Weapon,,TRUE,-1,0,1000,-10,,z,0,1,6,0,0,-1,1,FALSE,,,Cursed
+31,Mace -1,Knobbed Stick,Weapon,,TRUE,-1,0,1000,-10,,fpbsln,0,2,3,0,0,-1,1,FALSE,,,Cursed
+32,Staff +2,Stick,Weapon,,,-1,0,2500,0,,fmptbsln,0,1,4,2,0,2,1,FALSE,,,
+33,Dragon Slayer,Sword,Weapon,,,-1,0,10000,0,,fsln,0,1,10,1,0,1,1,FALSE,Dragons,Dragons,Purposed vs dragons,prot. vs dragons
+34,Helm + 1,Helm,Helmet,,,-1,0,3000,0,,fsln,0,0,0,0,2,0,0,FALSE,,,
+35,Leather -1,Armor,Armor,,TRUE,-1,0,1500,-10,,fptbsl,0,0,0,0,1,0,0,FALSE,,,Cursed
+36,Chain -1,Armor,Armor,,TRUE,-1,0,1500,-10,,fpsln,0,0,0,0,2,0,0,FALSE,,,Cursed
+37,Breast Plate-1,Armor,Armor,,TRUE,-1,0,1500,-10,,fpsln,0,0,0,0,3,0,0,FALSE,,,Cursed
+38,Shield -1,Shield,Shield,,TRUE,-1,0,1500,-10,,fptsl,0,0,0,0,-1,0,0,FALSE,,,
+39,Jeweled Amulet,Amulet,Misc,,,39,0,5000,2,dumapic,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 0%(dumapic)
+40,Scroll/Badios,Scroll,Consumable,,,0,100,500,0,badios,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(badios)
+41,Potion of Sopic,Potion,Consumable,,,0,100,1500,1,sopic,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(sopic)
+42,Long Sword + 2,Sword,Weapon,,,-1,0,4000,0,,fsln,0,1,10,2,0,6,3,FALSE,,,
+43,Short Sword +2,Sword,Weapon,,,-1,0,4000,0,,ftsln,0,1,6,2,0,5,3,FALSE,,,
+44,Mace + 2,Knobbed Stick,Weapon,,,-1,0,4000,0,,fpbsln,0,1,8,2,0,4,2,FALSE,,,
+45,Scroll/Lomilwa,Scroll,Consumable,,,0,100,2500,0,lomilwa,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(lomilwa)
+46,Scroll/Dilto,Scroll,Consumable,,,0,100,2500,0,dilto,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(dilto)
+47,Copper Gloves,Gloves,Gauntlet,,,-1,0,6000,-1,,fsln,0,0,0,0,1,0,0,FALSE,,,
+48,Leather + 2,Armor,Armor,,,-1,0,6000,0,,fptbsln,0,0,0,0,4,0,0,FALSE,,,
+49,Chain + 2,Armor,Armor,,,-1,0,6000,0,,fpsln,0,0,0,0,5,0,0,FALSE,,,
+50,Plate Mail + 2,Armor,Armor,,,-1,0,6000,0,,fpsln,0,0,0,0,7,0,0,FALSE,,,
+51,Shield + 2,Shield,Shield,,,-1,0,7000,0,,fptsln,0,0,0,0,5,0,0,FALSE,,,
+52,Helm +2 (Evil),Helm,Helmet,Evil,,-1,0,8000,0,,fsln,0,0,0,0,3,0,0,FALSE,,,Evil only
+53,Potion of Dial,Potion,Consumable,,,0,100,5000,0,dial,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(dial)
+54,Ring of Porfic,Ring,Misc,,,0,5,10000,0,porfic,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 5%(porfic)
+55,Were Slayer,Sword,Weapon,,,-1,0,10000,0,,fsln,0,1,10,1,0,5,2,FALSE,Were,Were,Purposed vs were,prot. vs were
+56,Mage Masher,Sword,Weapon,,,-1,0,10000,0,,ftsln,0,1,6,1,0,5,2,FALSE,Mage,Mage,Purposed vs mage,prot. vs mage
+57,Mace Pro Poison,Knobbed Stick,Weapon,,,-1,0,10000,0,,fpbsln,0,1,8,0,0,3,2,FALSE,Insect,Insect,Purposed vs insect, resist poison
+58,Staff/Montino,Staff,Weapon,,,5,10,15000,0,montino,z,0,1,5,1,0,1,1,FALSE,,,Decay 10%(montino(then staff))
+59,Blade Cusinart,Sword,Weapon,,,-1,0,15000,0,,fsln,0,1,3,9,0,6,4,FALSE,,,
+60,Amulet/Manifo,Amulet,Misc,,,0,10,15000,0,manifo,p,0,0,0,0,0,0,0,FALSE,,,Decay 10%(manifo)
+61,Rod of Flame,Rod,Misc,,,0,10,25000,0,mahalito,mbs,0,0,0,0,0,0,0,FALSE,,Fire,Decay 10%(mahalito),resist Fire
+62,Evil Chain + 2,Chain,Armor,Evil,,-1,0,8000,2,,fpsln,0,0,0,0,5,0,0,FALSE,,,Evil only
+63,Neut P-Mail + 2,Plate Armor,Armor,Neutral,,-1,0,8000,0,,fpsln,0,0,0,0,7,0,0,FALSE,,,Neutral only
+64,Evil Shield +3,Shield,Shield,Evil,,-1,0,25000,0,,fptsln,0,0,0,0,5,0,0,FALSE,,,Evil only
+65,Amulet/Makanito,Amulet,Misc,,,0,5,20000,0,makanito,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 5%(makanito)
+66,Diadem of Malor,Diadem,Helmet,,,14,100,25000,0,malor,fmptbsln,0,0,0,0,2,0,0,FALSE,,,Decay 100%(malor(then helm))
+67,Scroll/Badial,Scroll,Consumable,,,0,100,8000,0,badial,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(badial)
+68,Short Sword -2,Sword,Weapon,,TRUE,-1,0,8000,-10,,ftsln,0,1,6,0,0,1,1,FALSE,,,Cursed
+69,Dagger +2,Dagger,Weapon,,,-1,0,8000,0,,fmtsln,0,1,4,2,0,3,2,FALSE,,,
+70,Mace -2,Knobbed Stick,Weapon,,TRUE,-1,0,8000,-10,,fpbsln,0,1,8,0,0,0,0,FALSE,,,Cursed
+71,Staff -2,Stick,Weapon,,TRUE,-1,0,8000,-10,,fmptbsln,0,1,4,0,0,-2,1,FALSE,,,Cursed
+72,Dagger of Speed,Dagger,Weapon,,,-1,0,30000,0,,mn,0,1,4,0,-3,-1,7,FALSE,,,
+73,Cursed Robe,Robe,Armor,,TRUE,-1,0,8000,-10,,fmptbsln,0,0,0,0,-2,-2,0,FALSE,,,Cursed
+74,Leather -2,Armor,Armor,,TRUE,-1,0,8000,-10,,fptbsln,0,0,0,0,0,0,0,FALSE,,,Cursed
+75,Chain -2,Armor,Armor,,TRUE,-1,0,8000,-10,,fpsln,0,0,0,0,1,0,0,FALSE,,,Cursed
+76,Breast Plate -2,Armor,Armor,,TRUE,-1,0,8000,-10,,fpsln,0,0,0,0,2,0,0,FALSE,,,Cursed
+77,Shield - 2,Shield,Shield,,TRUE,-1,0,8000,-10,,fptsln,0,0,0,0,0,0,0,FALSE,,,Cursed
+78,Cursed Helmet,Helm,Helmet,,TRUE,-1,0,50000,-10,,fsln,0,0,0,0,-2,-2,0,FALSE,,,Cursed
+79,Breast Plate +2,Armor,Armor,,,-1,0,10000,0,,fpsln,0,0,0,0,6,0,0,FALSE,,,
+80,Silver Gloves,Gauntlets,Gauntlet,,,-1,0,60000,0,,fsln,0,0,0,0,3,0,0,FALSE,,,
+81,Evil Sword + 3,Sword,Weapon,Evil,,-1,0,50000,0,,fsln,0,1,10,3,0,7,4,FALSE,,,Evil only
+82,Evil S-Sword +3,Sword,Weapon,Evil,,-1,0,50000,0,,ftsln,0,1,6,0,0,6,4,FALSE,,,Evil only
+83,Thieves Dagger,Dagger,Weapon,,,6,100,50000,0,,tn,0,1,6,0,0,5,4,FALSE,,,Become_NInja
+84,Breast Plate +3,Armor,Armor,,,-1,0,100000,0,,fpsln,0,0,0,0,7,0,0,FALSE,,,
+85,Lords Garb,Armor,Armor,,,13,50,1000000,0,Heal_All_Party,l,1,0,0,0,10,0,0,FALSE,,Myth Dragon ,Special #23(heal all h.p.),decay 50%,regen. +1,prot. vs mythical dragon,autokill,purp. vs were undead demon
+86,Murasama Blade,Weapon,Weapon,,,1,50,1000000,0,STR_UP_1,s,0,10,5,0,0,8,3,FALSE,,,Special #1(strenght+1), decay 50%
+87,Shuriken,Weapon,Weapon,Evil,,0,50,50000,0,HP_UP_1,n,0,1,5,10,0,7,3,TRUE,,Poison Drain,Evil only, special #22(h.p.+1), decay 50%, resist poison and level drain, autokill
+88,Chain Pro Fire,Armor,Armor,,,-1,0,150000,0,,fpsln,0,0,0,0,6,0,0,FALSE,,Fire,Resit fire
+89,Evil Plate + 3,Plate Armor,Armor,Evil,,-1,0,150000,0,,fpsln,0,0,0,0,9,0,0,FALSE,,,Evil only
+90,Shield + 3,Shield,Shield,,,-1,0,250000,0,,fptsln,0,0,0,0,6,0,0,FALSE,,,
+91,Ring of Healing,Ring,Misc,,,-1,0,300000,0,,fmptbsln,1,0,0,0,0,0,0,FALSE,,,Regeneration +1
+92,Ring Pro Undead,Ring,Misc,,,-1,0,500000,0,,fmptbsln,0,0,0,0,0,0,0,FALSE,,Unead,Prot. undead
+93,Deadly Ring,Ring,Misc,,TRUE,-1,0,500000,-10,,fmptbsln,-3,0,0,0,0,0,0,FALSE,,,Cursed,regeneration -3
+94,Werdna's Amulet,Amulet,Misc,Evil,TRUE,94,0,9999999,0,Heal_All_Party,fmptbsln,5,0,0,0,10,0,0,FALSE,,Myth Dragon Undead Were Insect,Evil only,cursed,special #23(heal all h.p.),decay 0%(malor),regen. +5,prot. all except enchant.,resist all
+95,Statuette/Bear,Statuette/Bear,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+96,Statuette/Frog,Statuette/Frog,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+97,Bronze key,Bronze key,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+98,Silver Key,Silver Key,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+99,Gold Key,Gold Key,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+100,Blue Ribbon,Blue Ribbon,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,

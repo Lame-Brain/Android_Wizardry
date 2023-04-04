@@ -35,17 +35,19 @@ public class Party_Class : MonoBehaviour
     
     public void AddMember(int RosterIndex)
     {
-        for (int i = 0; i < Party.Length; i++)
+        for (int i = 0; i < 6; i++)
             if(Party[i] == -1)
             {
                 Party[i] = RosterIndex;
+                Game_Logic.ROSTER[RosterIndex].inParty = true;
                 return;
             }
     }
     public void RemoveMember(int PartyIndex)
     {
+        Game_Logic.ROSTER[Party[PartyIndex]].inParty = false;
         Party[PartyIndex] = -1;
-        for (int i = PartyIndex; i < Party.Length - 1; i++)
+        for (int i = PartyIndex; i < 5; i++)
         {
             Party[i] = Party[i + 1];
             Party[i + 1] = -1;

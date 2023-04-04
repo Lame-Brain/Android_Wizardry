@@ -541,6 +541,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   townStatus: 0
   _selectedRoster: 0
+  _selectedInventorySlot: 0
+  _selectedItemIndex: 0
 --- !u!4 &130644165
 Transform:
   m_ObjectHideFlags: 0
@@ -789,6 +791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49c745c5b90e2854fa4a03617f2e0ad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemListCSV: {fileID: 4900000, guid: acdefca942848d14a9694d2d1b266cb0, type: 3}
 --- !u!4 &844088763
 Transform:
   m_ObjectHideFlags: 0
