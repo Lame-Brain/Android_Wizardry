@@ -28,6 +28,7 @@ public class Character_Class
     public int swing_count;
     public Dice hit_dam;
     public Vector3Int lostXYL;
+    public int eqWeapon, eqArmor, eqShield, eqHelmet, eqGauntlet;
     public bool Trebor_Honor_Guard; // ">"
     public bool Gnilda_Staff_Keeper; // "K"
     public bool Llylgamyn_Knight; // "G"
@@ -74,6 +75,7 @@ public class Character_Class
         this.Descendent_of_Diamonds = false;
         this.Star_of_Llylgamyn = false;
         this.Strength = 10; this.IQ = 10; this.Piety = 10; this.Vitality = 10; this.Agility = 10; this.Luck = 10;
+        this.eqWeapon = -1; this.eqArmor = -1; this.eqShield = -1; this.eqHelmet = -1; this.eqGauntlet = -1;
         this.mageSpells = new int[7];
         this.mageSpellsCast = new int[7];
         this.priestSpells = new int[7];
@@ -156,31 +158,36 @@ public class Character_Class
         _n = 41; this.lostXYL.x = int.Parse(_data[_n]);
         _n = 42; this.lostXYL.y = int.Parse(_data[_n]);
         _n = 43; this.lostXYL.z = int.Parse(_data[_n]);
-        _n = 44; this.Trebor_Honor_Guard = _data[_n] == "1" ? true : false;
-        _n = 45; this.Gnilda_Staff_Keeper = _data[_n] == "1" ? true : false;
-        _n = 46; this.Llylgamyn_Knight = _data[_n] == "1" ? true : false;
-        _n = 47; this.Descendent_of_Diamonds = _data[_n] == "1" ? true : false;
-        _n = 48; this.Star_of_Llylgamyn = _data[_n] == "1" ? true : false;
-        _n = 49; this.Strength = int.Parse(_data[_n]);
-        _n = 50; this.IQ = int.Parse(_data[_n]);
-        _n = 51; this.Piety = int.Parse(_data[_n]);
-        _n = 52; this.Vitality = int.Parse(_data[_n]);
-        _n = 53; this.Agility = int.Parse(_data[_n]);
-        _n = 54; this.Luck = int.Parse(_data[_n]);
+        _n = 44; this.eqWeapon = int.Parse(_data[_n]);
+        _n = 45; this.eqArmor = int.Parse(_data[_n]);
+        _n = 46; this.eqShield = int.Parse(_data[_n]);
+        _n = 47; this.eqHelmet = int.Parse(_data[_n]);
+        _n = 48; this.eqGauntlet = int.Parse(_data[_n]);
+        _n = 49; this.Trebor_Honor_Guard = _data[_n] == "1" ? true : false;
+        _n = 50; this.Gnilda_Staff_Keeper = _data[_n] == "1" ? true : false;
+        _n = 51; this.Llylgamyn_Knight = _data[_n] == "1" ? true : false;
+        _n = 52; this.Descendent_of_Diamonds = _data[_n] == "1" ? true : false;
+        _n = 53; this.Star_of_Llylgamyn = _data[_n] == "1" ? true : false;
+        _n = 54; this.Strength = int.Parse(_data[_n]);
+        _n = 55; this.IQ = int.Parse(_data[_n]);
+        _n = 56; this.Piety = int.Parse(_data[_n]);
+        _n = 57; this.Vitality = int.Parse(_data[_n]);
+        _n = 58; this.Agility = int.Parse(_data[_n]);
+        _n = 59; this.Luck = int.Parse(_data[_n]);
 
-        _n = 55; string[] _mspells = _data[_n].Split(";");
+        _n = 60; string[] _mspells = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.mageSpells[i] = int.Parse(_mspells[i]);
 
-        _n = 56; string[] _mspellsC = _data[_n].Split(";");
+        _n = 61; string[] _mspellsC = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.mageSpellsCast[i] = int.Parse(_mspellsC[i]);
 
-        _n = 57; string[] _pspells = _data[_n].Split(";");
+        _n = 62; string[] _pspells = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.priestSpells[i] = int.Parse(_pspells[i]);
 
-        _n = 58; string[] _pspellsC = _data[_n].Split(";");
+        _n = 63; string[] _pspellsC = _data[_n].Split(";");
         for (int i = 0; i < 7; i++) this.priestSpellsCast[i] = int.Parse(_pspellsC[i]);
 
-        _n = 59; string[] _allSpKn = _data[_n].Split(";");
+        _n = 64; string[] _allSpKn = _data[_n].Split(";");
         for (int i = 0; i < 50; i++) this.SpellKnown[i] = _allSpKn[i] == "1" ? true : false;
     }
 
@@ -258,17 +265,22 @@ public class Character_Class
         _result += lostXYL.x + ",";              //41
         _result += lostXYL.y + ",";              //42
         _result += lostXYL.z + ",";              //43
-        _result += Trebor_Honor_Guard ? "1," : "0,"; //44
-        _result += Gnilda_Staff_Keeper ? "1," : "0,"; //45
-        _result += Llylgamyn_Knight ? "1," : "0,"; //46
-        _result += Descendent_of_Diamonds ? "1," : "0,"; //47
-        _result += Star_of_Llylgamyn ? "1," : "0,"; //48
-        _result += Strength;                     //49
-        _result += IQ;                           //50
-        _result += Piety;                        //51
-        _result += Vitality;                     //52
-        _result += Agility;                      //53
-        _result += Luck;                         //54
+        _result += eqWeapon + ",";               //44
+        _result += eqArmor + ",";                //45
+        _result += eqShield + ",";               //46
+        _result += eqHelmet + ",";               //47
+        _result += eqGauntlet + ",";             //48
+        _result += Trebor_Honor_Guard ? "1," : "0,"; //49
+        _result += Gnilda_Staff_Keeper ? "1," : "0,"; //50
+        _result += Llylgamyn_Knight ? "1," : "0,"; //51
+        _result += Descendent_of_Diamonds ? "1," : "0,"; //52
+        _result += Star_of_Llylgamyn ? "1," : "0,"; //53
+        _result += Strength;                     //54
+        _result += IQ;                           //55
+        _result += Piety;                        //56
+        _result += Vitality;                     //57
+        _result += Agility;                      //58
+        _result += Luck;                         //59
         string _ms = "", _mc = "", _ps = "", _pc = "";
         for (int i = 0; i < 7; i++)
         {
@@ -277,14 +289,14 @@ public class Character_Class
             _ps += priestSpells[i] + ";";
             _pc += priestSpellsCast[i] + ";";
         }
-        _result += _ms + ",";                    //55
-        _result += _mc + ",";                    //56
-        _result += _ps + ",";                    //57
-        _result += _pc + ",";                    //58
+        _result += _ms + ",";                    //60
+        _result += _mc + ",";                    //61
+        _result += _ps + ",";                    //62
+        _result += _pc + ",";                    //63
         string _sk = "";
         for (int i = 0; i < SpellKnown.Length; i++)
             _sk += SpellKnown[i] ? "1;" : "0;";
-        _result += _sk + ",";                    //59
+        _result += _sk + ",";                    //64
         return _result;
     }
 }

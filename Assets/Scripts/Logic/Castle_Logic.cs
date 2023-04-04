@@ -533,6 +533,17 @@ public class Castle_Logic : MonoBehaviour
                 if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("l")) _txt += "Lord\n";
                 if (Game_Logic.ITEM[_selectedItemIndex].class_use.Contains("n")) _txt += "Ninja\n";
 
+                if (_selected_character.Inventory[_selectedInventorySlot].equipped) _txt += "\nThis item is equipped.\n";
+                if (!_selected_character.Inventory[_selectedInventorySlot].equipped)
+                {
+                    string _s = "";
+                    if (Game_Logic.ITEM[_selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Weapon && _selected_character.eqWeapon > -1) _s = _selected_character.Inventory[_selected_character.eqWeapon].ItemName();
+                    if (Game_Logic.ITEM[_selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Armor && _selected_character.eqArmor > -1) _s = _selected_character.Inventory[_selected_character.eqArmor].ItemName();
+                    if (Game_Logic.ITEM[_selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Shield && _selected_character.eqShield > -1) _s = _selected_character.Inventory[_selected_character.eqShield].ItemName();
+                    if (Game_Logic.ITEM[_selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Helmet && _selected_character.eqHelmet > -1) _s = _selected_character.Inventory[_selected_character.eqHelmet].ItemName();
+                    if (Game_Logic.ITEM[_selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Gauntlets && _selected_character.eqGauntlet > -1) _s = _selected_character.Inventory[_selected_character.eqGauntlet].ItemName();
+                    _txt += "\n" + _s + " is equipped to this slot.";
+                }
             }
             else
             {
