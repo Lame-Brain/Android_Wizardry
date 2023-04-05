@@ -160,12 +160,12 @@ public class Input_Screen_Controller : MonoBehaviour
                     }
                 }
                 if (_found && _selected_character.inParty) 
-                    _display.PopUpMessage("Already in party!".ToUpper());
+                    _display.PopUpMessage("That character is already in the party...".ToUpper());
                 if (_found && _selected_character.location == BlobberEngine.Enum._Locaton.Dungeon) 
-                    _display.PopUpMessage("Out.".ToUpper());
+                    _display.PopUpMessage("That character is out of town...".ToUpper());
                 if (_found && !_selected_character.inParty && _selected_character.location != BlobberEngine.Enum._Locaton.Dungeon) 
                     Game_Logic.PARTY.AddMember(_selectedRoster);
-                if (!_found) _display.PopUpMessage("Who?".ToUpper());
+                if (!_found) _display.PopUpMessage("I don't recognize that name...".ToUpper());
 
                 _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
                 _castle.Update_Screen();
@@ -243,6 +243,65 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle._selectedInventorySlot = _num;
                 _castle._selectedItemIndex = _selected_character.Inventory[_num].index;
                 _castle.townStatus = Castle_Logic.ts.View_Item;
+                _castle.Update_Screen();
+                return;
+            }
+            if(_button == "Trade_Geld")
+            {
+                //_display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO ADD?");
+                _display.Update_Text_Screen("Trade Geld to whom?");
+                Clear_Buttons();
+                for (int i = 0; i < 6; i++)
+                    if (!Game_Logic.PARTY.EmptySlot(i))                        
+                        Create_Button( Game_Logic.PARTY.LookUp_PartyMember(i).name, "Trad2" + i);
+                Create_Button_Last("Cancel", "CancelTradeGeld");
+                return;
+            }
+            if (_button.Substring(0, 5) == "Trad2")
+            {
+                int _n = int.Parse(_button.Replace("Trad2", ""));
+                if (_n < 0 && _n > 5) _n = 0;
+                _selectedRoster = Game_Logic.PARTY.Get_Roster_Index(_n);
+                _selected_character = Game_Logic.PARTY.LookUp_PartyMember(_n);
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("HOW MUCH WOULD YOU LIKE TO TRADE?");
+                _display.Block_Buttons();
+                return;
+            }
+            if (_button.Length > 9 && _button.Substring(0, 10) == "TextInput:")
+            {
+                int _G = 0;
+                if(int.TryParse(_button.Replace("TextInput:", ""), out _G))
+                {
+                    if (_G < 0) _G = 0;
+                    if (_G > _castle._selected_character.Geld) _G = _castle._selected_character.Geld;
+                    Debug.Log("Logic check. Character sending Geld is " + _castle._selected_character.name + " and the Character receiving Geld is " + _selected_character.name);
+                    _castle._selected_character.Geld -= _G;
+                    _selected_character.Geld += _G;
+                    _castle.townStatus = Castle_Logic.ts.Tavern;
+                    _display.Button_Block_Panel.SetActive(false);
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _castle.Update_Screen();
+                    return;
+                }
+                else
+                {
+                    _display.PopUpMessage("That is not a valid number. Please try again.");
+                    Button_Clicked("Trade_Geld");                    
+                    _display.Button_Block_Panel.SetActive(false);
+                    return;
+                }
+            }
+            if(_button == "CancelTradeGeld")
+            {
+                _display.Button_Block_Panel.SetActive(false);
+                _castle.townStatus = Castle_Logic.ts.View_Char;
+                _castle.Update_Screen();
+                return;
+            }
+            if(_button == "Leave_Button")
+            {
+                _display.Button_Block_Panel.SetActive(false);
+                _castle.townStatus = Castle_Logic.ts.Tavern;
                 _castle.Update_Screen();
                 return;
             }

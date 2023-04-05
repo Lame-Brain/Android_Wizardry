@@ -27,6 +27,12 @@ public class Party_Class : MonoBehaviour
         return _result;
     }
 
+    public int Get_Roster_Index (int _partySlot)
+    {
+        int _result = -1;
+        if (!EmptySlot(_partySlot)) _result = Party[_partySlot];        
+        return _result;
+    }
     public Character_Class LookUp_PartyMember(int _n)
     {
         Character_Class _result = Game_Logic.ROSTER[Party[_n]];

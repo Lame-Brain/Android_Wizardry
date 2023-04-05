@@ -6,7 +6,7 @@ using TMPro;
 
 public class Display_Screen_Controller : MonoBehaviour
 {
-    public TextMeshProUGUI Screen_Sizing_String, Output, Message;
+    public TextMeshProUGUI Screen_Sizing_String, Output, Message, instructions;
     public RectTransform Input_Panel;
     public GameObject Button_Block_Panel, Message_Pop_Up, Text_Input_Controller;
 
@@ -28,6 +28,7 @@ public class Display_Screen_Controller : MonoBehaviour
         FONT_SIZE = Screen_Sizing_String.fontSize;
         Screen_Sizing_String.gameObject.SetActive(false);
         Output.fontSize = FONT_SIZE;
+        instructions.fontSize = FONT_SIZE * 0.5f;
     }
 
     public void Update_Text_Screen(string _txt)
@@ -36,12 +37,17 @@ public class Display_Screen_Controller : MonoBehaviour
         Output.text = _txt;
     }
 
+    public void Block_Buttons()
+    {
+        Button_Block_Panel.transform.SetAsLastSibling();
+        Button_Block_Panel.SetActive(true);
+    }
+
     public void PopUpMessage(string _message)
     {
         _message = _message.ToUpper();
         Message_Pop_Up.SetActive(true);
-        Button_Block_Panel.transform.SetAsLastSibling();
-        Button_Block_Panel.SetActive(true);
+        Block_Buttons();
         Message.fontSize = FONT_SIZE;
         Message.text = _message;
     }
