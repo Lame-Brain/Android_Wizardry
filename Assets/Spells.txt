@@ -1,0 +1,50 @@
+0,1,Priest,BADIOS,Harm,FALSE,TRUE,0,Causes 1d8 (1-8) points of damage to a monster
+1,1,Priest,DIOS,Heal,TRUE,TRUE,100,Restores 1d8 (1-8) points of health to a party member
+2,1,Priest,KALKI,Blessings,TRUE,TRUE,0,Reduces the armor class of all party members by 1 during combat
+3,1,Priest,MILWA,Light,TRUE,TRUE,0,Summons a softly glowing light that increases vision and reveals secret doors
+4,1,Priest,PORFIC,Shield,FALSE,TRUE,0,Lowers the armor class of the caster by 4 during combat
+5,2,Priest,CALFO,X-ray Vision,FALSE,FALSE,100,Caster can determine the trap on a chest is 95% of the time
+6,2,Priest,MANIFO,Statue,FALSE,TRUE,0,Causes some of the monsters to become temporarily paralyzed
+7,2,Priest,MATU,Blessing,TRUE,TRUE,0,Lowers armor class of all party members by 2 during combat
+8,2,Priest,MONTINO,Still Air,FALSE,TRUE,0,Silences the air around a group of monsters* making it impossible for them to cast spells
+9,3,Priest,BAMATU,Prayer,TRUE,TRUE,100,Lowers the party's armor class by 4 in combat
+10,3,Priest,DIALKO,Softness,TRUE,TRUE,0,Cures paralysis* and cures the effects of MANIFO and KATINO
+11,3,Priest,LATUMAPIC,Identification,FALSE,TRUE,0,Tells you exactly what the monsters really are
+12,3,Priest,LOMILWA,More Light,TRUE,TRUE,0,A more powerful MILWA spell that lasts the entire expedition* but gets terminated in darkness areas
+13,4,Priest,BADIAL,More Hurt,FALSE,TRUE,0,Causes 2d8 (2-16) points of damage
+14,4,Priest,DIAL,More Heal,TRUE,TRUE,100,Restores 2d8 (2-16) points of health
+15,4,Priest,LATUMOFIS,Cure Poison,TRUE,TRUE,0,Removes the effects of poison
+16,4,Priest,MAPORFIC,Big Shield,TRUE,TRUE,0,Lowers the party's armor class by 2* and lasts for the entire expedition
+17,5,Priest,BADI,Death,FALSE,TRUE,0,Attempt to kill one monster
+18,5,Priest,BADIALMA,Great Hurt,FALSE,TRUE,0,Causes 3d8 (3-24) points of damage
+19,5,Priest,DI,Life,FALSE,TRUE,0,Causes a dead person to be resurrected. If it works* character has only 1 hit point and decreased vitality. If it fails* dead character is turned to ashes.
+20,5,Priest,DIALMA,Great Heal,TRUE,TRUE,0,Restores 3d8 (3-24) points of health
+21,5,Priest,KANDI,Locate Soul,TRUE,FALSE,100,Gives the direction of the person the party is attempting to locate* relative to the position of the caster
+22,5,Priest,LITOKAN,Flame Tower,FALSE,TRUE,0,Causes a pillar of flame to strike a group of monsters* doing 3d8 (3-24) points of damage
+23,6,Priest,LOKTOFEIT,Recall,TRUE,TRUE,0,Causes all party members to be transported back to the castle* minus all of their equipment and most of their gold
+24,6,Priest,LORTO,Blades,FALSE,TRUE,0,Causes sharp blades to slice through a group* causing 6d6 (6-36) points of damage
+25,6,Priest,MABADI,Harming,FALSE,TRUE,0,Causes all but 1d8 (1-8) hit points to be removed from a target
+26,6,Priest,MADI,Healing,TRUE,TRUE,0,Causes all hit points to be restored and cures any condition except death
+27,7,Priest,KADORTO,Resurrection,TRUE,FALSE,100,Restores the dead to life* and restores all hit points* even if the character is ashes. However* if the spell fails* the character is permanently lost.
+28,7,Priest,MALIKTO,Word of Death,FALSE,TRUE,0,Causes 12d6 (12-72) hit points of damage to all monsters
+29,1,Mage,DUMAPIC,Clarity,TRUE,FALSE,0,Shows you your position on the current dungeon floor.
+30,1,Mage,HALITO,Little Fire,FALSE,TRUE,100,Causes a fireball to hit a monster for 1d8 (1-8) points of fire damage
+31,1,Mage,KATINO,Bad Air,FALSE,TRUE,0,Causes most of the monsters in a group to fall asleep
+32,1,Mage,MOGREF,Body Iron,FALSE,TRUE,100,Reduces the casters armor class by 2 for the encounter
+33,2,Mage,DILTO,Darkness,FALSE,TRUE,0,Causes one group of monsters to be enveloped in darkness* lowering their defense
+34,2,Mage,SOPIC,Glass,FALSE,TRUE,0,Causes the caster to become transparent* thus reducing their armor class by 4
+35,3,Mage,MAHALITO,Big Fire,FALSE,TRUE,100,Causes an explosion in a monster group* doing 4d6 (4-24) points of fire damage
+36,3,Mage,MOLITO,Spark Storm,FALSE,TRUE,100,Causes sparks to damage half of the monsters in a group for 3d6 (3-18) points damage
+37,4,Mage,DALTO,Blizzard,FALSE,TRUE,0,Does 6d6 (6-36) points of cold damage
+38,4,Mage,LAHALITO,Torch,FALSE,TRUE,0,Does 6d6 (6-36) points of fire damage
+39,4,Mage,MORLIS,Fear,FALSE,TRUE,100,Causes a group of monsters to fear the party* twice as powerful as Dilto
+40,5,Mage,MADALTO,Frost,FALSE,TRUE,0,Causes 8d8 (8-64) points of cold damage
+41,5,Mage,MAKANITO,Deadly Air,FALSE,TRUE,100,Kills any monsters of less than 8th level (about 35-40 hit points)
+42,5,Mage,MAMORLIS,Terror,FALSE,TRUE,0,Causes all monsters to fear the party
+43,6,Mage,HAMAN,Change,TRUE,FALSE,0,Has random effects* and drains the caster one level (see below).
+44,6,Mage,LAKANITO,Suffocation,FALSE,TRUE,0,Kills all monsters affected by this spell; some monsters are immune.
+45,6,Mage,MASOPIC,Big Glass,TRUE,TRUE,100,Reduces the armor class of the entire party by 4
+46,6,Mage,ZILWAN,Dispel,FALSE,TRUE,0,Will destroy any one undead monster
+47,7,Mage,MAHAMAN,Great Change,TRUE,FALSE,0,Does something random* stronger than Haman. Drains the caster one experience level* and is forgotten when cast (see below).
+48,7,Mage,MALOR,Apport,TRUE,TRUE,100,Teleports the party randomly within the current level when used in melee* but when cast in camp* you can decide exactly where you want to go. If a party teleports into stone it is LOST forever* so the spell is best used in conjunction with DUMAPIC.
+49,7,Mage,TILTOWAIT,Explosion,FALSE,TRUE,0,Does 10d10 (10-100) hit points of damage to all monsters.

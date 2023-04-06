@@ -80,7 +80,8 @@ public class Character_Class
         this.mageSpellsCast = new int[7];
         this.priestSpells = new int[7];
         this.priestSpellsCast = new int[7];
-        this.SpellKnown = new bool[49];
+        this.SpellKnown = new bool[50];
+        for (int i = 0; i < 50; i++) this.SpellKnown[i] = false;
     }
 
     public void Load_Character(string _char)

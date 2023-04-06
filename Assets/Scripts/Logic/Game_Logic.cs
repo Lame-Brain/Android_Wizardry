@@ -11,7 +11,7 @@ public class Game_Logic : MonoBehaviour
     public static List<Item_Class> ITEM = new List<Item_Class>();
 
     [SerializeField]
-    private TextAsset ItemListCSV;
+    private TextAsset ItemListCSV, SpellListCSV;
 
     //singleton
     public static Game_Logic instance;
@@ -44,6 +44,10 @@ public class Game_Logic : MonoBehaviour
         test.Inventory[0] = new Item(1, false, false, true);
         test.Inventory[1] = new Item(7,false,false,true);
         test.Inventory[2] = new Item(1,false,false,true);
+        test.mageSpells[0] = 1; test.priestSpells[0] = 1;
+        Debug.Log("spelk = " + SPELL.Count);
+        for (int i = 0; i < SPELL.Count; i++) test.SpellKnown[i] = true;
+        test.SpellKnown[2] = false; test.SpellKnown[6] = false;
         test.HP = 5; test.HP_MAX = 5;
         another_test.name = "Evan";
         third_test.name = "Roberts"; third_test.location = Enum._Locaton.Dungeon;
@@ -140,6 +144,24 @@ public class Game_Logic : MonoBehaviour
             }
 
             ITEM.Add(_itm);
+        }
+
+        //Spell List
+        string[] All_Spells = SpellListCSV.text.Split("\n");
+        for (int i = 0; i < All_Spells.Length; i++)
+        {
+            string[] _splData = All_Spells[i].Split(",");
+            int _n; Spell_Class _spl = new Spell_Class();
+            _n = 0; _spl.index = int.Parse(_splData[_n]);
+            _n = 1; _spl.circle = int.Parse(_splData[_n]);
+            _n = 2; _spl.book = _splData[_n];
+            _n = 3; _spl.name = _splData[_n];
+            _n = 4; _spl.word = _splData[_n];
+            _n = 5; _spl.camp = _splData[_n] == "TRUE" ? true : false;
+            _n = 6; _spl.combat = _splData[_n] == "TRUE" ? true : false;
+            _n = 7; _spl.learn_bonus = int.Parse(_splData[_n]);
+
+            SPELL.Add(_spl);
         }
     }
 

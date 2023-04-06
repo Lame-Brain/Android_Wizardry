@@ -308,30 +308,51 @@ public class Input_Screen_Controller : MonoBehaviour
             if(_button == "Read_Magic")
             {
                 string _t = "";
+                int _lastCircle = 0;
                 //Check selected character for priest spells
                 //if there are some, start with label "Priest Spells" then divide them out by circle
                 if(_castle._selected_character.priestSpells[0] > 0)
                 {
-                    _t = "--<Priest Spells>--\n\n";
-                    if(_castle._selected_character.SpellKnown[0] || 
-                       _castle._selected_character.SpellKnown[1] ||
-                       _castle._selected_character.SpellKnown[2] ||
-                       _castle._selected_character.SpellKnown[3])
+                    _t += "--<Priest Spells>--\n";
+                    for (int i = 0; i < Game_Logic.SPELL.Count; i++)
                     {
-                        if (_castle._selected_character.SpellKnown[0]) _t += "";
-                        if (_castle._selected_character.SpellKnown[1]) _t += "";
-                        if (_castle._selected_character.SpellKnown[2]) _t += "";
-                        if (_castle._selected_character.SpellKnown[3]) _t += "";
-                        _t += "\n";
+                        if (_castle._selected_character.SpellKnown[i] && Game_Logic.SPELL[i].book == "Priest")
+                        {
+                            if (_lastCircle < Game_Logic.SPELL[i].circle)
+                            {
+                                _t += "\n";
+                                _lastCircle = Game_Logic.SPELL[i].circle;
+                            }
+                            _t += Game_Logic.SPELL[i].name + " (" + Game_Logic.SPELL[i].word + ")\n";
+                        }                        
                     }
                 }
+                
+                if (_castle._selected_character.priestSpells[0] > 0 && _castle._selected_character.mageSpells[0] > 0) _t += "\n\n";
+                _lastCircle = 0;
 
+                if (_castle._selected_character.mageSpells[0] > 0)
+                {
+                    _t += "--<Mage Spells>--\n";
+                    for (int i = 0; i < Game_Logic.SPELL.Count; i++)
+                    {
+                        if (_castle._selected_character.SpellKnown[i] && Game_Logic.SPELL[i].book == "Mage")
+                        {
+                            if (_lastCircle < Game_Logic.SPELL[i].circle)
+                            {
+                                _t += "\n";
+                                _lastCircle = Game_Logic.SPELL[i].circle;
+                            }
+                            _t += Game_Logic.SPELL[i].name + " (" + Game_Logic.SPELL[i].word + ")\n";
+                        }                        
+                    }
+                }
 
                 //Check selected character for mage spells
                 //if there are some, start with label "Mage Spells" then divide them out by circle
 
 
-                for (int i = 0; i < 45; i++) _t += (i + 1) + ") SpellName" + (i + 1) + "\n";
+                //for (int i = 0; i < 45; i++) _t += (i + 1) + ") SpellName" + (i + 1) + "\n";
                 _display.PopUpMessage(_t);
             }
         }

@@ -14,7 +14,7 @@ public class Display_Screen_Controller : MonoBehaviour
 
     private int pp_NumOfPages, pp_currentPage;
     private string[] pp_message;
-    private int LINES_PER_PAGE = 22;
+    public int LINES_PER_PAGE = 22;
 
     private void OnEnable()
     {
