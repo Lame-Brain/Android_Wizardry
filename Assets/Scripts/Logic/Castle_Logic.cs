@@ -256,7 +256,7 @@ public class Castle_Logic : MonoBehaviour
                         _ac + " " + _hp + " " + _stat + "\n";
                 }
             }
-            string _txt = "+--------------------------------------+\n" +
+            string _txt =  "+--------------------------------------+\n" +
                            "| Castle                        Tavern |\n" +
                            "+----------- Current party: -----------+\n" +
                            "                                        \n" +

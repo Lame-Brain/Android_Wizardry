@@ -200,6 +200,22 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
+
+            if(_button == "Show_Roster")
+            {
+                string _t = "Names in Use:\n" +
+                            "----------------------------------------\n";
+                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+                {
+                    _t += Game_Logic.ROSTER[i].name + " level " + Game_Logic.ROSTER[i].level + " " + Game_Logic.ROSTER[i].race + " " 
+                       + Game_Logic.ROSTER[i].character_class + "(" + Game_Logic.ROSTER[i].status + ") ";
+                    if (Game_Logic.ROSTER[i].location == BlobberEngine.Enum._Locaton.Dungeon) _t += "OUT";
+                    if (Game_Logic.ROSTER[i].location == BlobberEngine.Enum._Locaton.Temple) _t += "Temple";
+                    _t += "\n";
+                }
+                _display.PopUpMessage(_t);
+                return;
+            }
         }
         //<<<<<<<<<<   Tavern REMOVE   >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Tavern_Remove)
@@ -328,9 +344,13 @@ public class Input_Screen_Controller : MonoBehaviour
                     }
                 }
                 
+                //Add extra spaces if character has both mage and preist spells
                 if (_castle._selected_character.priestSpells[0] > 0 && _castle._selected_character.mageSpells[0] > 0) _t += "\n\n";
-                _lastCircle = 0;
 
+
+                //Check selected character for mage spells
+                //if there are some, start with label "Mage Spells" then divide them out by circle
+                _lastCircle = 0;
                 if (_castle._selected_character.mageSpells[0] > 0)
                 {
                     _t += "--<Mage Spells>--\n";
@@ -346,13 +366,7 @@ public class Input_Screen_Controller : MonoBehaviour
                             _t += Game_Logic.SPELL[i].name + " (" + Game_Logic.SPELL[i].word + ")\n";
                         }                        
                     }
-                }
-
-                //Check selected character for mage spells
-                //if there are some, start with label "Mage Spells" then divide them out by circle
-
-
-                //for (int i = 0; i < 45; i++) _t += (i + 1) + ") SpellName" + (i + 1) + "\n";
+                }                
                 _display.PopUpMessage(_t);
             }
         }
