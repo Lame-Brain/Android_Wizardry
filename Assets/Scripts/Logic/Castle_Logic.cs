@@ -284,6 +284,7 @@ public class Castle_Logic : MonoBehaviour
                     if (!_party.EmptySlot(i))
                         _input.Create_Button("VIEW " + _party.LookUp_PartyMember(i).name, "View:" + i);
             }
+            _input.Create_Button("View Roster", "Show_Roster");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
 

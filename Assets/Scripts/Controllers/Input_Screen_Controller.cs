@@ -305,6 +305,35 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
+            if(_button == "Read_Magic")
+            {
+                string _t = "";
+                //Check selected character for priest spells
+                //if there are some, start with label "Priest Spells" then divide them out by circle
+                if(_castle._selected_character.priestSpells[0] > 0)
+                {
+                    _t = "--<Priest Spells>--\n\n";
+                    if(_castle._selected_character.SpellKnown[0] || 
+                       _castle._selected_character.SpellKnown[1] ||
+                       _castle._selected_character.SpellKnown[2] ||
+                       _castle._selected_character.SpellKnown[3])
+                    {
+                        if (_castle._selected_character.SpellKnown[0]) _t += "";
+                        if (_castle._selected_character.SpellKnown[1]) _t += "";
+                        if (_castle._selected_character.SpellKnown[2]) _t += "";
+                        if (_castle._selected_character.SpellKnown[3]) _t += "";
+                        _t += "\n";
+                    }
+                }
+
+
+                //Check selected character for mage spells
+                //if there are some, start with label "Mage Spells" then divide them out by circle
+
+
+                for (int i = 0; i < 45; i++) _t += (i + 1) + ") SpellName" + (i + 1) + "\n";
+                _display.PopUpMessage(_t);
+            }
         }
     }
 }
