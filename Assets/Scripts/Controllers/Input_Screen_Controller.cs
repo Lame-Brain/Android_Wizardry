@@ -370,5 +370,57 @@ public class Input_Screen_Controller : MonoBehaviour
                 _display.PopUpMessage(_t);
             }
         }
+        //<<<<<<<<<<   View Item  >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.View_Item)
+        {
+            if(_button == "Equip_Item")
+            {
+                //1) The item is not equipped and is not able to be equipped by class
+                //2) (skip if not identified) the item is not equipped, is able to be equipped by class, but is does not match align
+                //3) the item is not equipped, is able to be equipped by class, matches align or item align is null
+                //4) The item is already equipped, and cursed
+                //5) The item is already equipped, and not cursed
+                string _class = _castle._selected_character.character_class.ToString();
+                _class = _class.ToLower();
+                _class = _class.Substring(0, 1);
+                if (!Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains(_class))
+                {                    
+                    _display.PopUpMessage("Your class cannot equip this item.");
+                    _castle.Update_Screen();
+                    return;
+                }
+                
+                bool _slotFull = false;
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Weapon &&
+                    _castle._selected_character.eqWeapon > -1) _slotFull = true;
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Armor &&
+                    _castle._selected_character.eqArmor > -1) _slotFull = true;
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Shield &&
+                    _castle._selected_character.eqShield > -1) _slotFull = true;
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Helmet &&
+                    _castle._selected_character.eqHelmet > -1) _slotFull = true;
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Gauntlets &&
+                    _castle._selected_character.eqGauntlet > -1) _slotFull = true;
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Misc &&
+                    _castle._selected_character.eqMisc > -1) _slotFull = true;
+                if (_slotFull)
+                {
+                    _display.PopUpMessage("This equipment slot is already in use.");
+                    _castle.Update_Screen();
+                    return;
+                }
+
+                if(_castle._selected_character.Inventory[_castle._selectedInventorySlot].identified) 
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.none ||
+                        Game_Logic.ITEM[_castle._selectedItemIndex].item_align == _castle._selected_character.alignment)
+                    {
+                        _display.PopUpMessage("This equipment's alignment does not match the character's");
+                        _castle.Update_Screen();
+                        return;
+                    }
+
+                _castle._selected_character.EquipItem(_castle._selectedInventorySlot);
+            }
+        }
     }
 }

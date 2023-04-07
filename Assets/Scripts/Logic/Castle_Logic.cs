@@ -557,6 +557,7 @@ public class Castle_Logic : MonoBehaviour
             _input.Clear_Buttons();
             _input.Create_Button("Equip/ Unequip", "Equip_Item");
             _input.Create_Button("Trade Item", "Trade_Item");
+            _input.Create_Button("Use Item", "Use_Item");
             _input.Create_Button("Trash Item", "Trash_Item");
             _input.Create_Button("Identify Item", "ID_Item");
             _input.Create_Button_Last("Leave", "Leave_Button");

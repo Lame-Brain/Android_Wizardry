@@ -1,4 +1,4 @@
-0,Broken Item,Broken Item,Misc,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
+0,Broken Item,Broken Item,Special,,,-1,0,0,0,,z,0,0,0,0,0,0,0,FALSE,,,
 1,Long Sword,Sword,Weapon,,,-1,0,25,-1,,fsln,0,1,8,0,0,4,0,FALSE,,,
 2,Short Sword,Sword,Weapon,,,-1,0,15,-1,,ftsln,0,1,6,0,0,3,0,FALSE,,,
 3,Anointed Mace,Knobbed Stick,Weapon,,,-1,0,30,-1,,fpbsln,0,2,3,0,0,2,0,FALSE,,,
