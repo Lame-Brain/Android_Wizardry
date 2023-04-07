@@ -63,9 +63,8 @@ public class Game_Logic : MonoBehaviour
         ROSTER.Add(another_test);
         ROSTER.Add(third_test);
         PARTY.AddMember(0);        
-        PARTY.AddMember(1);        
-        //PARTY.AddMember(2);        
-        
+        PARTY.AddMember(1);
+        //PARTY.AddMember(2);
     }
 
     private void LoadCSVs()
@@ -257,6 +256,14 @@ public class Game_Logic : MonoBehaviour
             _cl.Update_Screen();
             return;
         }
+        //Swing Count
+        _me.CalculateBaseSwings();
+        if (_me.eqWeapon > -1 && ITEM[_me.Inventory[_me.eqWeapon].index].xtra_swings > _me.swing_count) _me.swing_count = ITEM[_me.Inventory[_me.eqWeapon].index].xtra_swings;
+        if (_me.eqArmor > -1 && ITEM[_me.Inventory[_me.eqArmor].index].xtra_swings > _me.swing_count) _me.swing_count = ITEM[_me.Inventory[_me.eqArmor].index].xtra_swings;
+        if (_me.eqShield > -1 && ITEM[_me.Inventory[_me.eqShield].index].xtra_swings > _me.swing_count) _me.swing_count = ITEM[_me.Inventory[_me.eqShield].index].xtra_swings;
+        if (_me.eqHelmet > -1 && ITEM[_me.Inventory[_me.eqHelmet].index].xtra_swings > _me.swing_count) _me.swing_count = ITEM[_me.Inventory[_me.eqHelmet].index].xtra_swings;
+        if (_me.eqGauntlet > -1 && ITEM[_me.Inventory[_me.eqGauntlet].index].xtra_swings > _me.swing_count) _me.swing_count = ITEM[_me.Inventory[_me.eqGauntlet].index].xtra_swings;
+        if (_me.eqMisc > -1 && ITEM[_me.Inventory[_me.eqMisc].index].xtra_swings > _me.swing_count) _me.swing_count = ITEM[_me.Inventory[_me.eqMisc].index].xtra_swings;
 
         //ReRoll HP_MAX
         int _bonus = 0; //Bonus hitpoints based on vitality

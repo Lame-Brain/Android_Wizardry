@@ -50,8 +50,8 @@ public class Display_Screen_Controller : MonoBehaviour
 
     public void Block_Buttons()
     {
-        Button_Block_Panel.transform.SetAsLastSibling();
         Button_Block_Panel.SetActive(true);
+        Button_Block_Panel.transform.SetAsLastSibling();
     }
 
     public void PopUpMessage(string _message)
@@ -70,7 +70,7 @@ public class Display_Screen_Controller : MonoBehaviour
     public void ClosePopUpMessage()
     {
         Message_Pop_Up.SetActive(false);
-        Button_Block_Panel.SetActive(false);
+        Button_Block_Panel.SetActive(false);        
     }
 
     private void Show_Pop_Up_Message()

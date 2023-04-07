@@ -305,6 +305,110 @@ public class Character_Class
 
     public void EquipItem(int _slot)
     {
+        //Check if something is already equipped
+        int _challengeSlot = -1;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Weapon) _challengeSlot = eqWeapon;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Armor) _challengeSlot = eqArmor;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Shield) _challengeSlot = eqShield;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Helmet) _challengeSlot = eqHelmet;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Gauntlets) _challengeSlot = eqGauntlet;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Misc) _challengeSlot = eqMisc;
 
+        //Edge case 1: An item is already equipped, and it is cursed (cancel)
+        if (_challengeSlot >= 0 && Inventory[_challengeSlot].curse_active) return;
+        //Edge case 2: An item is already equipped, and it is not cursed (unequip it)
+        if (_challengeSlot >= 0 && !Inventory[_challengeSlot].curse_active) UnequipItem(_challengeSlot);
+
+        //Ok, proceed with the EQUIP!
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Weapon) eqWeapon = _slot;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Armor) eqArmor = _slot;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Shield) eqShield = _slot;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Helmet) eqHelmet = _slot;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Gauntlets) eqGauntlet = _slot;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Misc) eqMisc = _slot;
+        Inventory[_slot].equipped = true;
+
+        //Heal Points
+        int _temp = Game_Logic.ITEM[Inventory[_slot].index].heal_pts;
+        if (_temp > 0) this.heal_points += _temp;
+
+        //Armor Mod
+        this.ArmorClass -= Game_Logic.ITEM[Inventory[_slot].index].armor_mod;
+
+        //Swings
+        _temp = Game_Logic.ITEM[Inventory[_slot].index].xtra_swings;
+        if (_temp > this.swing_count) this.swing_count = _temp;
+
+        //Damage        
+        this.hit_dam = Game_Logic.ITEM[Inventory[_slot].index].damage;
+
+        //Crit_hit
+        if (!this.crit_hit && Game_Logic.ITEM[Inventory[_slot].index].crit_hit) this.crit_hit = true;
+
+        //Curse?
+        if (Game_Logic.ITEM[Inventory[_slot].index].cursed) Inventory[_slot].curse_active = true;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_align != Enum._Alignment.none &&
+            Game_Logic.ITEM[Inventory[_slot].index].item_align != alignment) Inventory[_slot].curse_active = true;
+        if (Inventory[_slot].curse_active) Inventory[_slot].identified = true;
+    }
+
+    public void UnequipItem(int _slot)
+    {
+        //This function walks the equip process backwards, does not check for curses.
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Weapon) eqWeapon = -1;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Armor) eqArmor = -1;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Shield) eqShield = -1;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Helmet) eqHelmet = -1;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Gauntlets) eqGauntlet = -1;
+        if (Game_Logic.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Misc) eqMisc = -1;
+        Inventory[_slot].equipped = false;
+
+        //Heal Points
+        this.heal_points -= Game_Logic.ITEM[Inventory[_slot].index].heal_pts;
+
+        //Armor Mod
+        this.ArmorClass += Game_Logic.ITEM[Inventory[_slot].index].armor_mod;
+
+        //Swings
+        CalculateBaseSwings();
+
+        //Damage        
+        if(character_class == Enum._Class.ninja)
+        { this.hit_dam = new Dice(2, 4, 0); }
+        else { this.hit_dam = new Dice(2, 2, 0); }
+
+        //Crit_hit
+        if (character_class == Enum._Class.ninja)
+        { this.crit_hit = true; }
+        else { this.crit_hit = false; }
+    }
+
+    public int CalculateBaseSwings()
+    {
+        int _result = 0;
+        
+        this.swing_count = 1;
+        
+        if(this.character_class == Enum._Class.fighter || character_class == Enum._Class.samurai || character_class == Enum._Class.lord || character_class == Enum._Class.ninja)
+            this.swing_count += Mathf.FloorToInt(this.level / 5);
+
+        if (character_class == Enum._Class.ninja) this.swing_count++;
+
+        return _result;
+    }
+
+    public bool HaveEmptyInventorySlot()
+    {
+        bool _result = false;
+        for (int i = 0; i < 8; i++)
+            if (this.Inventory[i].index > -1) _result = true;
+        return _result;
+    }
+    public int GetEmptyInventorySlot()
+    {
+        int _result = -1;
+        for (int i = 7; i > -1; i--)
+            if (this.Inventory[i].index == -1) _result = i;
+        return _result;
     }
 }

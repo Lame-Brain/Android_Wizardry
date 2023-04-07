@@ -252,7 +252,14 @@ public class Input_Screen_Controller : MonoBehaviour
                 Create_Button_Last("Cancel", "Cancel");
                 return;
             }
-            if(_button.Substring(0,5) == "ViewI")
+            if(_button == "Cancel")
+            {
+                _display.Button_Block_Panel.SetActive(false);
+                _castle.townStatus = Castle_Logic.ts.View_Char;
+                _castle.Update_Screen();
+                return;
+            }
+            if (_button.Substring(0,5) == "ViewI")
             {
                 string _choice = _button.Replace("ViewI", "");
                 int _num = int.Parse(_choice);
@@ -263,8 +270,7 @@ public class Input_Screen_Controller : MonoBehaviour
                 return;
             }
             if(_button == "Trade_Geld")
-            {
-                //_display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO ADD?");
+            {                
                 _display.Update_Text_Screen("Trade Geld to whom?");
                 Clear_Buttons();
                 for (int i = 0; i < 6; i++)
@@ -375,51 +381,147 @@ public class Input_Screen_Controller : MonoBehaviour
         {
             if(_button == "Equip_Item")
             {
-                //1) The item is not equipped and is not able to be equipped by class
-                //2) (skip if not identified) the item is not equipped, is able to be equipped by class, but is does not match align
-                //3) the item is not equipped, is able to be equipped by class, matches align or item align is null
-                //4) The item is already equipped, and cursed
-                //5) The item is already equipped, and not cursed
-                string _class = _castle._selected_character.character_class.ToString();
-                _class = _class.ToLower();
-                _class = _class.Substring(0, 1);
-                if (!Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains(_class))
-                {                    
-                    _display.PopUpMessage("Your class cannot equip this item.");
-                    _castle.Update_Screen();
-                    return;
-                }
-                
-                bool _slotFull = false;
-                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Weapon &&
-                    _castle._selected_character.eqWeapon > -1) _slotFull = true;
-                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Armor &&
-                    _castle._selected_character.eqArmor > -1) _slotFull = true;
-                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Shield &&
-                    _castle._selected_character.eqShield > -1) _slotFull = true;
-                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Helmet &&
-                    _castle._selected_character.eqHelmet > -1) _slotFull = true;
-                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Gauntlets &&
-                    _castle._selected_character.eqGauntlet > -1) _slotFull = true;
-                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Misc &&
-                    _castle._selected_character.eqMisc > -1) _slotFull = true;
-                if (_slotFull)
-                {
-                    _display.PopUpMessage("This equipment slot is already in use.");
-                    _castle.Update_Screen();
-                    return;
-                }
+                if (!_castle._selected_character.Inventory[_castle._selectedInventorySlot].equipped)
+                { // Equip the item if it is not equipped
 
-                if(_castle._selected_character.Inventory[_castle._selectedInventorySlot].identified) 
-                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.none ||
-                        Game_Logic.ITEM[_castle._selectedItemIndex].item_align == _castle._selected_character.alignment)
+                    //Check if class can equip item
+                    string _class = _castle._selected_character.character_class.ToString();
+                    _class = _class.ToLower();
+                    _class = _class.Substring(0, 1);
+                    if (!Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains(_class))
                     {
-                        _display.PopUpMessage("This equipment's alignment does not match the character's");
+                        _display.PopUpMessage("Your class cannot equip this item.");
                         _castle.Update_Screen();
                         return;
                     }
 
-                _castle._selected_character.EquipItem(_castle._selectedInventorySlot);
+                    //Check if the slot is in use
+                    bool _slotFull = false;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Weapon &&
+                        _castle._selected_character.eqWeapon > -1) _slotFull = true;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Armor &&
+                        _castle._selected_character.eqArmor > -1) _slotFull = true;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Shield &&
+                        _castle._selected_character.eqShield > -1) _slotFull = true;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Helmet &&
+                        _castle._selected_character.eqHelmet > -1) _slotFull = true;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Gauntlets &&
+                        _castle._selected_character.eqGauntlet > -1) _slotFull = true;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type == BlobberEngine.Enum._Item_Type.Misc &&
+                        _castle._selected_character.eqMisc > -1) _slotFull = true;
+                    if (_slotFull)
+                    {
+                        _display.PopUpMessage("This equipment slot is already in use.");
+                        _castle.Update_Screen();
+                        return;
+                    }
+
+                    //If equipment is identifed, and the alignment doesn't match, stop the process
+                    if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].identified)
+                        if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align != BlobberEngine.Enum._Alignment.none &&
+                            Game_Logic.ITEM[_castle._selectedItemIndex].item_align == _castle._selected_character.alignment)
+                        {
+                            _display.PopUpMessage("This equipment's alignment does not match the character's");
+                            _castle.Update_Screen();
+                            return;
+                        }
+
+
+                    //Equip it
+                    _castle._selected_character.EquipItem(_castle._selectedInventorySlot);
+                    _castle.townStatus = Castle_Logic.ts.View_Char;
+                    _castle.Update_Screen();
+
+                    //Report result (cursed and equipped, or just equipped)
+                    if (!_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active) 
+                    {
+                        _display.PopUpMessage("You equipped " + _castle._selected_character.Inventory[_castle._selectedInventorySlot].ItemName() + ".");
+                        _display.Block_Buttons();
+                    }
+                    else
+                    {
+                        _display.PopUpMessage("You are cursed by " + _castle._selected_character.Inventory[_castle._selectedInventorySlot].ItemName() + "!");
+                    }
+
+                    return;
+                }
+
+                if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].equipped)
+                { //Unequip Item
+                    if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active)
+                    { //Can't unequip, cursed
+                        _display.PopUpMessage("You cannot unequip cursed items. You must have the curse lifted.");
+                        return;
+                    }
+
+                    //Unequip it.
+                    _castle._selected_character.UnequipItem(_castle._selectedInventorySlot);
+
+                    _castle.townStatus = Castle_Logic.ts.View_Char;
+                    _castle.Update_Screen();
+                    return;
+                }
+            }
+            if(_button == "Trade_Item")
+            {
+                _display.Update_Text_Screen("What item would you like to trade?");
+                Clear_Buttons();
+                for (int i = 0; i < 8; i++)
+                    if (_castle._selected_character.Inventory[i].index > -1)
+                        Create_Button(_castle._selected_character.Inventory[i].ItemName(), "Trad?" + i);
+                Create_Button_Last("Cancel", "CancelTradeItem");
+                return;
+            }
+            if (_button.Substring(0, 5) == "Trad?")
+            {
+                int _n = int.Parse(_button.Replace("Trad?", ""));
+                if (_n < 0 && _n > 7) _n = 0;
+                _castle._selectedInventorySlot = _n;
+                _castle._selectedItemIndex = _castle._selected_character.Inventory[_n].index;
+
+                if(_castle._selected_character.Inventory[_n].curse_active)
+                {
+                    _display.PopUpMessage("You cannot trade items with an activated curse!");
+                    _castle.Update_Screen();
+                    return;
+                }
+
+                _display.Update_Text_Screen("To whom would you trade " + _castle._selected_character.Inventory[_n].ItemName() + "?");
+                Clear_Buttons();
+                for (int i = 0; i < 6; i++)
+                    if (!Game_Logic.PARTY.EmptySlot(i))
+                        Create_Button(Game_Logic.PARTY.LookUp_PartyMember(i).name, "Trad2" + i);
+                Create_Button_Last("Cancel", "CancelTradeItem");
+                return;
+            }
+            if (_button.Substring(0, 5) == "Trad2")
+            {
+                int _n = int.Parse(_button.Replace("Trad2", ""));
+                if (_n < 0 && _n > 5) _n = 0;
+                _selectedRoster = Game_Logic.PARTY.Get_Roster_Index(_n);
+                _selected_character = Game_Logic.PARTY.LookUp_PartyMember(_n);
+
+                if (!_selected_character.HaveEmptyInventorySlot())
+                {
+                    _display.PopUpMessage(_selected_character.name + " does not have any space.");
+                    _castle.Update_Screen();
+                    return;
+                }
+                _castle._selected_character.UnequipItem(_castle._selectedInventorySlot);
+                _selected_character.Inventory[_selected_character.GetEmptyInventorySlot()] = _castle._selected_character.Inventory[_castle._selectedInventorySlot];
+                _castle._selected_character.Inventory[_castle._selectedInventorySlot].index = -1;
+
+                _display.PopUpMessage("Done. Sent.");
+                _castle.Update_Screen();
+                return;
+            }
+
+
+            if(_button == "Leave_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.View_Char;
+                _castle.Update_Screen();
+                return;
             }
         }
     }
