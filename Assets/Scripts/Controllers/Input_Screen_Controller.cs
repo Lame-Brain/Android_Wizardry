@@ -248,7 +248,7 @@ public class Input_Screen_Controller : MonoBehaviour
                 for (int i = 0; i < 8; i++) 
                     if (_selected_character.Inventory[i] != null)
                         if(_selected_character.Inventory[i].index != -1) 
-                            Create_Button("Item #" + i, "ViewI" + i);
+                            Create_Button("Item #" + (i+1), "ViewI" + i);
                 Create_Button_Last("Cancel", "Cancel");
                 return;
             }
@@ -464,29 +464,14 @@ public class Input_Screen_Controller : MonoBehaviour
             }
             if(_button == "Trade_Item")
             {
-                _display.Update_Text_Screen("What item would you like to trade?");
-                Clear_Buttons();
-                for (int i = 0; i < 8; i++)
-                    if (_castle._selected_character.Inventory[i].index > -1)
-                        Create_Button(_castle._selected_character.Inventory[i].ItemName(), "Trad?" + i);
-                Create_Button_Last("Cancel", "CancelTradeItem");
-                return;
-            }
-            if (_button.Substring(0, 5) == "Trad?")
-            {
-                int _n = int.Parse(_button.Replace("Trad?", ""));
-                if (_n < 0 && _n > 7) _n = 0;
-                _castle._selectedInventorySlot = _n;
-                _castle._selectedItemIndex = _castle._selected_character.Inventory[_n].index;
-
-                if(_castle._selected_character.Inventory[_n].curse_active)
+                if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active)
                 {
                     _display.PopUpMessage("You cannot trade items with an activated curse!");
                     _castle.Update_Screen();
                     return;
                 }
 
-                _display.Update_Text_Screen("To whom would you trade " + _castle._selected_character.Inventory[_n].ItemName() + "?");
+                _display.Update_Text_Screen("Who Would you like to trade " + _castle._selected_character.Inventory[_castle._selectedInventorySlot].ItemName() + " to?");
                 Clear_Buttons();
                 for (int i = 0; i < 6; i++)
                     if (!Game_Logic.PARTY.EmptySlot(i))
@@ -501,22 +486,81 @@ public class Input_Screen_Controller : MonoBehaviour
                 _selectedRoster = Game_Logic.PARTY.Get_Roster_Index(_n);
                 _selected_character = Game_Logic.PARTY.LookUp_PartyMember(_n);
 
-                if (!_selected_character.HaveEmptyInventorySlot())
+                if (!_selected_character.HasEmptyInventorySlot())
                 {
                     _display.PopUpMessage(_selected_character.name + " does not have any space.");
                     _castle.Update_Screen();
                     return;
                 }
-                _castle._selected_character.UnequipItem(_castle._selectedInventorySlot);
-                _selected_character.Inventory[_selected_character.GetEmptyInventorySlot()] = _castle._selected_character.Inventory[_castle._selectedInventorySlot];
-                _castle._selected_character.Inventory[_castle._selectedInventorySlot].index = -1;
 
+                _castle._selected_character.UnequipItem(_castle._selectedInventorySlot);
+                int _a = _selected_character.GetEmptyInventorySlot();
+                _selected_character.Inventory[_selected_character.GetEmptyInventorySlot()] = new Item(_castle._selected_character.Inventory[_castle._selectedInventorySlot].index, false, false, _castle._selected_character.Inventory[_castle._selectedInventorySlot].identified);
+                _castle._selected_character.Inventory[_castle._selectedInventorySlot].index = -1;
+                
+
+
+                _castle.townStatus = Castle_Logic.ts.View_Char;
+                _castle.Update_Screen();
                 _display.PopUpMessage("Done. Sent.");
+                return;
+            }
+            if(_button == "Use_Item")
+            {
+                //TO DO: FILL THIS IN
+            }
+            if(_button == "Trash_Item")
+            {
+                _display.Update_Text_Screen("Are you sure?");
+                Clear_Buttons();
+                Create_Button("YES", "YesTrash");
+                Create_Button("NO", "Cancel");
+                return;
+            }
+            if(_button == "YesTrash")
+            {
+                _castle._selected_character.Inventory[_castle._selectedInventorySlot].index = -1;
+                _castle.townStatus = Castle_Logic.ts.View_Char;
                 _castle.Update_Screen();
                 return;
             }
+            if(_button == "ID_Item")
+            {
+                string _message = "Failed";
+                if (_castle._selected_character.character_class == BlobberEngine.Enum._Class.bishop)
+                {
+                    _message = "Failed";
+                    int _succeed_chance = 10 + (5 * _castle._selected_character.level),
+                        _crit_fail_chance = 35 - (3 * _castle._selected_character.level);
 
+                    if(Random.Range(0,100) + 1 <= _succeed_chance)
+                    {
+                        _message = "Succeeded";
+                        _castle._selected_character.Inventory[_castle._selectedInventorySlot].identified = true;
+                    }                    
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].cursed && Random.Range(0, 100) + 1 <= _crit_fail_chance)
+                    {
+                        _message += " and struck by curse!";
+                        _castle._selected_character.EquipItem(_castle._selectedInventorySlot);
+                    }
+                }
+                else
+                {
+                    _message = "Only Bishops can Identify items";
+                }
+                _castle.townStatus = Castle_Logic.ts.View_Item;
+                _castle.Update_Screen();
+                _display.PopUpMessage(_message);
+                _display.Block_Buttons();
+                return;
+            }
 
+            if (_button == "Cancel")
+            {
+                _castle.townStatus = Castle_Logic.ts.View_Item;
+                _castle.Update_Screen();
+                return;
+            }
             if(_button == "Leave_Button")
             {
                 _castle.townStatus = Castle_Logic.ts.View_Char;

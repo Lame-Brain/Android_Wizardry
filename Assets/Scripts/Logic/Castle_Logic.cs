@@ -444,7 +444,7 @@ public class Castle_Logic : MonoBehaviour
                     if (!_selected_character.Inventory[i].identified) _addChar = "?";
                     if (_selected_character.Inventory[i].equipped) _addChar = "*";
                     if (_selected_character.Inventory[i].curse_active) _addChar = "-";
-                    _18inv[i] = i + ")" + _addChar + _selected_character.Inventory[i].ItemName();
+                    _18inv[i] = (i+1) + ")" + _addChar + _selected_character.Inventory[i].ItemName();
 
                     //Bound string to 20 characters, no more, no less
                     if (_18inv[i].Length > 19) _18inv[i] = _18inv[i].Substring(0, 20);

@@ -397,11 +397,11 @@ public class Character_Class
         return _result;
     }
 
-    public bool HaveEmptyInventorySlot()
+    public bool HasEmptyInventorySlot()
     {
         bool _result = false;
         for (int i = 0; i < 8; i++)
-            if (this.Inventory[i].index > -1) _result = true;
+            if (this.Inventory[i].index == -1) _result = true;
         return _result;
     }
     public int GetEmptyInventorySlot()
