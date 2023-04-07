@@ -511,11 +511,21 @@ public class Input_Screen_Controller : MonoBehaviour
             }
             if(_button == "Trash_Item")
             {
-                _display.Update_Text_Screen("Are you sure?");
-                Clear_Buttons();
-                Create_Button("YES", "YesTrash");
-                Create_Button("NO", "Cancel");
-                return;
+                if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active)
+                {
+                    _display.Update_Text_Screen("You cannot trash cursed items.\nYou have to have the curse lifted.");
+                    Clear_Buttons();
+                    Create_Button("BACK", "Cancel");
+                    return;
+                }
+                else
+                {
+                    _display.Update_Text_Screen("Are you sure?");
+                    Clear_Buttons();
+                    Create_Button("YES", "YesTrash");
+                    Create_Button("NO", "Cancel");
+                    return;
+                }
             }
             if(_button == "YesTrash")
             {
