@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BlobberEngine;
 
 public class Input_Screen_Controller : MonoBehaviour
 {
@@ -132,7 +133,7 @@ public class Input_Screen_Controller : MonoBehaviour
                     }
                     else
                     {
-                        Game_Logic.instance.LevelUpCharacter(_selectedRoster);
+                        _castle.LevelUpCharacter(_selectedRoster);
                     }
                     return; 
                 }
@@ -198,6 +199,19 @@ public class Input_Screen_Controller : MonoBehaviour
                 _selectedRoster = -1; _castle._selectedRoster = -1;
                 _castle.townStatus = Castle_Logic.ts.Market;
                 _castle.Update_Screen();
+                return;
+            }
+
+            if(_button == "Make_Character")
+            {
+                Enum._Race _race = Enum._Race.none;
+                Enum._Class _class = Enum._Class.none;
+                Enum._Alignment _align = Enum._Alignment.none;
+                string _name = "None";
+                int _strBase, _strMod, _IQBase, _IQMod, _pieBase, _pieMod, _vitBase, _vitMod, _agiBase, _agiMod, _lkBase, _lkMod;
+
+
+                //_castle.Make_Character();
                 return;
             }
 
