@@ -8,7 +8,7 @@ public class Display_Screen_Controller : MonoBehaviour
 {
     public TextMeshProUGUI Screen_Sizing_String, Output, Message, instructions;
     public RectTransform Input_Panel;
-    public GameObject Button_Block_Panel, Message_Pop_Up, Text_Input_Controller;
+    public GameObject Button_Block_Panel, Message_Pop_Up, Text_Input_Controller, Character_Gen;
 
     public float FONT_SIZE;
 

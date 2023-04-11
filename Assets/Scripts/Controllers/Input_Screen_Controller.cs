@@ -204,14 +204,7 @@ public class Input_Screen_Controller : MonoBehaviour
 
             if(_button == "Make_Character")
             {
-                Enum._Race _race = Enum._Race.none;
-                Enum._Class _class = Enum._Class.none;
-                Enum._Alignment _align = Enum._Alignment.none;
-                string _name = "None";
-                int _strBase, _strMod, _IQBase, _IQMod, _pieBase, _pieMod, _vitBase, _vitMod, _agiBase, _agiMod, _lkBase, _lkMod;
-
-
-                //_castle.Make_Character();
+                _display.Character_Gen.SetActive(true);
                 return;
             }
 

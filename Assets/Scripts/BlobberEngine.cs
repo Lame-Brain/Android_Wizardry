@@ -7,7 +7,7 @@ namespace BlobberEngine
     public class Enum
     {
         public enum _Class { none, fighter, mage, priest, thief, bishop, samurai, lord, ninja, animal, demon, dragon, enchanted, giant, insect, myth, undead, were }
-        public enum _Race { none, human, elf, dwarf, gnome, halfling }
+        public enum _Race { none, human, elf, dwarf, gnome, hobbit }
         public enum _Alignment { none, good, neutral, evil }
         public enum _Direction { none, north, east, south, west, forward, backward, left, right }
         public enum _Damage_type { physical, fire, cold }

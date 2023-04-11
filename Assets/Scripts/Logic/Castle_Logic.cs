@@ -566,18 +566,6 @@ public class Castle_Logic : MonoBehaviour
     }
 
 
-
-
-    #region Make_Character
-    public void Make_Character(Enum._Race _race, int _str, int _iq, int _pie, int _vit, int _agi, int _lk, Enum._Class _class, Enum._Alignment _align, string _name)
-    {
-
-    }
-    #endregion
-
-
-
-
     #region LEVEL_UP
     public void LevelUpCharacter(int _n)
     {
