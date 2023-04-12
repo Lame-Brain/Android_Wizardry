@@ -4381,7 +4381,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 550, y: 550}
+  m_SizeDelta: {x: 750, y: 750}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &853151722
 MonoBehaviour:
@@ -4441,7 +4441,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 150, y: 100}
+  m_CellSize: {x: 200, y: 100}
   m_Spacing: {x: 15, y: 15}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -4473,7 +4473,7 @@ GameObject:
   - component: {fileID: 862489712}
   m_Layer: 5
   m_Name: Button_Block_Panel
-  m_TagString: Untagged
+  m_TagString: Button_Block_Panel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

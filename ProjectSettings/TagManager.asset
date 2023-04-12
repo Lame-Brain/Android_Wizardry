@@ -8,6 +8,7 @@ TagManager:
   - Display_Panel
   - Button
   - Temp_Button
+  - Button_Block_Panel
   layers:
   - Default
   - TransparentFX

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BlobberEngine;
 
 public class Party_Class : MonoBehaviour
 {
     public bool[,,] tile_visited;
     private int[] Party;
+    private Enum._Alignment PartyAlign;
 
     public void InitParty()
     {
