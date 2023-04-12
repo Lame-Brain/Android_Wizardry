@@ -466,7 +466,106 @@ public class Character_Gen_Controller : MonoBehaviour
     }
     public void FINAL_YES()
     {
+        //FINISH CHARACTER GENERATION
+        Character_Class New_Character = new Character_Class();
+        New_Character.name = _name;
+        New_Character.character_class = _class;
+        New_Character.race = _race;
+        New_Character.alignment = _align;
+        New_Character.Strength = _str;
+        New_Character.IQ = _iq;
+        New_Character.Piety = _pie;
+        New_Character.Vitality = _vit;
+        New_Character.Agility = _agi;
+        New_Character.Luck = _lk;
+        switch (_class)
+        {
+            case Enum._Class.fighter:
+                New_Character.hitDiceSides = 10;
+                New_Character.Save_vs_Death = -3;
+                break;
+            case Enum._Class.mage:
+                New_Character.hitDiceSides = 4;
+                New_Character.Save_vs_Spell -= 3;
+                New_Character.mageSpells[0] = 2;
+                New_Character.SpellKnown[30] = true;
+                New_Character.SpellKnown[31] = true;
+                break;
+            case Enum._Class.priest:
+                New_Character.hitDiceSides = 8;
+                New_Character.Save_vs_Petrify -= 3;
+                New_Character.priestSpells[0] = 2;
+                New_Character.SpellKnown[0] = true;
+                New_Character.SpellKnown[1] = true;
+                break;
+            case Enum._Class.thief:
+                New_Character.hitDiceSides = 6;
+                New_Character.Save_vs_Breath -= 3;
+                break;
+            case Enum._Class.bishop:
+                New_Character.hitDiceSides = 6;
+                New_Character.Save_vs_Petrify -= 2;
+                New_Character.Save_vs_Wand -= 2;
+                New_Character.Save_vs_Spell -= 2;
+                New_Character.mageSpells[0] = 2;
+                New_Character.SpellKnown[30] = true;
+                New_Character.SpellKnown[31] = true;
+                break;
+            case Enum._Class.samurai:
+                New_Character.hitDiceSides = 8;
+                New_Character.Save_vs_Death -= 2;
+                New_Character.Save_vs_Spell -= 2;
+                break;
+            case Enum._Class.lord:
+                New_Character.hitDiceSides = 10;
+                New_Character.Save_vs_Death -= 2;
+                New_Character.Save_vs_Petrify -= 2;
+                break;
+            case Enum._Class.ninja:
+                New_Character.hitDiceSides = 6;
+                New_Character.Save_vs_Death -= 3;
+                New_Character.Save_vs_Breath -= 3;
+                New_Character.Save_vs_Petrify -= 2;
+                New_Character.Save_vs_Spell -= 2;
+                New_Character.Save_vs_Wand -= 4;
+                New_Character.hit_dam = new Dice(2, 4, 0);
+                break;
+            default:
+                New_Character.hitDiceSides = 8;
+                break;
+        }
+        switch (_race)
+        {
+            case Enum._Race.human:
+                New_Character.Save_vs_Death--;
+                break;
+            case Enum._Race.elf:
+                New_Character.Save_vs_Wand -= 2;
+                break;
+            case Enum._Race.dwarf:
+                New_Character.Save_vs_Breath -= 4;
+                break;
+            case Enum._Race.gnome:
+                New_Character.Save_vs_Petrify -= 2;
+                break;
+            case Enum._Race.hobbit:
+                New_Character.Save_vs_Spell -= 3;
+                break;
+        }
+        New_Character.HP_MAX = Random.Range(0, New_Character.hitDiceSides) + 1; //roll max hp
+        if (New_Character.Vitality == 3) New_Character.HP_MAX -= 2; //Adjust for vitality
+        if (New_Character.Vitality == 4 || New_Character.Vitality == 5) New_Character.HP_MAX --;
+        if (New_Character.Vitality == 16) New_Character.HP_MAX ++;
+        if (New_Character.Vitality == 17) New_Character.HP_MAX += 2;
+        if (New_Character.Vitality == 18) New_Character.HP_MAX += 3;
+        if (New_Character.HP_MAX < 2) New_Character.HP_MAX = 2; //Hp max cannot be less than 2.
+        New_Character.HP = New_Character.HP_MAX; //set Hp to Hp Max
+        New_Character.Geld = Random.Range(0, 100) + 90; //Geld roll
+        New_Character.xp_nnl = new XPTable().LookupNNL(1, New_Character.character_class);
+
         //WRITE THIS CHARACTER TO THE ROSTER
+        Game_Logic.ROSTER.Add(New_Character);
+
         this.gameObject.SetActive(false);
     }
 }

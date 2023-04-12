@@ -48,7 +48,7 @@ public class Character_Class
         this.race = Enum._Race.none;
         this.character_class = Enum._Class.fighter;
         this.alignment = Enum._Alignment.neutral;
-        this.ageInWeeks = 52 * 18;
+        this.ageInWeeks = Random.Range(0, 300) + 936; 
         this.status = Enum._Status.OK;
         this.Save_vs_Death = 0;
         this.Save_vs_Wand = 0;
@@ -67,6 +67,7 @@ public class Character_Class
         this.ArmorClass = 10;
         this.heal_points = 0;
         this.crit_hit = false;
+        this.swing_count = 1;
         this.hit_dam = new Dice(1, 2, 0); //1d2
         this.lostXYL = Vector3Int.zero;
         this.Trebor_Honor_Guard = false;
@@ -404,6 +405,7 @@ public class Character_Class
             if (this.Inventory[i].index == -1) _result = true;
         return _result;
     }
+    
     public int GetEmptyInventorySlot()
     {
         int _result = -1;
