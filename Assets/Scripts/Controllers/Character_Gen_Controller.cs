@@ -223,9 +223,19 @@ public class Character_Gen_Controller : MonoBehaviour
 
     public void Name_Input_Accepted(string _val)
     {
-        _name = _val;
+        bool good_name = true;
         _val = _val.Replace(",", " ");
-        Next_Button.SetActive(true);
+        if (_val.Length > 15) _val = _val.Substring(0, 15);
+        _name = _val.ToUpper();
+        Name_Text.text = "Tap Next to continue.";
+        for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+            if (_name == Game_Logic.ROSTER[i].name.ToUpper())
+            {
+                good_name = false;
+                Name_Text.text = "That name is Taken, please enter another.";
+            }
+
+        Next_Button.SetActive(good_name);
     }
     public void Choose_Alignment(int _val)
     {
@@ -559,6 +569,17 @@ public class Character_Gen_Controller : MonoBehaviour
         if (New_Character.Vitality == 17) New_Character.HP_MAX += 2;
         if (New_Character.Vitality == 18) New_Character.HP_MAX += 3;
         if (New_Character.HP_MAX < 2) New_Character.HP_MAX = 2; //Hp max cannot be less than 2.
+
+        if (New_Character.character_class == Enum._Class.samurai) //Samurai get an extra Hit Dice Roll
+        {
+            New_Character.HP_MAX += Random.Range(0, 8) + 1;
+            if (New_Character.Vitality == 3) New_Character.HP_MAX -= 2;
+            if (New_Character.Vitality == 4 || New_Character.Vitality == 5) New_Character.HP_MAX--;
+            if (New_Character.Vitality == 16) New_Character.HP_MAX++;
+            if (New_Character.Vitality == 17) New_Character.HP_MAX += 2;
+            if (New_Character.Vitality == 18) New_Character.HP_MAX += 3;
+        }
+
         New_Character.HP = New_Character.HP_MAX; //set Hp to Hp Max
         New_Character.Geld = Random.Range(0, 100) + 90; //Geld roll
         New_Character.xp_nnl = new XPTable().LookupNNL(1, New_Character.character_class);

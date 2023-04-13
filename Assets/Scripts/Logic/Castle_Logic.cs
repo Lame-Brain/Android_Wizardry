@@ -92,7 +92,8 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("TAVERN", "Tavern_Button");
             _input.Create_Button("TRADE POST","Boltac_Button");
             _input.Create_Button("TEMPLE","Temple_Button");
-            _input.Create_Button_Last("EDGE OF TOWN","Edge_of_Town_Button");
+            _input.Create_Button_Last("TRAINING HALL","Guild_Button");
+            _input.Create_Button_Last("MAZE ENTRANCE","Maze_Button");
         }
 
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INN INTRO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -285,8 +286,8 @@ public class Castle_Logic : MonoBehaviour
                     if (!_party.EmptySlot(i))
                         _input.Create_Button("VIEW " + _party.LookUp_PartyMember(i).name, "View:" + i);
             }
-            _input.Create_Button("Make Character", "Make_Character");
-            _input.Create_Button("View Roster", "Show_Roster");
+            //_input.Create_Button("Make Character", "Make_Character");
+            //_input.Create_Button("View Roster", "Show_Roster");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
     
@@ -563,7 +564,274 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("Identify Item", "ID_Item");
             _input.Create_Button_Last("Leave", "Leave_Button");
         }
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ADVENTURER GUILD <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (townStatus == ts.Training)
+        {
+            string _txt = "+--------------------------------------+\n" +
+                          "|Castle                  Training Hall |\n" +
+                          "+--------------------------------------+\n\n" +
+                          "Here you can recruit new adventurers    \n" +
+                          "view adventurers in the roster, change  \n" +
+                          "their names, change their class, or     \n" +
+                          "retire them from the roster             \n";
+
+            _display.Update_Text_Screen(_txt);
+
+            _input.Clear_Buttons();
+            _input.Create_Button("Make Character", "Make_Character");
+            _input.Create_Button("View Roster", "Show_Roster");
+            _input.Create_Button("Lookup Character", "Inspect_Hero");
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
+        }
+
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INSPECT CHARACTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (townStatus == ts.Inspect)
+        {
+            string _txt = _selected_character.name + " " + _selected_character.race.ToString() + " " + _selected_character.alignment.ToString()[0] + "-" + _selected_character.character_class.ToString() + " ";
+            if (_selected_character.Trebor_Honor_Guard) _txt += ">";
+            if (_selected_character.Gnilda_Staff_Keeper) _txt += "K";
+            if (_selected_character.Llylgamyn_Knight) _txt += "G";
+            if (_selected_character.Descendent_of_Diamonds) _txt += "D";
+            if (_selected_character.Star_of_Llylgamyn) _txt += "*";
+            _txt += "\n\n";
+            //Strength Line
+            if (_selected_character.Strength < 10)
+            { _txt += "    STRENGTH  " + _selected_character.Strength + "    Geld " + _selected_character.Geld + "\n"; }
+            else
+            { _txt += "    STRENGTH " + _selected_character.Strength + "    Geld " + _selected_character.Geld + "\n"; }
+
+            //IQ line
+            if (_selected_character.IQ < 10)
+            { _txt += "        I.Q.  " + _selected_character.IQ + "     EXP " + _selected_character.xp + "\n"; }
+            else
+            { _txt += "        I.Q. " + _selected_character.IQ + "     EXP " + _selected_character.xp + "\n"; }
+
+            //Piety Line
+            if (_selected_character.Piety < 10)
+            { _txt += "       PIETY  " + _selected_character.Piety + "\n"; }
+            else
+            { _txt += "       PIETY " + _selected_character.Piety + "\n"; }
+
+            //Vitality Line
+            if (_selected_character.Vitality < 10)
+            { _txt += "    VITALITY  " + _selected_character.Vitality + "   LEVEL"; }
+            else
+            { _txt += "    VITALITY " + _selected_character.Vitality + "   LEVEL"; }
+            if (_selected_character.level < 10) _txt += " ";
+            if (_selected_character.level < 100) _txt += " ";
+            if (_selected_character.level > 99) _txt += " ";
+            _txt += _selected_character.level + "       AGE";
+            _txt += " " + _selected_character.ageInWeeks / 52 + "\n";
+
+            //Agility Line
+            if (_selected_character.Agility < 10)
+            { _txt += "     AGILITY  " + _selected_character.Agility + "    HITS " + _selected_character.HP; }
+            else
+            { _txt += "     AGILITY " + _selected_character.Agility + "    HITS " + _selected_character.HP; }
+            if (_selected_character.HP < 10) _txt += "  ";
+            if (_selected_character.HP > 9 && _selected_character.HP < 100) _txt += " ";
+            if (_selected_character.HP > 99) _txt += "";
+            _txt += "/" + _selected_character.HP_MAX;
+            if (_selected_character.HP_MAX < 10) _txt += "    ";
+            if (_selected_character.HP_MAX > 9 && _selected_character.HP_MAX < 100) _txt += "   ";
+            if (_selected_character.HP_MAX > 99) _txt += "  ";
+            _txt += "AC  ";
+            if (_selected_character.ArmorClass > 99) _txt += "HI";
+            if (_selected_character.ArmorClass < 100 && _selected_character.ArmorClass > 9) _txt += _selected_character.ArmorClass.ToString();
+            if (_selected_character.ArmorClass < 10 && _selected_character.ArmorClass > -1) _txt += " " + _selected_character.ArmorClass;
+            if (_selected_character.ArmorClass < 0 && _selected_character.ArmorClass > -10) _txt += _selected_character.ArmorClass.ToString();
+            if (_selected_character.ArmorClass < -9) _txt += "LO";
+            _txt += "\n";
+
+            //Luck Line
+            if (_selected_character.Luck < 10)
+            { _txt += "        LUCK  " + _selected_character.Luck + "  STATUS "; }
+            else
+            { _txt += "        LUCK " + _selected_character.Luck + "  STATUS "; }
+            _txt += _selected_character.status.ToString() + "\n\n";
+
+            //Spells
+            int[] _temp = new int[7];
+            for (int i = 0; i < 7; i++) _temp[i] = _selected_character.mageSpells[i] - _selected_character.mageSpellsCast[i];
+            _txt += "        MAGE " + _temp[0] + "/" + _temp[1] + "/" + _temp[2] + "/" + _temp[3] + "/" + _temp[4] + "/" + _temp[5] + "/" + _temp[6] + "\n";
+            for (int i = 0; i < 7; i++) _temp[i] = _selected_character.priestSpells[i] - _selected_character.priestSpellsCast[i];
+            _txt += "      PRIEST " + _temp[0] + "/" + _temp[1] + "/" + _temp[2] + "/" + _temp[3] + "/" + _temp[4] + "/" + _temp[5] + "/" + _temp[6] + "\n\n";
+
+            //Inventory            
+            _txt += "*=EQUIP, -=CURSED, ?=UNKNOWN, #=UNUSABLE\n\n";
+            string[] _18inv = new string[8];
+            for (int i = 0; i < 8; i++)
+            {
+                if (_selected_character.Inventory[i].index != -1)
+                {
+                    //String displayed at start of string
+                    string _addChar = " ";
+
+                    //ChatGPT suggested this code:
+                    string charClass = _selected_character.character_class.ToString().Substring(0, 1);
+                    string itemClassUse = Game_Logic.ITEM[_selected_character.Inventory[i].index].class_use;
+                    if (itemClassUse.IndexOf(charClass, System.StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+                        _addChar = "#";
+                    }
+                    // Replacing this code:
+                    //if (!Game_Logic.ITEM[_selected_character.Inventory[i].index].class_use.Contains(_selected_character.character_class.ToString().Substring(0, 1).ToLower())) _addChar = "#";
+
+                    if (!_selected_character.Inventory[i].identified) _addChar = "?";
+                    if (_selected_character.Inventory[i].equipped) _addChar = "*";
+                    if (_selected_character.Inventory[i].curse_active) _addChar = "-";
+                    _18inv[i] = (i + 1) + ")" + _addChar + _selected_character.Inventory[i].ItemName();
+
+                    //Bound string to 20 characters, no more, no less
+                    if (_18inv[i].Length > 19) _18inv[i] = _18inv[i].Substring(0, 20);
+                    while (_18inv[i].Length < 20) _18inv[i] += " ";
+                }
+                else
+                {
+                    _18inv[i] = "                    ";
+                }
+            }
+            _txt += _18inv[0] + _18inv[1] + "\n";
+            _txt += _18inv[2] + _18inv[3] + "\n";
+            _txt += _18inv[4] + _18inv[5] + "\n";
+            _txt += _18inv[6] + _18inv[7] + "\n\n";
+
+            _display.Update_Text_Screen(_txt);
+            _input.Clear_Buttons();
+            _input.Create_Button("Rename Character", "Rename_Button");
+            _input.Create_Button("Learn New Class", "ReClass_Button");
+            _input.Create_Button("Retire Character", "Retire_Button");
+            _input.Create_Button_Last("BACK", "Leave_Button");
+        }
     }
+
+
+
+    #region Change_Class
+    public void ChangeCharacterClass(Character_Class _char, Enum._Class _newClass)
+    {
+        //Change Attributes
+        switch (_char.race)
+        {
+            case Enum._Race.human:
+                _char.Strength = 8;
+                _char.IQ = 8;
+                _char.Piety = 5;
+                _char.Vitality = 8;
+                _char.Agility = 8;
+                _char.Luck = 9;
+                break;
+            case Enum._Race.elf:
+                _char.Strength = 7;
+                _char.IQ = 10;
+                _char.Piety = 10;
+                _char.Vitality = 6;
+                _char.Agility = 9;
+                _char.Luck = 6;
+                break;
+            case Enum._Race.dwarf:
+                _char.Strength = 10;
+                _char.IQ = 7;
+                _char.Piety = 10;
+                _char.Vitality = 10;
+                _char.Agility = 5;
+                _char.Luck = 6;
+                break;
+            case Enum._Race.gnome:
+                _char.Strength = 7;
+                _char.IQ = 7;
+                _char.Piety = 10;
+                _char.Vitality = 8;
+                _char.Agility = 10;
+                _char.Luck = 7;
+                break;
+            case Enum._Race.hobbit:
+                _char.Strength = 5;
+                _char.IQ = 7;
+                _char.Piety = 7;
+                _char.Vitality = 6;
+                _char.Agility = 10;
+                _char.Luck = 15;
+                break;
+        }
+        //Set new class
+        _char.character_class = _newClass;
+        //Unequip items
+        for (int i = 0; i < 8; i++)
+            if (_char.Inventory[i].index > -1 && !_char.Inventory[i].curse_active) _char.UnequipItem(i);
+        //New NNL
+        _char.xp_nnl = new XPTable().LookupNNL(1, _newClass);
+        //Hit Dice
+        switch (_char.character_class)
+        {
+            case Enum._Class.fighter:
+                _char.hitDiceSides = 10;
+                break;
+            case Enum._Class.mage:
+                _char.hitDiceSides = 4;
+                break;
+            case Enum._Class.priest:
+                _char.hitDiceSides = 8;
+                break;
+            case Enum._Class.thief:
+                _char.hitDiceSides = 6;
+                break;
+            case Enum._Class.bishop:
+                _char.hitDiceSides = 6;
+                break;
+            case Enum._Class.samurai:
+                _char.hitDiceSides = 8;
+                break;
+            case Enum._Class.lord:
+                _char.hitDiceSides = 10;
+                break;
+            case Enum._Class.ninja:
+                _char.hitDiceSides = 6;
+                _char.hit_dam = new Dice(2, 4, 0);
+                break;
+            default:
+                _char.hitDiceSides = 8;
+                break;
+        }
+        int _new_HP = Random.Range(0, _char.hitDiceSides) + 1, _deltaHP = _char.HP_MAX - _char.HP; 
+        Debug.Log("MAX " + _char.HP_MAX + " - HP " + _char.HP + " = " + _deltaHP);
+        if (_char.Vitality == 3) _new_HP -= 2; //Adjust for vitality
+        if (_char.Vitality == 4 || _char.Vitality == 5) _new_HP--;
+        if (_char.Vitality == 16) _new_HP++;
+        if (_char.Vitality == 17) _new_HP += 2;
+        if (_char.Vitality == 18) _new_HP += 3;
+        if(_char.character_class == Enum._Class.samurai)
+        {
+            _new_HP += Random.Range(0, _char.hitDiceSides) + 1;
+            if (_char.Vitality == 3) _new_HP -= 2; //Adjust for vitality
+            if (_char.Vitality == 4 || _char.Vitality == 5) _new_HP--;
+            if (_char.Vitality == 16) _new_HP++;
+            if (_char.Vitality == 17) _new_HP += 2;
+            if (_char.Vitality == 18) _new_HP += 3;
+        }
+        if (_char.HP_MAX < _new_HP)
+        {
+            _char.HP_MAX = _new_HP;
+            _char.HP = _new_HP - _deltaHP;
+        }
+        //Spells and Magicka
+        if(_char.character_class == Enum._Class.mage || _char.character_class == Enum._Class.bishop)
+        {
+            if(!_char.SpellKnown[30]) _char.SpellKnown[30] = true;
+            if(!_char.SpellKnown[31]) _char.SpellKnown[31] = true;
+            if (_char.mageSpells[0] < 2) _char.mageSpells[0] = 2;
+        }
+        if (_char.character_class == Enum._Class.priest)
+        {
+            if (!_char.SpellKnown[0]) _char.SpellKnown[0] = true;
+            if (!_char.SpellKnown[1]) _char.SpellKnown[1] = true;
+            if (_char.priestSpells[0] < 2) _char.priestSpells[0] = 2;
+        }
+            //Age
+            _char.ageInWeeks += ((Random.Range(0, 3) + 1) * 52) + 44;
+    }
+    #endregion
 
 
     #region LEVEL_UP

@@ -39,15 +39,14 @@ public class Game_Logic : MonoBehaviour
         //Debug
         Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
         test.name = "Ethan"; test.race = Enum._Race.human;  test.alignment = Enum._Alignment.good;
-        test.Strength = 14; test.Vitality = 16; test.Luck = 18;
+        test.Strength = 14; test.IQ = 13;  test.Vitality = 16; test.Luck = 18;
         test.ageInWeeks = 52 * 45; test.level = 12; test.ArmorClass = -58;
-        test.Inventory[0] = new Item(29, false, false, false);
+        test.Inventory[0] = new Item(1, false, false, true); test.EquipItem(0); test.hitDiceSides = 10;
         test.Inventory[1] = new Item(7,false,false,true);
-        test.Inventory[2] = new Item(1,false,false,true);
-        test.mageSpells[0] = 1; test.priestSpells[0] = 1;
-        Debug.Log("spelk = " + SPELL.Count);
-        for (int i = 0; i < SPELL.Count; i++) test.SpellKnown[i] = true;
-        test.SpellKnown[2] = false; test.SpellKnown[6] = false;
+        //test.Inventory[2] = new Item(1,false,false,true);
+        //test.mageSpells[0] = 1; test.priestSpells[0] = 1;
+        //for (int i = 0; i < SPELL.Count; i++) test.SpellKnown[i] = true;
+        //test.SpellKnown[2] = false; test.SpellKnown[6] = false;
         test.HP = 5; test.HP_MAX = 5;
         another_test.name = "Evan";
         third_test.name = "Roberts"; third_test.location = Enum._Locaton.Dungeon;

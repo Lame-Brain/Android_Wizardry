@@ -13,6 +13,7 @@ public class Text_Input_Panel_Controller : MonoBehaviour
 
     private Input_Screen_Controller _input;
     private Display_Screen_Controller _display;
+    private string _token;
 
 
     private void OnEnable()
@@ -24,11 +25,12 @@ public class Text_Input_Panel_Controller : MonoBehaviour
         InputText.fontSize = _display.FONT_SIZE;
     }
 
-    public void Show_Text_Input_Panel(string _text)
+    public void Show_Text_Input_Panel(string _text, string token = "TextInput:")
     {
         this.gameObject.SetActive(true);
         _text = _text.ToUpper();
         Message.text = _text;
+        _token = token;
     }
     public void Close_Text_Input_Panel()
     {
@@ -41,6 +43,6 @@ public class Text_Input_Panel_Controller : MonoBehaviour
 
     public void Accept_Input(string _S)
     {
-        _input.Button_Clicked("TextInput:" + _S);        
+        _input.Button_Clicked(_token + _S);
     }
 }

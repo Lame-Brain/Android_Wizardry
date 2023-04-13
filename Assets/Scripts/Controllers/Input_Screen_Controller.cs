@@ -58,7 +58,7 @@ public class Input_Screen_Controller : MonoBehaviour
         Debug.Log("Button Clicked! Received input: " + _button);
 
         //<<<<<<<<<<   MARKET   >>>>>>>>>>>>>>>>>>>>>>>
-        if(_castle.townStatus == Castle_Logic.ts.Market)
+        if (_castle.townStatus == Castle_Logic.ts.Market)
         {
             if (_button == "Inn_Button")
             {
@@ -72,11 +72,17 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
+            if (_button == "Guild_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Training;
+                _castle.Update_Screen();
+                return;
+            }
         }
         //<<<<<<<<<<   INN  INTRO >>>>>>>>>>>>>>>>>>>>>>>
-        if(_castle.townStatus == Castle_Logic.ts.Inn_Intro)
+        if (_castle.townStatus == Castle_Logic.ts.Inn_Intro)
         {
-            if(_button == "Leave_Button")
+            if (_button == "Leave_Button")
             {
                 _castle.townStatus = Castle_Logic.ts.Market;
                 _castle.Update_Screen();
@@ -97,45 +103,45 @@ public class Input_Screen_Controller : MonoBehaviour
         if (_castle.townStatus == Castle_Logic.ts.Inn)
         {
             if (_button == "Leave_Button")
-            {                
+            {
                 _selected_character = null; _castle._selected_character = null;
                 _selectedRoster = -1; _castle._selectedRoster = -1;
-                _castle.townStatus = Castle_Logic.ts.Inn_Intro;                
+                _castle.townStatus = Castle_Logic.ts.Inn_Intro;
                 _castle.Update_Screen();
                 return;
             }
-            else 
+            else
             {
                 Display_Screen_Controller _display = FindObjectOfType<Display_Screen_Controller>();
                 int _delta = _selected_character.xp_nnl - _selected_character.xp;
                 int _gpCost = 0, _hpAdd = 0;
 
-                if(_button == "Stables") { _gpCost = 0; _hpAdd = 0; }
-                if(_button == "Cots") { _gpCost = 10; _hpAdd = Random.Range(1,6); }
-                if(_button == "Economy") { _gpCost = 50; _hpAdd = Random.Range(3, 11); }
-                if(_button == "Merchant") { _gpCost = 200; _hpAdd = Random.Range(5, 16); }
-                if(_button == "Royal") { _gpCost = 500; _hpAdd = Random.Range(10, 21); }
+                if (_button == "Stables") { _gpCost = 0; _hpAdd = 0; }
+                if (_button == "Cots") { _gpCost = 10; _hpAdd = Random.Range(1, 6); }
+                if (_button == "Economy") { _gpCost = 50; _hpAdd = Random.Range(3, 11); }
+                if (_button == "Merchant") { _gpCost = 200; _hpAdd = Random.Range(5, 16); }
+                if (_button == "Royal") { _gpCost = 500; _hpAdd = Random.Range(10, 21); }
 
                 if (_selected_character.Geld < _gpCost)
                 {
                     _display.PopUpMessage(_selected_character.name + " doesn't have enough geld!");
                     return;
                 }
-                else 
+                else
                 {
                     _selected_character.Geld -= _gpCost;
                     _selected_character.HP += _hpAdd;
                     if (_delta > 0)
                     {
                         string _txt = _selected_character.name + " needs " + _delta + " more XP to make the next level.";
-                        if(_hpAdd > 0) _txt = _selected_character.name + " heals " + _hpAdd + "hp.\n" + _txt;
+                        if (_hpAdd > 0) _txt = _selected_character.name + " heals " + _hpAdd + "hp.\n" + _txt;
                         _display.PopUpMessage(_txt);
                     }
                     else
                     {
                         _castle.LevelUpCharacter(_selectedRoster);
                     }
-                    return; 
+                    return;
                 }
             }
         }
@@ -150,7 +156,7 @@ public class Input_Screen_Controller : MonoBehaviour
             if (_button.Length > 9 && _button.Substring(0, 10) == "TextInput:")
             {
                 string _name = _button.Replace("TextInput:", "");
-                bool _found = false;                
+                bool _found = false;
                 for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
                 {
                     if (_name.ToUpper() == Game_Logic.ROSTER[i].name.ToUpper())
@@ -160,11 +166,11 @@ public class Input_Screen_Controller : MonoBehaviour
                         _selected_character = Game_Logic.ROSTER[i];
                     }
                 }
-                if (_found && _selected_character.inParty) 
+                if (_found && _selected_character.inParty)
                     _display.PopUpMessage("That character is already in the party...".ToUpper());
-                if (_found && _selected_character.location == BlobberEngine.Enum._Locaton.Dungeon) 
+                if (_found && _selected_character.location == BlobberEngine.Enum._Locaton.Dungeon)
                     _display.PopUpMessage("That character is out of town...".ToUpper());
-                if (_found && !_selected_character.inParty && _selected_character.location != BlobberEngine.Enum._Locaton.Dungeon) 
+                if (_found && !_selected_character.inParty && _selected_character.location != BlobberEngine.Enum._Locaton.Dungeon)
                     Game_Logic.PARTY.AddMember(_selectedRoster);
                 if (!_found) _display.PopUpMessage("I don't recognize that name...".ToUpper());
 
@@ -201,28 +207,6 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
-
-            if(_button == "Make_Character")
-            {
-                _display.Character_Gen.SetActive(true);
-                return;
-            }
-
-            if(_button == "Show_Roster")
-            {
-                string _t = "Names in Use:\n" +
-                            "----------------------------------------\n";
-                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
-                {
-                    _t += Game_Logic.ROSTER[i].name + " level " + Game_Logic.ROSTER[i].level + " " + Game_Logic.ROSTER[i].race + " " 
-                       + Game_Logic.ROSTER[i].character_class + "(" + Game_Logic.ROSTER[i].status + ") ";
-                    if (Game_Logic.ROSTER[i].location == BlobberEngine.Enum._Locaton.Dungeon) _t += "OUT";
-                    if (Game_Logic.ROSTER[i].location == BlobberEngine.Enum._Locaton.Temple) _t += "Temple";
-                    _t += "\n";
-                }
-                _display.PopUpMessage(_t);
-                return;
-            }
         }
         //<<<<<<<<<<   Tavern REMOVE   >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Tavern_Remove)
@@ -247,26 +231,26 @@ public class Input_Screen_Controller : MonoBehaviour
             }
         }
         //<<<<<<<<<<   View Character  >>>>>>>>>>>>>>>>>>>>>>>
-        if(_castle.townStatus == Castle_Logic.ts.View_Char)
+        if (_castle.townStatus == Castle_Logic.ts.View_Char)
         {
-            if(_button == "View_Item")
+            if (_button == "View_Item")
             {
                 Clear_Buttons();
-                for (int i = 0; i < 8; i++) 
+                for (int i = 0; i < 8; i++)
                     if (_selected_character.Inventory[i] != null)
-                        if(_selected_character.Inventory[i].index != -1) 
-                            Create_Button("Item #" + (i+1), "ViewI" + i);
+                        if (_selected_character.Inventory[i].index != -1)
+                            Create_Button("Item #" + (i + 1), "ViewI" + i);
                 Create_Button_Last("Cancel", "Cancel");
                 return;
             }
-            if(_button == "Cancel")
+            if (_button == "Cancel")
             {
                 _display.Button_Block_Panel.SetActive(false);
                 _castle.townStatus = Castle_Logic.ts.View_Char;
                 _castle.Update_Screen();
                 return;
             }
-            if (_button.Substring(0,5) == "ViewI")
+            if (_button.Substring(0, 5) == "ViewI")
             {
                 string _choice = _button.Replace("ViewI", "");
                 int _num = int.Parse(_choice);
@@ -276,13 +260,13 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
-            if(_button == "Trade_Geld")
-            {                
+            if (_button == "Trade_Geld")
+            {
                 _display.Update_Text_Screen("Trade Geld to whom?");
                 Clear_Buttons();
                 for (int i = 0; i < 6; i++)
-                    if (!Game_Logic.PARTY.EmptySlot(i))                        
-                        Create_Button( Game_Logic.PARTY.LookUp_PartyMember(i).name, "Trad2" + i);
+                    if (!Game_Logic.PARTY.EmptySlot(i))
+                        Create_Button(Game_Logic.PARTY.LookUp_PartyMember(i).name, "Trad2" + i);
                 Create_Button_Last("Cancel", "CancelTradeGeld");
                 return;
             }
@@ -299,7 +283,7 @@ public class Input_Screen_Controller : MonoBehaviour
             if (_button.Length > 9 && _button.Substring(0, 10) == "TextInput:")
             {
                 int _G = 0;
-                if(int.TryParse(_button.Replace("TextInput:", ""), out _G))
+                if (int.TryParse(_button.Replace("TextInput:", ""), out _G))
                 {
                     if (_G < 0) _G = 0;
                     if (_G > _castle._selected_character.Geld) _G = _castle._selected_character.Geld;
@@ -315,32 +299,32 @@ public class Input_Screen_Controller : MonoBehaviour
                 else
                 {
                     _display.PopUpMessage("That is not a valid number. Please try again.");
-                    Button_Clicked("Trade_Geld");                    
+                    Button_Clicked("Trade_Geld");
                     _display.Button_Block_Panel.SetActive(false);
                     return;
                 }
             }
-            if(_button == "CancelTradeGeld")
+            if (_button == "CancelTradeGeld")
             {
                 _display.Button_Block_Panel.SetActive(false);
                 _castle.townStatus = Castle_Logic.ts.View_Char;
                 _castle.Update_Screen();
                 return;
             }
-            if(_button == "Leave_Button")
+            if (_button == "Leave_Button")
             {
                 _display.Button_Block_Panel.SetActive(false);
                 _castle.townStatus = Castle_Logic.ts.Tavern;
                 _castle.Update_Screen();
                 return;
             }
-            if(_button == "Read_Magic")
+            if (_button == "Read_Magic")
             {
                 string _t = "";
                 int _lastCircle = 0;
                 //Check selected character for priest spells
                 //if there are some, start with label "Priest Spells" then divide them out by circle
-                if(_castle._selected_character.priestSpells[0] > 0)
+                if (_castle._selected_character.priestSpells[0] > 0)
                 {
                     _t += "--<Priest Spells>--\n";
                     for (int i = 0; i < Game_Logic.SPELL.Count; i++)
@@ -353,10 +337,10 @@ public class Input_Screen_Controller : MonoBehaviour
                                 _lastCircle = Game_Logic.SPELL[i].circle;
                             }
                             _t += Game_Logic.SPELL[i].name + " (" + Game_Logic.SPELL[i].word + ")\n";
-                        }                        
+                        }
                     }
                 }
-                
+
                 //Add extra spaces if character has both mage and preist spells
                 if (_castle._selected_character.priestSpells[0] > 0 && _castle._selected_character.mageSpells[0] > 0) _t += "\n\n";
 
@@ -377,16 +361,16 @@ public class Input_Screen_Controller : MonoBehaviour
                                 _lastCircle = Game_Logic.SPELL[i].circle;
                             }
                             _t += Game_Logic.SPELL[i].name + " (" + Game_Logic.SPELL[i].word + ")\n";
-                        }                        
+                        }
                     }
-                }                
+                }
                 _display.PopUpMessage(_t);
             }
         }
         //<<<<<<<<<<   View Item  >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.View_Item)
         {
-            if(_button == "Equip_Item")
+            if (_button == "Equip_Item")
             {
                 if (!_castle._selected_character.Inventory[_castle._selectedInventorySlot].equipped)
                 { // Equip the item if it is not equipped
@@ -440,7 +424,7 @@ public class Input_Screen_Controller : MonoBehaviour
                     _castle.Update_Screen();
 
                     //Report result (cursed and equipped, or just equipped)
-                    if (!_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active) 
+                    if (!_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active)
                     {
                         _display.PopUpMessage("You equipped " + _castle._selected_character.Inventory[_castle._selectedInventorySlot].ItemName() + ".");
                         _display.Block_Buttons();
@@ -469,7 +453,7 @@ public class Input_Screen_Controller : MonoBehaviour
                     return;
                 }
             }
-            if(_button == "Trade_Item")
+            if (_button == "Trade_Item")
             {
                 if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active)
                 {
@@ -504,7 +488,7 @@ public class Input_Screen_Controller : MonoBehaviour
                 int _a = _selected_character.GetEmptyInventorySlot();
                 _selected_character.Inventory[_selected_character.GetEmptyInventorySlot()] = new Item(_castle._selected_character.Inventory[_castle._selectedInventorySlot].index, false, false, _castle._selected_character.Inventory[_castle._selectedInventorySlot].identified);
                 _castle._selected_character.Inventory[_castle._selectedInventorySlot].index = -1;
-                
+
 
 
                 _castle.townStatus = Castle_Logic.ts.View_Char;
@@ -512,11 +496,11 @@ public class Input_Screen_Controller : MonoBehaviour
                 _display.PopUpMessage("Done. Sent.");
                 return;
             }
-            if(_button == "Use_Item")
+            if (_button == "Use_Item")
             {
                 //TO DO: FILL THIS IN
             }
-            if(_button == "Trash_Item")
+            if (_button == "Trash_Item")
             {
                 if (_castle._selected_character.Inventory[_castle._selectedInventorySlot].curse_active)
                 {
@@ -534,14 +518,14 @@ public class Input_Screen_Controller : MonoBehaviour
                     return;
                 }
             }
-            if(_button == "YesTrash")
+            if (_button == "YesTrash")
             {
                 _castle._selected_character.Inventory[_castle._selectedInventorySlot].index = -1;
                 _castle.townStatus = Castle_Logic.ts.View_Char;
                 _castle.Update_Screen();
                 return;
             }
-            if(_button == "ID_Item")
+            if (_button == "ID_Item")
             {
                 string _message = "Failed";
                 if (_castle._selected_character.character_class == BlobberEngine.Enum._Class.bishop)
@@ -550,11 +534,11 @@ public class Input_Screen_Controller : MonoBehaviour
                     int _succeed_chance = 10 + (5 * _castle._selected_character.level),
                         _crit_fail_chance = 35 - (3 * _castle._selected_character.level);
 
-                    if(Random.Range(0,100) + 1 <= _succeed_chance)
+                    if (Random.Range(0, 100) + 1 <= _succeed_chance)
                     {
                         _message = "Succeeded";
                         _castle._selected_character.Inventory[_castle._selectedInventorySlot].identified = true;
-                    }                    
+                    }
                     if (Game_Logic.ITEM[_castle._selectedItemIndex].cursed && Random.Range(0, 100) + 1 <= _crit_fail_chance)
                     {
                         _message += " and struck by curse!";
@@ -578,12 +562,204 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
-            if(_button == "Leave_Button")
+            if (_button == "Leave_Button")
             {
                 _castle.townStatus = Castle_Logic.ts.View_Char;
                 _castle.Update_Screen();
                 return;
             }
         }
+
+
+        //<<<<<<<<<<   Training Hall  >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.Training)
+        {
+            if (_button == "Make_Character")
+            {
+                _display.Character_Gen.SetActive(true);
+                return;
+            }
+
+            if (_button == "Show_Roster")
+            {
+                string _t = "Names in Use:\n" +
+                            " --------------------------------------\n";
+                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+                {
+                    _t += Game_Logic.ROSTER[i].name + " level " + Game_Logic.ROSTER[i].level + " " + Game_Logic.ROSTER[i].race + " "
+                       + Game_Logic.ROSTER[i].character_class + "(" + Game_Logic.ROSTER[i].status + ") ";
+                    if (Game_Logic.ROSTER[i].location == BlobberEngine.Enum._Locaton.Dungeon) _t += "OUT";
+                    if (Game_Logic.ROSTER[i].location == BlobberEngine.Enum._Locaton.Temple) _t += "Temple";
+                    _t += "\n";
+                }
+                _display.PopUpMessage(_t);
+                return;
+            }
+
+            if(_button == "Inspect_Hero")
+            {
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO INSPECT?");
+            }
+
+            if (_button.Length > 9 && _button.Substring(0, 10) == "TextInput:")
+            {
+                string _name = _button.Replace("TextInput:", "");
+                bool _found = false;
+                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+                {
+                    if (_name.ToUpper() == Game_Logic.ROSTER[i].name.ToUpper())
+                    {
+                        _found = true;
+                        _castle._selectedRoster = i;
+                        _castle._selected_character = Game_Logic.ROSTER[i];
+                        _selectedRoster = i;
+                        _selected_character = Game_Logic.ROSTER[i];
+                    }
+                }
+                if (_found)
+                {
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _castle.townStatus = Castle_Logic.ts.Inspect;
+                    _castle.Update_Screen();
+                    return;
+                }
+                if (!_found) _display.PopUpMessage("I don't recognize that name...".ToUpper());
+
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "Leave_Button")
+            {
+                _selected_character = null; _castle._selected_character = null;
+                _selectedRoster = -1; _castle._selectedRoster = -1;
+                _castle.townStatus = Castle_Logic.ts.Market;
+                _castle.Update_Screen();
+                return;
+            }
+        }
+
+        //<<<<<<<<<<   Inspect Character  >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.Inspect)
+        {
+            if (_button == "Rename_Button")
+            {
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("Enter New Name for this character:");
+            }
+
+            if (_button.Length > 9 && _button.Substring(0, 10) == "TextInput:")
+            {
+                bool good_name = true;               
+                string _val = _button.Replace("TextInput:", "");
+                if (_val == "") _val = _selected_character.name;
+                _val = _val.Replace(",", " ");
+                if (_val.Length > 15) _val = _val.Substring(0, 15);
+                _val = _val.ToUpper();
+
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+                    if (_selectedRoster != i && _val == Game_Logic.ROSTER[i].name.ToUpper())
+                    {
+                        good_name = false;
+                        _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("That name is Taken, please enter another.");
+                    }
+
+                if (good_name) _selected_character.name = _val;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if(_button == "ReClass_Button")
+            {
+                //_castle.ChangeCharacterClass();
+                _display.Update_Text_Screen("What Class woud you like to change to?");
+                Clear_Buttons();
+
+                if(_selected_character.character_class != Enum._Class.fighter && _selected_character.Strength > 10 ) Create_Button("FIGHTER", "Change2Fighter");
+                if(_selected_character.character_class != Enum._Class.mage && _selected_character.IQ > 10 ) Create_Button("MAGE", "Change2Mage");
+                if(_selected_character.character_class != Enum._Class.priest && _selected_character.Piety > 10 ) Create_Button("PRIEST", "Change2Priest");
+                if(_selected_character.character_class != Enum._Class.thief && _selected_character.Agility > 10 ) Create_Button("THIEF", "Change2Thief");
+                if(_selected_character.character_class != Enum._Class.bishop && _selected_character.IQ > 10 
+                                                                             && _selected_character.Piety > 10 ) Create_Button("BISHOP", "Change2Bishop");
+                if(_selected_character.character_class != Enum._Class.samurai && _selected_character.Strength > 14 
+                                                                              && _selected_character.IQ > 10
+                                                                              && _selected_character.Piety > 9 
+                                                                              && _selected_character.Vitality > 13
+                                                                              && _selected_character.Agility > 9) 
+                                                                                    Create_Button("BISHOP", "Change2Samurai");
+                if(_selected_character.character_class != Enum._Class.lord && _selected_character.Strength > 14 
+                                                                           && _selected_character.IQ > 11
+                                                                           && _selected_character.Piety > 11 
+                                                                           && _selected_character.Vitality > 14
+                                                                           && _selected_character.Agility > 13
+                                                                           && _selected_character.Luck > 14)
+                                                                                Create_Button("BISHOP", "Change2Lord");
+                if(_selected_character.character_class != Enum._Class.ninja && _selected_character.Strength > 14 
+                                                                            && _selected_character.IQ > 14
+                                                                            && _selected_character.Piety > 14
+                                                                            && _selected_character.Vitality > 14
+                                                                            && _selected_character.Agility > 14
+                                                                            && _selected_character.Luck > 14)
+                                                                                 Create_Button("BISHOP", "Change2Ninja");
+                Create_Button_Last("CANCEL", "cancel_button");
+                return;
+            }
+
+            if (_button.Contains("Change2"))
+            {
+                if (_button.Contains("Figher")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.fighter);
+                if (_button.Contains("Mage")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.mage);
+                if (_button.Contains("Priest")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.priest);
+                if (_button.Contains("Thief")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.thief);
+                if (_button.Contains("Bishop")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.bishop);
+                if (_button.Contains("Samurai")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.samurai);
+                if (_button.Contains("Lord")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.lord);
+                if (_button.Contains("Ninja")) _castle.ChangeCharacterClass(_selected_character, Enum._Class.ninja);
+                _castle.Update_Screen();
+                _display.PopUpMessage("Be sure to re-equip any equipment!");
+                return;
+            }
+
+            if (_button == "cancel_button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Inspect;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "Retire_Button")
+            {
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("Are you sure? This will delete the Character forever!\nEnter Character's Name to confirm:", "del_Input:");
+                return;
+            }
+
+            if (_button.Length > 9 && _button.Substring(0, 10) == "del_Input:")
+            {
+                string _val = _button.Replace("del_Input:", "");
+                if (_val.ToUpper() == _selected_character.name.ToUpper())
+                {
+                    Game_Logic.ROSTER.Remove(_selected_character);
+                    _castle.townStatus = Castle_Logic.ts.Training;
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _castle.Update_Screen();
+                    return;
+                }
+                _castle.townStatus = Castle_Logic.ts.Inspect;
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "Leave_Button")
+            {
+                _selected_character = null; _castle._selected_character = null;
+                _selectedRoster = -1; _castle._selectedRoster = -1;
+                _castle.townStatus = Castle_Logic.ts.Training;
+                _castle.Update_Screen();
+                return;
+            }
+        }
+
     }
 }
