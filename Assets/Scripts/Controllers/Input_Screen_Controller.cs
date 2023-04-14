@@ -30,6 +30,7 @@ public class Input_Screen_Controller : MonoBehaviour
     {
         GameObject _go = Instantiate(button_prefab, this.transform);
         _go.tag = "Button";
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = _display.FONT_SIZE;
         _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name.ToUpper();
         _go.GetComponent<Name_Button_Controller>().String = command;
     }
@@ -37,6 +38,7 @@ public class Input_Screen_Controller : MonoBehaviour
     {
         GameObject _go = Instantiate(button_prefab, this.transform);
         _go.tag = "Button";
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = _display.FONT_SIZE;
         _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
         _go.GetComponent<Name_Button_Controller>().String = command;
         _go.transform.SetAsFirstSibling();
@@ -45,6 +47,7 @@ public class Input_Screen_Controller : MonoBehaviour
     {
         GameObject _go = Instantiate(button_prefab, this.transform);
         _go.tag = "Button";
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = _display.FONT_SIZE;
         _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
         _go.GetComponent<Name_Button_Controller>().String = command;
         _go.transform.SetAsLastSibling();
@@ -75,6 +78,12 @@ public class Input_Screen_Controller : MonoBehaviour
             if (_button == "Guild_Button")
             {
                 _castle.townStatus = Castle_Logic.ts.Training;
+                _castle.Update_Screen();
+                return;
+            }
+            if(_button == "Boltac_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Shop_Intro;
                 _castle.Update_Screen();
                 return;
             }
@@ -195,6 +204,34 @@ public class Input_Screen_Controller : MonoBehaviour
                 _selectedRoster = _num;
                 _castle._selectedRoster = _selectedRoster;
                 _castle.townStatus = Castle_Logic.ts.View_Char;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "Divvy_Geld")
+            {
+                int _pool = 0, _num = 0, _share = 0, _remainder = 0;
+                for (int i = 0; i < 6; i++)
+                    if (!Game_Logic.PARTY.EmptySlot(i))
+                    {
+                        _num++;
+                        _pool += Game_Logic.PARTY.LookUp_PartyMember(i).Geld;
+                        Game_Logic.PARTY.LookUp_PartyMember(i).Geld = 0;
+                    }
+                if (_num > 0)
+                {
+                    _share = (int)(_pool / _num);
+                    _remainder = _pool % _num;
+                    for (int i = 0; i < 6; i++)
+                        if (!Game_Logic.PARTY.EmptySlot(i))
+                        {
+                            Game_Logic.PARTY.LookUp_PartyMember(i).Geld = _share;
+                        }
+                    Game_Logic.PARTY.LookUp_PartyMember(0).Geld += _remainder;
+                    string _txt = "Each party memeber receives " + _share + "g.";
+                    if (_remainder > 0) _txt += "\n" + Game_Logic.PARTY.LookUp_PartyMember(0).name + " receives the extra " + _remainder + "g.";
+                    _display.PopUpMessage(_txt);
+                }
                 _castle.Update_Screen();
                 return;
             }
@@ -569,8 +606,6 @@ public class Input_Screen_Controller : MonoBehaviour
                 return;
             }
         }
-
-
         //<<<<<<<<<<   Training Hall  >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Training)
         {
@@ -639,7 +674,6 @@ public class Input_Screen_Controller : MonoBehaviour
                 return;
             }
         }
-
         //<<<<<<<<<<   Inspect Character  >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Inspect)
         {
@@ -761,5 +795,27 @@ public class Input_Screen_Controller : MonoBehaviour
             }
         }
 
+        //<<<<<<<<<<   Boltac's Trade Post  >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.Shop_Intro || _castle.townStatus == Castle_Logic.ts.Shop)
+        {
+            if (_button == "Leave_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Market;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button.Contains("Character:"))
+            {
+                _button = _button.Replace("Character:", "");
+                _selectedRoster = int.Parse(_button);
+                _selected_character = Game_Logic.ROSTER[_selectedRoster];
+                _castle._selected_character = _selected_character;
+                _castle._selectedRoster = _selectedRoster;
+                _castle.townStatus = Castle_Logic.ts.Shop;
+                _castle.Update_Screen();
+                return;
+            }
+        }
     }
 }

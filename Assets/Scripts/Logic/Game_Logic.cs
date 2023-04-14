@@ -51,7 +51,7 @@ public class Game_Logic : MonoBehaviour
         another_test.name = "Evan";
         third_test.name = "Roberts"; third_test.location = Enum._Locaton.Dungeon;
 
-        test.Geld = 10000;
+        test.Geld = 1001;
         //string save = test.Save_Character();
         //Debug.Log(save);
         //test.name = "FUCKER";

@@ -4207,6 +4207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23fe5f9c76baa474e9d6bf7056f2fadc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Temple_Favor: 0
 --- !u!1 &849582447
 GameObject:
   m_ObjectHideFlags: 0
@@ -4381,7 +4382,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 750, y: 750}
+  m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &853151722
 MonoBehaviour:
@@ -4441,8 +4442,8 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 100}
-  m_Spacing: {x: 15, y: 15}
+  m_CellSize: {x: 250, y: 150}
+  m_Spacing: {x: 25, y: 25}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &853151725

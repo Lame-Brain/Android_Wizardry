@@ -6,7 +6,7 @@ using BlobberEngine;
 
 public class Castle_Logic : MonoBehaviour
 {
-    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
+    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop_Intro, Shop, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
     public ts townStatus;
     public Character_Class _selected_character;
     public int _selectedRoster;
@@ -273,8 +273,10 @@ public class Castle_Logic : MonoBehaviour
                            "                                        \n" +
                            "   You May ";
             if (_party.EmptySlot(5)) _txt += "Add a member,\n ";
-            if (!_party.EmptySlot(0)) _txt += "          Remove a member,\n           Inspect a member,\n";
-            _txt += "\nor press Leave to return to the castle.";
+            if (!_party.EmptySlot(0)) _txt += "          Remove a member," +
+                                            "\n           Inspect a member," +
+                                            "\n           Divvy party Geld,\n";
+            _txt +=                         "\nor press Leave to return to the castle.";
             _display.Update_Text_Screen(_txt);
 
             _input.Clear_Buttons();
@@ -286,8 +288,7 @@ public class Castle_Logic : MonoBehaviour
                     if (!_party.EmptySlot(i))
                         _input.Create_Button("VIEW " + _party.LookUp_PartyMember(i).name, "View:" + i);
             }
-            //_input.Create_Button("Make Character", "Make_Character");
-            //_input.Create_Button("View Roster", "Show_Roster");
+            _input.Create_Button("Divvy Geld", "Divvy_Geld");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
     
@@ -349,7 +350,6 @@ public class Castle_Logic : MonoBehaviour
                     _input.Create_Button(_party.LookUp_PartyMember(i).name, "Char:" + i);
             _input.Create_Button_Last("DONE", "Leave_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  VIEW CHARACTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.View_Char)
         {            
@@ -473,7 +473,6 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("Read Spells", "Read_Magic");
             _input.Create_Button_Last("DONE", "Leave_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  VIEW ITEM <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if(townStatus == ts.View_Item)
         {
@@ -564,7 +563,6 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("Identify Item", "ID_Item");
             _input.Create_Button_Last("Leave", "Leave_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ADVENTURER GUILD <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.Training)
         {
@@ -584,7 +582,6 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("Lookup Character", "Inspect_Hero");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INSPECT CHARACTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.Inspect)
         {
@@ -703,6 +700,127 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("Learn New Class", "ReClass_Button");
             _input.Create_Button("Retire Character", "Retire_Button");
             _input.Create_Button_Last("BACK", "Leave_Button");
+        }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  SHOP INTRO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (townStatus == ts.Shop_Intro)
+        {
+            string[] _partyText = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                _partyText[i] = "";
+                if (!Game_Logic.PARTY.EmptySlot(i))
+                {
+                    Character_Class me = Game_Logic.PARTY.LookUp_PartyMember(i);
+
+                    //Name replacement for spacing
+                    string _tmpNam = me.name; while (_tmpNam.Length < 15) _tmpNam += " ";
+
+                    //armor class replacment for spacing
+                    string _ac = me.ArmorClass.ToString();
+                    if (me.ArmorClass > 0 && me.ArmorClass < 10) _ac = " " + _ac;
+                    if (me.ArmorClass < -9) _ac = "lo";
+                    if (me.ArmorClass > 11) _ac = "hi";
+
+                    //HP replacement, for spacing                    
+                    string _hp = me.HP.ToString();
+                    if (me.HP > 9999) _hp = "lots";
+                    if (me.HP < 1000) _hp = " " + _hp;
+                    if (me.HP < 100) _hp = " " + _hp;
+                    if (me.HP < 10) _hp = " " + _hp;
+
+                    //Status replacment, for spacing
+                    string _stat = me.status.ToString();
+                    if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hp;
+
+                    _partyText[i] = " 1 " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
+                        me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
+                        _ac + " " + _hp + " " + _stat + "\n";
+                }
+            }
+
+            _display.Update_Text_Screen("+--------------------------------------+\n" +
+                                        "| Castle                          Shop |\n" +
+                                        "+----------- Current party: -----------+\n" +
+                                        "                                        \n" +
+                                        " # character name  class ac hits status \n" +
+                                        _partyText[0] +
+                                        _partyText[1] +
+                                        _partyText[2] +
+                                        _partyText[3] +
+                                        _partyText[4] +
+                                        _partyText[5] +
+                                        "+--------------------------------------+\n" +
+                                        "                                        \n" +
+                                        "           It's a small shop!           \n\n" +
+                                        "           Who will Enter?              ");
+            _input.Clear_Buttons();
+            for (int i = 0; i < 6; i++)
+                if (!_party.EmptySlot(i))
+                    _input.Create_Button(_party.LookUp_PartyMember(i).name, "Character:" + i);
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
+        }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  SHOP  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (townStatus == ts.Shop)
+        {
+            string[] _partyText = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                _partyText[i] = "";
+                if (!Game_Logic.PARTY.EmptySlot(i))
+                {
+                    Character_Class me = Game_Logic.PARTY.LookUp_PartyMember(i);
+
+                    //Name replacement for spacing
+                    string _tmpNam = me.name; while (_tmpNam.Length < 15) _tmpNam += " ";
+
+                    //armor class replacment for spacing
+                    string _ac = me.ArmorClass.ToString();
+                    if (me.ArmorClass > 0 && me.ArmorClass < 10) _ac = " " + _ac;
+                    if (me.ArmorClass < -9) _ac = "lo";
+                    if (me.ArmorClass > 11) _ac = "hi";
+
+                    //HP replacement, for spacing                    
+                    string _hp = me.HP.ToString();
+                    if (me.HP > 9999) _hp = "lots";
+                    if (me.HP < 1000) _hp = " " + _hp;
+                    if (me.HP < 100) _hp = " " + _hp;
+                    if (me.HP < 10) _hp = " " + _hp;
+
+                    //Status replacment, for spacing
+                    string _stat = me.status.ToString();
+                    if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hp;
+
+                    _partyText[i] = " 1 " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
+                        me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
+                        _ac + " " + _hp + " " + _stat + "\n";
+                }
+            }
+
+            _display.Update_Text_Screen("+--------------------------------------+\n" +
+                                        "| Castle                          Shop |\n" +
+                                        "+----------- Current party: -----------+\n" +
+                                        "                                        \n" +
+                                        " # character name  class ac hits status \n" +
+                                        _partyText[0] +
+                                        _partyText[1] +
+                                        _partyText[2] +
+                                        _partyText[3] +
+                                        _partyText[4] +
+                                        _partyText[5] +
+                                        "+--------------------------------------+\n" +
+                                        "                                        \n" +
+                                        "      Welcome " + _selected_character.name + "\n" +
+                                        "     You Have:   " + _selected_character.Geld + " g.\n\n" +
+                                        "You May Buy an Item,\n" +
+                                        "        Sell and Item, Have an item\n" +
+                                        "        Uncursed, or have an item\n" +
+                                        "        Identified, or leave.") ;
+            _input.Clear_Buttons();
+            _input.Create_Button("Buy", "Buy_item");
+            _input.Create_Button("Sell", "Sell_item");
+            _input.Create_Button("Uncurse", "Uncurse_item");
+            _input.Create_Button("Identify", "Identify_item");
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
     }
 
