@@ -798,7 +798,7 @@ public class Input_Screen_Controller : MonoBehaviour
 
         //<<<<<<<<<<   Boltac's Trade Post  >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Shop_Intro || _castle.townStatus == Castle_Logic.ts.Shop)
-        {            
+        {
             if (_button == "Leave_Button")
             {
                 _castle.townStatus = Castle_Logic.ts.Market;
@@ -818,7 +818,21 @@ public class Input_Screen_Controller : MonoBehaviour
                 return;
             }
 
-            if(_button == "Buy_item")
+            if (_button == "Pool_Geld") // <------------------------------------------------------------------------------ POOL GELD CODE
+            {
+                int _pool = 0;
+                for (int i = 0; i < 6; i++)
+                    if (Game_Logic.PARTY.Get_Roster_Index(i) > -1)
+                    {
+                        _pool += Game_Logic.PARTY.LookUp_PartyMember(i).Geld;
+                        Game_Logic.PARTY.LookUp_PartyMember(i).Geld = 0;
+                    }
+                _selected_character.Geld = _pool;
+                _castle.Update_Screen();
+                _display.PopUpMessage(_selected_character.name + " now has " + _selected_character.Geld + " G.");
+            }
+
+            if (_button == "Buy_item")
             {
                 if (_selected_character.HasEmptyInventorySlot())
                 {
@@ -831,14 +845,14 @@ public class Input_Screen_Controller : MonoBehaviour
                 }
             }
 
-            if(_button == "View_Buy_item")
+            if (_button == "View_Buy_item")
             {
                 //Update list of items
                 List<int> _roster_index_in_stock = new List<int>();
                 List<string> _name_in_stock = new List<string>();
                 for (int i = 0; i < Game_Logic.ITEM.Count; i++)
-                    if (Game_Logic.ITEM[i].store_stock == -1 || Game_Logic.ITEM[i].store_stock > 0)
-                    { 
+                    if (Game_Logic.PARTY.BoltacStock[i] == -1 || Game_Logic.PARTY.BoltacStock[i] > 0)
+                    {
                         _roster_index_in_stock.Add(Game_Logic.ITEM[i].index);
                         _name_in_stock.Add(Game_Logic.ITEM[i].name);
                     }
@@ -846,8 +860,8 @@ public class Input_Screen_Controller : MonoBehaviour
                 {
                     if (Game_Logic.ITEM[_roster_index_in_stock[i]].item_align != Enum._Alignment.none &&
                         Game_Logic.ITEM[_roster_index_in_stock[i]].item_align != _selected_character.alignment)
-                            //Debug.Log("ALIGNMENT FAIL ON " + _name_in_stock + " item is " + Game_Logic.ITEM[_roster_index_in_stock[i]].item_align + " and the character is " + _selected_character.alignment);
-                            _name_in_stock[i] = "#" + _name_in_stock[i];
+                        //Debug.Log("ALIGNMENT FAIL ON " + _name_in_stock + " item is " + Game_Logic.ITEM[_roster_index_in_stock[i]].item_align + " and the character is " + _selected_character.alignment);
+                        _name_in_stock[i] = "#" + _name_in_stock[i];
 
                     if (Game_Logic.ITEM[_roster_index_in_stock[i]].item_type != Enum._Item_Type.Consumable &&
                         Game_Logic.ITEM[_roster_index_in_stock[i]].item_type != Enum._Item_Type.Special)
@@ -865,12 +879,13 @@ public class Input_Screen_Controller : MonoBehaviour
                     _name_in_stock[i] += Game_Logic.ITEM[_roster_index_in_stock[i]].price + "G.\n";
                 }
                 // shop screen
-                string _txt =               "+--------------------------------------+\n" +
+                string _txt = "+--------------------------------------+\n" +
                                             "| Castle                          Shop |\n" +
                                             "+--------------------------------------+\n\n";
                 //Item list
                 for (int i = 0; i < 10; i++)
                 {
+                    if ((1 + i + _bp_page * 10) < 10) _txt += " ";
                     _txt += (1 + i + _bp_page * 10);
                     if (i + _bp_page * 10 < _name_in_stock.Count) _txt += ". " + _name_in_stock[i + _bp_page * 10];
                 }
@@ -884,7 +899,7 @@ public class Input_Screen_Controller : MonoBehaviour
                 //purchase, scroll forward or back, go to start, leave
                 Clear_Buttons();
                 for (int i = 0; i < 10; i++)
-                    if (i + _bp_page * 10 < _roster_index_in_stock.Count) 
+                    if (i + _bp_page * 10 < _roster_index_in_stock.Count)
                         Create_Button("Purchase:\n" + Game_Logic.ITEM[_roster_index_in_stock[i + _bp_page * 10]].name, "Purchase:" + _roster_index_in_stock[i + _bp_page * 10]);
                 if (_bp_page > 0) Create_Button("Scroll Back", "BP_Scroll_Back");
                 if (_bp_page * 10 + 10 < _roster_index_in_stock.Count) Create_Button("Scroll Forward", "BP_Scroll_Forward");
@@ -939,15 +954,70 @@ public class Input_Screen_Controller : MonoBehaviour
                             _use = false;
                     }
 
-                    if(Game_Logic.ITEM[_castle._selectedItemIndex].item_align != Enum._Alignment.none &&
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align != Enum._Alignment.none &&
                         Game_Logic.ITEM[_castle._selectedItemIndex].item_align != _selected_character.alignment)
                     {
                         _use = false;
                     }
 
-                    if(!_use) _txt = "WARNING:\nThis character cannot use this item!\n\n";
+                    _txt += Game_Logic.ITEM[_castle._selectedItemIndex].name + "\n";
+                    switch (Game_Logic.ITEM[_castle._selectedItemIndex].item_type)
+                    {
+                        //Weapon, Armor, Helmet, Gauntlets, Special, Misc, Consumable
+                        case BlobberEngine.Enum._Item_Type.Weapon:
+                            _txt += "This is a Weapon.\n";
+                            break;
+                        case BlobberEngine.Enum._Item_Type.Helmet:
+                            _txt += "This is a Helmet.\n";
+                            break;
+                        case BlobberEngine.Enum._Item_Type.Shield:
+                            _txt += "This is a Shield.\n";
+                            break;
+                        case BlobberEngine.Enum._Item_Type.Armor:
+                            _txt += "This is Armor.\n";
+                            break;
+                        case BlobberEngine.Enum._Item_Type.Gauntlets:
+                            _txt += "This is a set of Gloves.\n";
+                            break;
+                        case BlobberEngine.Enum._Item_Type.Special:
+                            _txt += "This is a Special Item.\n";
+                            break;
+                        case BlobberEngine.Enum._Item_Type.Consumable:
+                            _txt += "This is a Consumable Item.\n";
+                            break;
+                        default:
+                            _txt += "This is a Misc Item.\n";
+                            break;
+                    }
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].damage.num > 0)
+                    {
+                        _txt += "\n";
+                        if (Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod < 0) _txt += "(ToHit " + Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod + ") ";
+                        if (Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod >= 0) _txt += "(ToHit +" + Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod + ") ";
+                        _txt += "Damage = " + Game_Logic.ITEM[_castle._selectedItemIndex].damage.num + "d" + Game_Logic.ITEM[_castle._selectedItemIndex].damage.sides;
+                        if (Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus < 0) _txt += Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus;
+                        if (Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus > 0) _txt += "+" + Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus;
+                        if (Game_Logic.ITEM[_castle._selectedItemIndex].xtra_swings > 1) _txt += "x" + Game_Logic.ITEM[_castle._selectedItemIndex].xtra_swings;
+                        _txt += "\n";
+                    }
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].armor_mod > 0) _txt += "\n Armor: " + Game_Logic.ITEM[_castle._selectedItemIndex].armor_mod + "\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].spell != "") _txt += "\n When invoked, casts: " + Game_Logic.ITEM[_castle._selectedItemIndex].spell + ".\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.none) _txt += "\nUsable by: \n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.good) _txt += "\nUsable by: (Good Only)\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.neutral) _txt += "\nUsable by: (Neutral Only)\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.evil) _txt += "\nUsable by: (Evil Only)\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("z")) _txt += "<None>\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("f")) _txt += "Fighter\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("m")) _txt += "Mage\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("p")) _txt += "Priest\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("t")) _txt += "Thief\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("b")) _txt += "Bishop\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("s")) _txt += "Samurai\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("l")) _txt += "Lord\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("n")) _txt += "Ninja\n";
 
-                    _txt += "Do you wish to buy\n\n" + Game_Logic.ITEM[_i].name + "\n\nfor " + Game_Logic.ITEM[_i].price + " G?";
+                    if (!_use) _txt += "\nWARNING:\nThis character cannot use this item!\n\n";
+                    _txt += "\nDo you wish to buy\n\n" + Game_Logic.ITEM[_i].name + "\n\nfor " + Game_Logic.ITEM[_i].price + " G?";
                     _display.Update_Text_Screen(_txt);
                     Clear_Buttons();
                     Create_Button("Yes", "Yes_buy_item");
@@ -966,6 +1036,7 @@ public class Input_Screen_Controller : MonoBehaviour
             {
                 _selected_character.Geld -= (int)Game_Logic.ITEM[_castle._selectedItemIndex].price;
                 _selected_character.Inventory[_selected_character.GetEmptyInventorySlot()] = new Item(_castle._selectedItemIndex, false, false, true);
+                if (Game_Logic.PARTY.BoltacStock[_castle._selectedItemIndex] != -1) Game_Logic.PARTY.BoltacStock[_castle._selectedItemIndex]--;
 
                 _castle._selectedInventorySlot = -1;
                 Button_Clicked("View_Buy_item");
@@ -978,6 +1049,152 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle._selectedInventorySlot = -1;
                 Button_Clicked("View_Buy_item");
                 _display.PopUpMessage("Perhaps next time...");
+                return;
+            }
+
+
+            if (_button == "Sell_item")
+            {
+
+                string _txt = "+--------------------------------------+\n" +
+                              "| Castle                          Shop |\n" +
+                              "+--------------------------------------+\n\n";
+                //Item list
+                List<int> _slot_in_inventory = new List<int>();
+                string _this_line;
+                for (int i = 0; i < 8; i++)
+                {
+                    _this_line = " " + (i + 1) + ". ";
+                    _slot_in_inventory.Add(i);
+
+                    if (_selected_character.Inventory[i].index != -1 && !_selected_character.Inventory[i].curse_active)
+                    {
+                        _this_line += _selected_character.Inventory[i].ItemName();
+                        while (_this_line.Length < 20)
+                            _this_line += " ";
+                        int _p = (int)Game_Logic.ITEM[_selected_character.Inventory[i].index].price / 2;
+                        _this_line += _p + " G.";
+                    }
+                    _txt += _this_line + "\n";
+                }
+
+                // geld and info
+                _txt += "\n" + _selected_character.name + " has " + _selected_character.Geld + " G.\n" +
+                    "Which Item would you like to sell?";
+                _display.Update_Text_Screen(_txt);
+                Clear_Buttons();
+                for (int i = 0; i < 8; i++)
+                    if (_selected_character.Inventory[i].index != -1 && !_selected_character.Inventory[i].curse_active)
+                        Create_Button("Sell item #" + (i + 1), "Sell_This_Item:" + i);
+                Create_Button_Last("Done", "Leave_Sell_Panel");
+                return;
+            }
+
+            if (_button == "Leave_Sell_Panel")
+            {
+                _castle.townStatus = Castle_Logic.ts.Shop;
+                _castle.Update_Screen();
+                return;
+            }
+
+            // <<<<<<<<<<<<<<<<<<<<<<<<<< VIEW SELL ITEM
+            if (_button.Contains("Sell_This_Item:"))
+            {
+                _button = _button.Replace("Sell_This_Item:", "");
+                int _i = int.Parse(_button);
+                _castle._selectedItemIndex = _selected_character.Inventory[_i].index;
+                string _txt = "";
+
+                _txt += Game_Logic.ITEM[_castle._selectedItemIndex].name + "\n";
+                switch (Game_Logic.ITEM[_castle._selectedItemIndex].item_type)
+                {
+                    //Weapon, Armor, Helmet, Gauntlets, Special, Misc, Consumable
+                    case BlobberEngine.Enum._Item_Type.Weapon:
+                        _txt += "This is a Weapon.\n";
+                        break;
+                    case BlobberEngine.Enum._Item_Type.Helmet:
+                        _txt += "This is a Helmet.\n";
+                        break;
+                    case BlobberEngine.Enum._Item_Type.Shield:
+                        _txt += "This is a Shield.\n";
+                        break;
+                    case BlobberEngine.Enum._Item_Type.Armor:
+                        _txt += "This is Armor.\n";
+                        break;
+                    case BlobberEngine.Enum._Item_Type.Gauntlets:
+                        _txt += "This is a set of Gloves.\n";
+                        break;
+                    case BlobberEngine.Enum._Item_Type.Special:
+                        _txt += "This is a Special Item.\n";
+                        break;
+                    case BlobberEngine.Enum._Item_Type.Consumable:
+                        _txt += "This is a Consumable Item.\n";
+                        break;
+                    default:
+                        _txt += "This is a Misc Item.\n";
+                        break;
+                }
+
+                if (_selected_character.Inventory[_castle._selectedItemIndex].equipped)
+                {
+                    _txt += "This item is currently equipped.\n";
+                }
+
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].damage.num > 0)
+                {
+                    _txt += "\n";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod < 0) _txt += "(ToHit " + Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod + ") ";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod >= 0) _txt += "(ToHit +" + Game_Logic.ITEM[_castle._selectedItemIndex].hit_mod + ") ";
+                    _txt += "Damage = " + Game_Logic.ITEM[_castle._selectedItemIndex].damage.num + "d" + Game_Logic.ITEM[_castle._selectedItemIndex].damage.sides;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus < 0) _txt += Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus > 0) _txt += "+" + Game_Logic.ITEM[_castle._selectedItemIndex].damage.bonus;
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].xtra_swings > 1) _txt += "x" + Game_Logic.ITEM[_castle._selectedItemIndex].xtra_swings;
+                    _txt += "\n";
+                }
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].armor_mod > 0) _txt += "\n Armor: " + Game_Logic.ITEM[_castle._selectedItemIndex].armor_mod + "\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].spell != "") _txt += "\n When invoked, casts: " + Game_Logic.ITEM[_castle._selectedItemIndex].spell + ".\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.none) _txt += "\nUsable by: \n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.good) _txt += "\nUsable by: (Good Only)\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.neutral) _txt += "\nUsable by: (Neutral Only)\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].item_align == BlobberEngine.Enum._Alignment.evil) _txt += "\nUsable by: (Evil Only)\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("z")) _txt += "<None>\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("f")) _txt += "Fighter\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("m")) _txt += "Mage\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("p")) _txt += "Priest\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("t")) _txt += "Thief\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("b")) _txt += "Bishop\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("s")) _txt += "Samurai\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("l")) _txt += "Lord\n";
+                if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("n")) _txt += "Ninja\n";
+
+                int _p = (int)Game_Logic.ITEM[_castle._selectedItemIndex].price / 2;
+                _txt += "\nDo you wish to Sell\n\n" + Game_Logic.ITEM[_castle._selectedItemIndex].name + "\n\nfor " + (_p) + " G?";
+                _display.Update_Text_Screen(_txt);
+                Clear_Buttons();
+                Create_Button("Yes", "Yes_Sell_Item:" + _i);
+                Create_Button("No", "No_Sell_item");
+                return;                
+            }
+
+            if (_button == "No_Sell_item")
+            {
+                _castle._selectedInventorySlot = -1;
+                Button_Clicked("Sell_item");
+                _display.PopUpMessage("Perhaps next time...");
+                return;
+            }
+
+            if (_button.Contains("Yes_Sell_Item:"))
+            {
+                _button = _button.Replace("Yes_Sell_Item:", "");
+                int _n = int.Parse(_button);
+                if (_selected_character.Inventory[_n].equipped) _selected_character.UnequipItem(_n);
+                _selected_character.Inventory[_n].index = -1;
+                _selected_character.Geld += (int)(Game_Logic.ITEM[_castle._selectedItemIndex].price / 2);
+
+                _castle._selectedInventorySlot = -1;
+                Button_Clicked("Sell_item");
+                _display.PopUpMessage("Thank you for your business!");
                 return;
             }
         }

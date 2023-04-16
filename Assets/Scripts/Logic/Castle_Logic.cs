@@ -811,11 +811,13 @@ public class Castle_Logic : MonoBehaviour
                                         "                                        \n" +
                                         "      Welcome " + _selected_character.name + "\n" +
                                         "     You Have:   " + _selected_character.Geld + " g.\n\n" +
-                                        "You May Buy an Item,\n" +
+                                        "You May Pool your Party's geld,\n" +
+                                        "        Buy an Item,\n" +
                                         "        Sell and Item, Have an item\n" +
                                         "        Uncursed, or have an item\n" +
                                         "        Identified, or leave.") ;
             _input.Clear_Buttons();
+            _input.Create_Button("Pool Geld", "Pool_Geld");
             _input.Create_Button("Buy", "Buy_item");
             _input.Create_Button("Sell", "Sell_item");
             _input.Create_Button("Uncurse", "Uncurse_item");
