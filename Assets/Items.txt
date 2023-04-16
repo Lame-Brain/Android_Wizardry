@@ -28,10 +28,10 @@
 27,Scroll/Badios,Paper,Consumable,,,0,100,500,-1,badios,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(badios)
 28,Scroll/Halito,Scroll,Consumable,,,0,100,500,27,halito,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(halito)
 29,Long Sword -1,Sword,Weapon,,TRUE,-1,0,1000,-10,,fsln,0,1,8,0,0,-1,0,FALSE,,,Cursed
-30,Short Sword -1,Sword,Weapon,,TRUE,-1,0,1000,-10,,z,0,1,6,0,0,-1,1,FALSE,,,Cursed
-31,Mace -1,Knobbed Stick,Weapon,,TRUE,-1,0,1000,-10,,fpbsln,0,2,3,0,0,-1,1,FALSE,,,Cursed
-32,Staff +2,Stick,Weapon,,,-1,0,2500,0,,fmptbsln,0,1,4,2,0,2,1,FALSE,,,
-33,Dragon Slayer,Sword,Weapon,,,-1,0,10000,0,,fsln,0,1,10,1,0,1,1,FALSE,Dragons,Dragons,Purposed vs dragons,prot. vs dragons
+30,Short Sword -1,Sword,Weapon,,TRUE,-1,0,1000,-10,,ftsln,0,1,6,0,0,-1,0,FALSE,,,Cursed
+31,Mace -1,Knobbed Stick,Weapon,,TRUE,-1,0,1000,-10,,fpbsln,0,2,3,0,0,-1,0,FALSE,,,Cursed
+32,Staff +2,Stick,Weapon,,,-1,0,2500,0,,fmptbsln,0,1,4,2,0,2,0,FALSE,,,
+33,Dragon Slayer,Sword,Weapon,,,-1,0,10000,0,,fsln,0,1,10,1,0,1,0,FALSE,Dragons,Dragons,Purposed vs dragons,prot. vs dragons
 34,Helm + 1,Helm,Helmet,,,-1,0,3000,0,,fsln,0,0,0,0,2,0,0,FALSE,,,
 35,Leather -1,Armor,Armor,,TRUE,-1,0,1500,-10,,fptbsl,0,0,0,0,1,0,0,FALSE,,,Cursed
 36,Chain -1,Armor,Armor,,TRUE,-1,0,1500,-10,,fpsln,0,0,0,0,2,0,0,FALSE,,,Cursed
@@ -56,7 +56,7 @@
 55,Were Slayer,Sword,Weapon,,,-1,0,10000,0,,fsln,0,1,10,1,0,5,2,FALSE,Were,Were,Purposed vs were,prot. vs were
 56,Mage Masher,Sword,Weapon,,,-1,0,10000,0,,ftsln,0,1,6,1,0,5,2,FALSE,Mage,Mage,Purposed vs mage,prot. vs mage
 57,Mace Pro Poison,Knobbed Stick,Weapon,,,-1,0,10000,0,,fpbsln,0,1,8,0,0,3,2,FALSE,Insect,Insect,Purposed vs insect, resist poison
-58,Staff/Montino,Staff,Weapon,,,5,10,15000,0,montino,z,0,1,5,1,0,1,1,FALSE,,,Decay 10%(montino(then staff))
+58,Staff/Montino,Staff,Weapon,,,5,10,15000,0,montino,fmptbsln,0,1,5,1,0,1,0,FALSE,,,Decay 10%(montino(then staff))
 59,Blade Cusinart,Sword,Weapon,,,-1,0,15000,0,,fsln,0,1,3,9,0,6,4,FALSE,,,
 60,Amulet/Manifo,Amulet,Misc,,,0,10,15000,0,manifo,p,0,0,0,0,0,0,0,FALSE,,,Decay 10%(manifo)
 61,Rod of Flame,Rod,Misc,,,0,10,25000,0,mahalito,mbs,0,0,0,0,0,0,0,FALSE,,Fire,Decay 10%(mahalito),resist Fire
@@ -66,10 +66,10 @@
 65,Amulet/Makanito,Amulet,Misc,,,0,5,20000,0,makanito,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 5%(makanito)
 66,Diadem of Malor,Diadem,Helmet,,,14,100,25000,0,malor,fmptbsln,0,0,0,0,2,0,0,FALSE,,,Decay 100%(malor(then helm))
 67,Scroll/Badial,Scroll,Consumable,,,0,100,8000,0,badial,fmptbsln,0,0,0,0,0,0,0,FALSE,,,Decay 100%(badial)
-68,Short Sword -2,Sword,Weapon,,TRUE,-1,0,8000,-10,,ftsln,0,1,6,0,0,1,1,FALSE,,,Cursed
+68,Short Sword -2,Sword,Weapon,,TRUE,-1,0,8000,-10,,ftsln,0,1,6,0,0,1,0,FALSE,,,Cursed
 69,Dagger +2,Dagger,Weapon,,,-1,0,8000,0,,fmtsln,0,1,4,2,0,3,2,FALSE,,,
 70,Mace -2,Knobbed Stick,Weapon,,TRUE,-1,0,8000,-10,,fpbsln,0,1,8,0,0,0,0,FALSE,,,Cursed
-71,Staff -2,Stick,Weapon,,TRUE,-1,0,8000,-10,,fmptbsln,0,1,4,0,0,-2,1,FALSE,,,Cursed
+71,Staff -2,Stick,Weapon,,TRUE,-1,0,8000,-10,,fmptbsln,0,1,4,0,0,-2,0,FALSE,,,Cursed
 72,Dagger of Speed,Dagger,Weapon,,,-1,0,30000,0,,mn,0,1,4,0,-3,-1,7,FALSE,,,
 73,Cursed Robe,Robe,Armor,,TRUE,-1,0,8000,-10,,fmptbsln,0,0,0,0,-2,-2,0,FALSE,,,Cursed
 74,Leather -2,Armor,Armor,,TRUE,-1,0,8000,-10,,fptbsln,0,0,0,0,0,0,0,FALSE,,,Cursed
@@ -83,7 +83,7 @@
 82,Evil S-Sword +3,Sword,Weapon,Evil,,-1,0,50000,0,,ftsln,0,1,6,0,0,6,4,FALSE,,,Evil only
 83,Thieves Dagger,Dagger,Weapon,,,6,100,50000,0,,tn,0,1,6,0,0,5,4,FALSE,,,Become_NInja
 84,Breast Plate +3,Armor,Armor,,,-1,0,100000,0,,fpsln,0,0,0,0,7,0,0,FALSE,,,
-85,Lords Garb,Armor,Armor,,,13,50,1000000,0,Heal_All_Party,l,1,0,0,0,10,0,0,FALSE,,Myth Dragon ,Special #23(heal all h.p.),decay 50%,regen. +1,prot. vs mythical dragon,autokill,purp. vs were undead demon
+85,Lords Garb,Armor,Armor,Good,,13,50,1000000,0,Heal_All_Party,l,1,0,0,0,10,0,0,FALSE,,Myth Dragon ,Special #23(heal all h.p.),decay 50%,regen. +1,prot. vs mythical dragon,autokill,purp. vs were undead demon
 86,Murasama Blade,Weapon,Weapon,,,1,50,1000000,0,STR_UP_1,s,0,10,5,0,0,8,3,FALSE,,,Special #1(strenght+1), decay 50%
 87,Shuriken,Weapon,Weapon,Evil,,0,50,50000,0,HP_UP_1,n,0,1,5,10,0,7,3,TRUE,,Poison Drain,Evil only, special #22(h.p.+1), decay 50%, resist poison and level drain, autokill
 88,Chain Pro Fire,Armor,Armor,,,-1,0,150000,0,,fpsln,0,0,0,0,6,0,0,FALSE,,Fire,Resit fire

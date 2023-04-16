@@ -12,6 +12,7 @@ public class Input_Screen_Controller : MonoBehaviour
 
     private Display_Screen_Controller _display;
     private Castle_Logic _castle;
+    private int _bp_page;
 
     private void Start()
     {
@@ -797,7 +798,7 @@ public class Input_Screen_Controller : MonoBehaviour
 
         //<<<<<<<<<<   Boltac's Trade Post  >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Shop_Intro || _castle.townStatus == Castle_Logic.ts.Shop)
-        {
+        {            
             if (_button == "Leave_Button")
             {
                 _castle.townStatus = Castle_Logic.ts.Market;
@@ -814,6 +815,169 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle._selectedRoster = _selectedRoster;
                 _castle.townStatus = Castle_Logic.ts.Shop;
                 _castle.Update_Screen();
+                return;
+            }
+
+            if(_button == "Buy_item")
+            {
+                if (_selected_character.HasEmptyInventorySlot())
+                {
+                    _bp_page = 0;
+                    _button = "View_Buy_item";
+                }
+                else
+                {
+                    _display.PopUpMessage("Inventory full! Sell something first!");
+                }
+            }
+
+            if(_button == "View_Buy_item")
+            {
+                //Update list of items
+                List<int> _roster_index_in_stock = new List<int>();
+                List<string> _name_in_stock = new List<string>();
+                for (int i = 0; i < Game_Logic.ITEM.Count; i++)
+                    if (Game_Logic.ITEM[i].store_stock == -1 || Game_Logic.ITEM[i].store_stock > 0)
+                    { 
+                        _roster_index_in_stock.Add(Game_Logic.ITEM[i].index);
+                        _name_in_stock.Add(Game_Logic.ITEM[i].name);
+                    }
+                for (int i = 0; i < _name_in_stock.Count; i++)
+                {
+                    if (Game_Logic.ITEM[_roster_index_in_stock[i]].item_align != Enum._Alignment.none &&
+                        Game_Logic.ITEM[_roster_index_in_stock[i]].item_align != _selected_character.alignment)
+                            //Debug.Log("ALIGNMENT FAIL ON " + _name_in_stock + " item is " + Game_Logic.ITEM[_roster_index_in_stock[i]].item_align + " and the character is " + _selected_character.alignment);
+                            _name_in_stock[i] = "#" + _name_in_stock[i];
+
+                    if (Game_Logic.ITEM[_roster_index_in_stock[i]].item_type != Enum._Item_Type.Consumable &&
+                        Game_Logic.ITEM[_roster_index_in_stock[i]].item_type != Enum._Item_Type.Special)
+                    {
+                        string _chk = _selected_character.character_class.ToString();
+                        _chk = _chk.ToLower();
+                        _chk = _chk.Substring(0, 1);
+                        if (!Game_Logic.ITEM[_roster_index_in_stock[i]].class_use.Contains(_chk))
+                            //Debug.Log("Class fail. item can be used by " + Game_Logic.ITEM[_castle._selectedItemIndex].class_use + " and the character is " + _chk);
+                            _name_in_stock[i] = "#" + _name_in_stock[i];
+                    }
+
+                    while (_name_in_stock[i].Length < 20)
+                        _name_in_stock[i] += " ";
+                    _name_in_stock[i] += Game_Logic.ITEM[_roster_index_in_stock[i]].price + "G.\n";
+                }
+                // shop screen
+                string _txt =               "+--------------------------------------+\n" +
+                                            "| Castle                          Shop |\n" +
+                                            "+--------------------------------------+\n\n";
+                //Item list
+                for (int i = 0; i < 10; i++)
+                {
+                    _txt += (1 + i + _bp_page * 10);
+                    if (i + _bp_page * 10 < _name_in_stock.Count) _txt += ". " + _name_in_stock[i + _bp_page * 10];
+                }
+
+                // geld and info
+                _txt += "\n" + _selected_character.name + " has " + _selected_character.Geld + " G.";
+
+                //Display text to screen
+                _display.Update_Text_Screen(_txt);
+
+                //purchase, scroll forward or back, go to start, leave
+                Clear_Buttons();
+                for (int i = 0; i < 10; i++)
+                    if (i + _bp_page * 10 < _roster_index_in_stock.Count) 
+                        Create_Button("Purchase:\n" + Game_Logic.ITEM[_roster_index_in_stock[i + _bp_page * 10]].name, "Purchase:" + _roster_index_in_stock[i + _bp_page * 10]);
+                if (_bp_page > 0) Create_Button("Scroll Back", "BP_Scroll_Back");
+                if (_bp_page * 10 + 10 < _roster_index_in_stock.Count) Create_Button("Scroll Forward", "BP_Scroll_Forward");
+                if (_bp_page > 0) Create_Button("Scroll to Top", "BP_Scroll_Top");
+                Create_Button_Last("Done", "Leave_Buy_Panel");
+                return;
+            }
+
+            if (_button == "Leave_Buy_Panel")
+            {
+                _castle.townStatus = Castle_Logic.ts.Shop;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "BP_Scroll_Back")
+            {
+                _bp_page--;
+                Button_Clicked("View_Buy_item");
+                return;
+            }
+            if (_button == "BP_Scroll_Forward")
+            {
+                _bp_page++;
+                Button_Clicked("View_Buy_item");
+                return;
+            }
+            if (_button == "BP_Scroll_Top")
+            {
+                _bp_page = 0;
+                Button_Clicked("View_Buy_item");
+                return;
+            }
+
+            if (_button.Contains("Purchase:"))
+            {
+                _button = _button.Replace("Purchase:", "");
+                int _i = int.Parse(_button);
+                _castle._selectedItemIndex = _i;
+                bool _use = true;
+                Debug.Log("Character has " + _selected_character.Geld + " and the " + Game_Logic.ITEM[_castle._selectedItemIndex].name + " costs " + Game_Logic.ITEM[_castle._selectedItemIndex].price);
+                if (_selected_character.Geld >= Game_Logic.ITEM[_castle._selectedItemIndex].price)
+                {
+                    string _txt = "";
+                    if (Game_Logic.ITEM[_castle._selectedItemIndex].item_type != Enum._Item_Type.Consumable &&
+                        Game_Logic.ITEM[_castle._selectedItemIndex].item_type != Enum._Item_Type.Special)
+                    {
+                        string _chk = _selected_character.character_class.ToString();
+                        _chk = _chk.ToLower();
+                        _chk = _chk.Substring(0, 1);
+                        if (!Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains(_chk))
+                            _use = false;
+                    }
+
+                    if(Game_Logic.ITEM[_castle._selectedItemIndex].item_align != Enum._Alignment.none &&
+                        Game_Logic.ITEM[_castle._selectedItemIndex].item_align != _selected_character.alignment)
+                    {
+                        _use = false;
+                    }
+
+                    if(!_use) _txt = "WARNING:\nThis character cannot use this item!\n\n";
+
+                    _txt += "Do you wish to buy\n\n" + Game_Logic.ITEM[_i].name + "\n\nfor " + Game_Logic.ITEM[_i].price + " G?";
+                    _display.Update_Text_Screen(_txt);
+                    Clear_Buttons();
+                    Create_Button("Yes", "Yes_buy_item");
+                    Create_Button("No", "No_buy_item");
+                    return;
+                }
+                else
+                {
+                    Button_Clicked("View_Buy_item");
+                    _display.PopUpMessage("Not enough Geld!");
+                    return;
+                }
+            }
+
+            if (_button == "Yes_buy_item")
+            {
+                _selected_character.Geld -= (int)Game_Logic.ITEM[_castle._selectedItemIndex].price;
+                _selected_character.Inventory[_selected_character.GetEmptyInventorySlot()] = new Item(_castle._selectedItemIndex, false, false, true);
+
+                _castle._selectedInventorySlot = -1;
+                Button_Clicked("View_Buy_item");
+                _display.PopUpMessage("Thank you for your business!");
+                return;
+            }
+
+            if (_button == "No_buy_item")
+            {
+                _castle._selectedInventorySlot = -1;
+                Button_Clicked("View_Buy_item");
+                _display.PopUpMessage("Perhaps next time...");
                 return;
             }
         }

@@ -33,16 +33,17 @@ public class Game_Logic : MonoBehaviour
     {
         PARTY = FindObjectOfType<Party_Class>();
         PARTY.InitParty();
-
         LoadCSVs();
+        //LoadSave();
 
         //Debug
         Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
         test.name = "Ethan"; test.race = Enum._Race.human;  test.alignment = Enum._Alignment.good;
         test.Strength = 14; test.IQ = 13;  test.Vitality = 16; test.Luck = 18;
-        test.ageInWeeks = 52 * 45; test.level = 12; test.ArmorClass = -58;
+        test.ageInWeeks = 52 * 45; test.level = 12;
         test.Inventory[0] = new Item(1, false, false, true); test.EquipItem(0); test.hitDiceSides = 10;
         test.Inventory[1] = new Item(7,false,false,true);
+        //for (int i = 1; i < 8; i++) test.Inventory[i] = new Item(7, false, false, true);
         //test.Inventory[2] = new Item(1,false,false,true);
         //test.mageSpells[0] = 1; test.priestSpells[0] = 1;
         //for (int i = 0; i < SPELL.Count; i++) test.SpellKnown[i] = true;
@@ -51,7 +52,7 @@ public class Game_Logic : MonoBehaviour
         another_test.name = "Evan";
         third_test.name = "Roberts"; third_test.location = Enum._Locaton.Dungeon;
 
-        test.Geld = 1001;
+        test.Geld = 10000;
         //string save = test.Save_Character();
         //Debug.Log(save);
         //test.name = "FUCKER";
@@ -143,6 +144,9 @@ public class Game_Logic : MonoBehaviour
 
             ITEM.Add(_itm);
         }
+        //Load up saved stock as default
+        PARTY.BoltacStock = new int[ITEM.Count];
+        for (int i = 0; i < ITEM.Count; i++) PARTY.BoltacStock[i] = ITEM[i].store_stock;
 
         //Spell List
         string[] All_Spells = SpellListCSV.text.Split("\n");
