@@ -4208,6 +4208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Temple_Favor: 0
+  BoltacStock: 
 --- !u!1 &849582447
 GameObject:
   m_ObjectHideFlags: 0
@@ -4442,7 +4443,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 250, y: 150}
+  m_CellSize: {x: 275, y: 150}
   m_Spacing: {x: 25, y: 25}
   m_Constraint: 0
   m_ConstraintCount: 2
