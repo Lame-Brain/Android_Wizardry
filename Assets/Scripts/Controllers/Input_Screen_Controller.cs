@@ -1191,6 +1191,7 @@ public class Input_Screen_Controller : MonoBehaviour
                 if (_selected_character.Inventory[_n].equipped) _selected_character.UnequipItem(_n);
                 _selected_character.Inventory[_n].index = -1;
                 _selected_character.Geld += (int)(Game_Logic.ITEM[_castle._selectedItemIndex].price / 2);
+                if (Game_Logic.PARTY.BoltacStock[_castle._selectedItemIndex] > -1) Game_Logic.PARTY.BoltacStock[_castle._selectedItemIndex]++;
 
                 _castle._selectedInventorySlot = -1;
                 Button_Clicked("Sell_item");
