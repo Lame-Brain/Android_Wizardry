@@ -1073,6 +1073,7 @@ public class Input_Screen_Controller : MonoBehaviour
                         while (_this_line.Length < 20)
                             _this_line += " ";
                         int _p = (int)Game_Logic.ITEM[_selected_character.Inventory[i].index].price / 2;
+                        if (_p > 1 && !_selected_character.Inventory[i].identified) _p = 1;
                         _this_line += _p + " G.";
                     }
                     _txt += _this_line + "\n";
@@ -1135,7 +1136,7 @@ public class Input_Screen_Controller : MonoBehaviour
                         break;
                 }
 
-                if (_selected_character.Inventory[_castle._selectedItemIndex].equipped)
+                if (_selected_character.Inventory[_i].equipped)
                 {
                     _txt += "This item is currently equipped.\n";
                 }
@@ -1168,6 +1169,7 @@ public class Input_Screen_Controller : MonoBehaviour
                 if (Game_Logic.ITEM[_castle._selectedItemIndex].class_use.Contains("n")) _txt += "Ninja\n";
 
                 int _p = (int)Game_Logic.ITEM[_castle._selectedItemIndex].price / 2;
+                if (_p > 1 && !_selected_character.Inventory[_i].identified) _p = 1;
                 _txt += "\nDo you wish to Sell\n\n" + Game_Logic.ITEM[_castle._selectedItemIndex].name + "\n\nfor " + (_p) + " G?";
                 _display.Update_Text_Screen(_txt);
                 Clear_Buttons();
@@ -1189,14 +1191,143 @@ public class Input_Screen_Controller : MonoBehaviour
                 _button = _button.Replace("Yes_Sell_Item:", "");
                 int _n = int.Parse(_button);
                 if (_selected_character.Inventory[_n].equipped) _selected_character.UnequipItem(_n);
+                int _p = (int)(Game_Logic.ITEM[_castle._selectedItemIndex].price / 2);
+                if (_p > 1 && !_selected_character.Inventory[_n].identified) _p = 1;
+                _selected_character.Geld += _p;
                 _selected_character.Inventory[_n].index = -1;
-                _selected_character.Geld += (int)(Game_Logic.ITEM[_castle._selectedItemIndex].price / 2);
                 if (Game_Logic.PARTY.BoltacStock[_castle._selectedItemIndex] > -1) Game_Logic.PARTY.BoltacStock[_castle._selectedItemIndex]++;
 
                 _castle._selectedInventorySlot = -1;
                 Button_Clicked("Sell_item");
                 _display.PopUpMessage("Thank you for your business!");
                 return;
+            }
+
+            if (_button == "Uncurse_item")
+            {
+
+                string _txt = "+--------------------------------------+\n" +
+                              "| Castle                          Shop |\n" +
+                              "+--------------------------------------+\n\n";
+                //Item list
+                List<int> _slot_in_inventory = new List<int>();
+                string _this_line;
+                for (int i = 0; i < 8; i++)
+                {
+                    _this_line = " " + (i + 1) + ". ";
+                    _slot_in_inventory.Add(i);
+
+                    if (_selected_character.Inventory[i].index != -1 && _selected_character.Inventory[i].curse_active)
+                    {
+                        _this_line += _selected_character.Inventory[i].ItemName();
+                        while (_this_line.Length < 20)
+                            _this_line += " ";
+                        int _p = (int)Game_Logic.ITEM[_selected_character.Inventory[i].index].price / 2;
+                        _this_line += _p + " G.";
+                    }
+                    _txt += _this_line + "\n";
+                }
+
+                // geld and info
+                _txt += "\n" + _selected_character.name + " has " + _selected_character.Geld + " G.\n" +
+                    "Which Item is cursed?";
+                _display.Update_Text_Screen(_txt);
+                Clear_Buttons();
+                for (int i = 0; i < 8; i++)
+                    if (_selected_character.Inventory[i].index != -1 && _selected_character.Inventory[i].curse_active)
+                        Create_Button("Uncurse item #" + (i + 1), "Uncurse_This_Item:" + i);
+                Create_Button_Last("Done", "Cancel_Uncurse_Identify_Panel");
+                return;
+            }
+            if (_button == "Cancel_Uncurse_Identify_Panel")
+            {
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button.Contains("Uncurse_This_Item:"))
+            {
+                _button = _button.Replace("Uncurse_This_Item:", "");
+                int _n = int.Parse(_button);
+                int _price = (int)Game_Logic.ITEM[_selected_character.Inventory[_n].index].price / 2;
+                if(_selected_character.Geld < _price)
+                {
+                    _castle._selectedItemIndex = -1;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("Not enough Geld for that service.");
+                    return;
+                }
+                else
+                {
+                    _selected_character.Geld -= _price;
+                    if (_selected_character.Inventory[_n].equipped) _selected_character.UnequipItem(_n);
+                    _selected_character.Inventory[_n].index = -1;
+                    _castle._selectedItemIndex = -1;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("The curse has been lifted!");
+                    return;
+                }
+            }
+
+            if (_button == "Identify_item")
+            {
+
+                string _txt = "+--------------------------------------+\n" +
+                              "| Castle                          Shop |\n" +
+                              "+--------------------------------------+\n\n";
+                //Item list
+                List<int> _slot_in_inventory = new List<int>();
+                string _this_line;
+                for (int i = 0; i < 8; i++)
+                {
+                    _this_line = " " + (i + 1) + ". ";
+                    _slot_in_inventory.Add(i);
+
+                    if (_selected_character.Inventory[i].index != -1 && !_selected_character.Inventory[i].identified)
+                    {
+                        _this_line += _selected_character.Inventory[i].ItemName();
+                        while (_this_line.Length < 20)
+                            _this_line += " ";
+                        int _p = (int)Game_Logic.ITEM[_selected_character.Inventory[i].index].price / 2;
+                        _this_line += _p + " G.";
+                    }
+                    _txt += _this_line + "\n";
+                }
+
+                // geld and info
+                _txt += "\n" + _selected_character.name + " has " + _selected_character.Geld + " G.\n" +
+                    "Which Item needs to be identified?";
+                _display.Update_Text_Screen(_txt);
+                Clear_Buttons();
+                for (int i = 0; i < 8; i++)
+                    if (_selected_character.Inventory[i].index != -1 && !_selected_character.Inventory[i].identified)
+                        Create_Button("Identify item #" + (i + 1), "Identify_This_Item:" + i);
+                Create_Button_Last("Done", "Cancel_Uncurse_Identify_Panel");
+                return;
+            }
+
+            if (_button.Contains("Identify_This_Item:"))
+            {
+                _button = _button.Replace("Identify_This_Item:", "");
+                int _n = int.Parse(_button);
+                int _price = (int)Game_Logic.ITEM[_selected_character.Inventory[_n].index].price / 2;
+                if (_selected_character.Geld < _price)
+                {
+                    _castle._selectedItemIndex = -1;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("Not enough Geld for that service.");
+                    return;
+                }
+                else
+                {
+                    _selected_character.Geld -= _price;
+                    if (_selected_character.Inventory[_n].equipped) _selected_character.UnequipItem(_n);
+                    _selected_character.Inventory[_n].identified = true;
+                    _castle._selectedItemIndex = -1;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("The Item is now identified!");
+                    return;
+                }
             }
         }
     }

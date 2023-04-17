@@ -43,6 +43,7 @@ public class Game_Logic : MonoBehaviour
         test.ageInWeeks = 52 * 45; test.level = 12;
         test.Inventory[0] = new Item(1, false, false, true); test.EquipItem(0); test.hitDiceSides = 10;
         test.Inventory[1] = new Item(7,false,false,true);
+        test.Inventory[2] = new Item(17,false,false,false);
         //for (int i = 1; i < 8; i++) test.Inventory[i] = new Item(7, false, false, true);
         //test.Inventory[2] = new Item(1,false,false,true);
         //test.mageSpells[0] = 1; test.priestSpells[0] = 1;
