@@ -88,6 +88,12 @@ public class Input_Screen_Controller : MonoBehaviour
                 _castle.Update_Screen();
                 return;
             }
+            if(_button == "Temple_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Temple_Intro;
+                _castle.Update_Screen();
+                return;
+            }
         }
         //<<<<<<<<<<   INN  INTRO >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Inn_Intro)
@@ -795,7 +801,6 @@ public class Input_Screen_Controller : MonoBehaviour
                 return;
             }
         }
-
         //<<<<<<<<<<   Boltac's Trade Post  >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Shop_Intro || _castle.townStatus == Castle_Logic.ts.Shop)
         {
@@ -1328,6 +1333,213 @@ public class Input_Screen_Controller : MonoBehaviour
                     _display.PopUpMessage("The Item is now identified!");
                     return;
                 }
+            }
+        }
+        //<<<<<<<<<<   TEMPLE INTRO  >>>>>>>>>>>>>>>>>>>>>>>
+        if(_castle.townStatus == Castle_Logic.ts.Temple_Intro)
+        {
+            if (_button.Contains("Character:"))
+            {
+                _button = _button.Replace("Character:", "");
+                int _num = int.Parse(_button);
+                _selectedRoster = _num;
+                _selected_character = Game_Logic.PARTY.LookUp_PartyMember(_num); //_selected_character is the temple petitioner
+                _castle.townStatus = Castle_Logic.ts.Temple;
+                _castle.Update_Screen();
+                return;
+            }
+            if(_button == "Leave_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Market;
+                _castle.Update_Screen();
+                return;
+            }
+        }
+        //<<<<<<<<<<   TEMPLE >>>>>>>>>>>>>>>>>>>>>>>
+        if (_castle.townStatus == Castle_Logic.ts.Temple)
+        {
+            if (_button == "Leave_Button")
+            {
+                _castle.townStatus = Castle_Logic.ts.Market;
+                _castle.Update_Screen();
+                return;
+            }
+
+            if (_button == "Pool_Geld") // <------------------------------------------------------------------------------ POOL GELD CODE
+            {
+                int _pool = 0;
+                for (int i = 0; i < 6; i++)
+                    if (Game_Logic.PARTY.Get_Roster_Index(i) > -1)
+                    {
+                        _pool += Game_Logic.PARTY.LookUp_PartyMember(i).Geld;
+                        Game_Logic.PARTY.LookUp_PartyMember(i).Geld = 0;
+                    }
+                _selected_character.Geld = _pool; // <----- _selected_character is petitioner
+                _castle.Update_Screen();
+                _display.PopUpMessage(_selected_character.name + " now has " + _selected_character.Geld + " G.");
+            }
+
+            if (_button == "Donate_button")
+            {
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("HOW MUCH WOULD YOU LIKE TO DONATE?");
+                _display.Block_Buttons();
+                return;
+            }
+            if (_button.Contains("TextInput:"))
+            {
+                int _G = 0;
+                if (int.TryParse(_button.Replace("TextInput:", ""), out _G))
+                {
+                    if (_G < 0) _G = 0;
+                    if (_G > _selected_character.Geld) _G = _selected_character.Geld;                    
+                    if(_G == 0)
+                    {
+                        _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                        _castle.Update_Screen();
+                        return;
+                    }
+                    _selected_character.Geld -= _G;
+                    Game_Logic.PARTY.Temple_Favor += _G;
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("Bless you! Generosity earns the favor of CANT!");
+                    return;
+                }
+                else
+                {
+                    Button_Clicked("Donate_button");
+                    _display.PopUpMessage("That is not a valid number. Please try again.");
+                    return;
+                }
+            }
+
+            if (_button == "Petition_button")
+            {
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO AID?", "Who_to_Help:");
+            }
+
+            if (_button.Contains("Who_to_Help:"))
+            {
+                _button = _button.Replace("Who_to_Help:", "").ToUpper();
+                Debug.Log("THIS IS WHAT I GOT ==> " + _button);
+                
+                for (int i = 0; i < Game_Logic.ROSTER.Count; i++)
+                    if (Game_Logic.ROSTER[i].name.ToUpper() == _button)
+                    {
+                        Debug.Log("Found 'em");
+                        _castle._selected_character = Game_Logic.ROSTER[i]; // <------ _castle._selected_Character is the character to help.
+                        break;
+                    }
+
+                int _price = 0;
+                if (_castle._selected_character.status == Enum._Status.plyze)
+                    _price = 100 * _castle._selected_character.level;
+
+                if (_castle._selected_character.status == Enum._Status.stoned)
+                    _price = 200 * _castle._selected_character.level;
+
+                if (_castle._selected_character.status == Enum._Status.dead)
+                    _price = 250 * _castle._selected_character.level;
+
+                if (_castle._selected_character.status != Enum._Status.ashes)
+                    _price = 500 * _castle._selected_character.level;
+
+                // Is the Character Lost? If so, temple cannot help.
+                if (_castle._selected_character.status == Enum._Status.lost)
+                {
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _button = "";
+                    _castle._selected_character = null;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("\n\nThe Priest aplogizes: 'This character is beyond all help.\n\nI'm sorry, there is nothing to be done.'");
+                    return;
+                }
+
+                // Is the Character still in the dungeon? If so, temple cannot help.
+                if (_castle._selected_character.location == Enum._Locaton.Dungeon)
+                {
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _button = "";
+                    _castle._selected_character = null;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("\n\nThe Priest aplogizes: 'This character is still in the dungeon.\n\nFind them to rescue them, and perhaps we can assist!'");
+                    return;
+                }
+
+                // Is the Character not Paralyzed, Stone, Dead, or Ashes? If so, there is nothing to help
+                if (_castle._selected_character.status != Enum._Status.plyze && _castle._selected_character.status != Enum._Status.stoned 
+                   && _castle._selected_character.status != Enum._Status.dead && _castle._selected_character.status != Enum._Status.ashes)
+                {
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _button = "";
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("\n\nThe Priest smiles: 'Fortunately"+ _castle._selected_character +" is not Paralyzed, Cursed with stone form, or Dead!");
+                    _castle._selected_character = null;
+                    return;
+                }
+
+                // If the Party does not have enough favor to heal the character, then the Temple will not help.
+                if (Game_Logic.PARTY.Temple_Favor < _price)
+                {
+                    _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                    _button = "";
+                    _castle._selected_character = null;
+                    _castle.Update_Screen();
+                    _display.PopUpMessage("\n\nThe Priest frowns. 'Sadly, CANT chooses to not help at this time.\n\nPerhaps later, when you have more favor, Cant will reconsider.'\n\n" +
+                        "\n(You need at least " + _price + " favor.)");
+                    return;
+                }
+
+                // CANT will help, here are the results:
+                string _txt = "\n\nThe Priest smiles: 'CANT!!! BLESS " + _castle._selected_character.name + " with your curative power!'\n\n\n" +
+                    "A shining Light shines down, and burns " + _price + " favor!\n\n\n";
+                if (_castle._selected_character.status == Enum._Status.plyze || _castle._selected_character.status == Enum._Status.stoned) 
+                {
+                    _castle._selected_character.status = Enum._Status.OK;
+                    _castle._selected_character.location = Enum._Locaton.Roster;
+                    _txt += "Success! Welcome back " + _castle._selected_character.name + "!!!";
+                }
+
+                if (_castle._selected_character.status == Enum._Status.dead)
+                {
+                    int _perc = (_castle._selected_character.Vitality * 3) + 50;
+                    if (Random.Range(1,101) < _perc)
+                    {
+                        _castle._selected_character.status = Enum._Status.OK;
+                        _castle._selected_character.location = Enum._Locaton.Roster;
+                        _txt += "Success! Welcome back " + _castle._selected_character.name + "!!!";
+                    }
+                    else
+                    {
+                        _castle._selected_character.status = Enum._Status.ashes;
+                        _castle._selected_character.location = Enum._Locaton.Temple;
+                        _txt += "Oh no! The ritual has failed!" + _castle._selected_character.name + " is reduced to Ashes!";
+                    }
+                }
+
+                if (_castle._selected_character.status == Enum._Status.ashes)
+                {
+                    int _perc = (_castle._selected_character.Vitality * 3) + 40;
+                    if (Random.Range(1,101) < _perc)
+                    {
+                        _castle._selected_character.status = Enum._Status.OK;
+                        _castle._selected_character.location = Enum._Locaton.Roster;
+                        _txt += "Success! Welcome back " + _castle._selected_character.name + "!!!";
+                    }
+                    else
+                    {
+                        _castle._selected_character.location = Enum._Locaton.Temple;
+                        _txt += "Oh no! The ritual has failed!" + _castle._selected_character.name + " is still to Ashes!";
+                    }
+                }
+
+                Game_Logic.PARTY.Temple_Favor -= _price;
+                _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Close_Text_Input_Panel();
+                _button = "";
+                _castle.Update_Screen();
+                _display.PopUpMessage(_txt);
+                _castle._selected_character = null;
+                return;
             }
         }
     }

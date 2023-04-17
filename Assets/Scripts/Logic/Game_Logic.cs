@@ -51,7 +51,7 @@ public class Game_Logic : MonoBehaviour
         //test.SpellKnown[2] = false; test.SpellKnown[6] = false;
         test.HP = 5; test.HP_MAX = 5;
         another_test.name = "Evan";
-        third_test.name = "Roberts"; third_test.location = Enum._Locaton.Dungeon;
+        third_test.name = "Roberts"; third_test.location = Enum._Locaton.Temple; third_test.status = Enum._Status.plyze;
 
         test.Geld = 10000;
         //string save = test.Save_Character();

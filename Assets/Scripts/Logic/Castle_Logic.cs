@@ -6,7 +6,7 @@ using BlobberEngine;
 
 public class Castle_Logic : MonoBehaviour
 {
-    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop_Intro, Shop, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
+    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop_Intro, Shop, Temple_Intro, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
     public ts townStatus;
     public Character_Class _selected_character;
     public int _selectedRoster;
@@ -95,7 +95,6 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button_Last("TRAINING HALL","Guild_Button");
             _input.Create_Button_Last("MAZE ENTRANCE","Maze_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INN INTRO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.Inn_Intro)
         {
@@ -154,7 +153,6 @@ public class Castle_Logic : MonoBehaviour
                     _input.Create_Button(_party.LookUp_PartyMember(i).name, "" + i);
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  INN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.Inn)
         {
@@ -221,7 +219,6 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("ROTAL SUITES","Royal");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
-
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  TAVERN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.Tavern)
         {
@@ -290,8 +287,7 @@ public class Castle_Logic : MonoBehaviour
             }
             _input.Create_Button("Divvy Geld", "Divvy_Geld");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
-        }
-    
+        }    
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  TAVERN REMOVE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (townStatus == ts.Tavern_Remove)
         {
@@ -822,6 +818,81 @@ public class Castle_Logic : MonoBehaviour
             _input.Create_Button("Sell", "Sell_item");
             _input.Create_Button("Uncurse", "Uncurse_item");
             _input.Create_Button("Identify", "Identify_item");
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
+        }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  TEMPLE INTRO  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (townStatus == ts.Temple_Intro)
+        {
+            string[] _partyText = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                _partyText[i] = "";
+                if (!Game_Logic.PARTY.EmptySlot(i))
+                {
+                    Character_Class me = Game_Logic.PARTY.LookUp_PartyMember(i);
+
+                    //Name replacement for spacing
+                    string _tmpNam = me.name; while (_tmpNam.Length < 15) _tmpNam += " ";
+
+                    //armor class replacment for spacing
+                    string _ac = me.ArmorClass.ToString();
+                    if (me.ArmorClass > 0 && me.ArmorClass < 10) _ac = " " + _ac;
+                    if (me.ArmorClass < -9) _ac = "lo";
+                    if (me.ArmorClass > 11) _ac = "hi";
+
+                    //HP replacement, for spacing                    
+                    string _hp = me.HP.ToString();
+                    if (me.HP > 9999) _hp = "lots";
+                    if (me.HP < 1000) _hp = " " + _hp;
+                    if (me.HP < 100) _hp = " " + _hp;
+                    if (me.HP < 10) _hp = " " + _hp;
+
+                    //Status replacment, for spacing
+                    string _stat = me.status.ToString();
+                    if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hp;
+
+                    _partyText[i] = " 1 " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
+                        me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
+                        _ac + " " + _hp + " " + _stat + "\n";
+                }
+            }
+
+            _display.Update_Text_Screen("+--------------------------------------+\n" +
+                                        "| Castle                        Temple |\n" +
+                                        "+----------- Current party: -----------+\n" +
+                                        "                                        \n" +
+                                        " # character name  class ac hits status \n" +
+                                        _partyText[0] +
+                                        _partyText[1] +
+                                        _partyText[2] +
+                                        _partyText[3] +
+                                        _partyText[4] +
+                                        _partyText[5] +
+                                        "+--------------------------------------+\n" +
+                                        "                                        \n" +
+                                        "     Who will petition the temple?\n");
+            _input.Clear_Buttons();
+            for (int i = 0; i < 6; i++)
+                if (!_party.EmptySlot(i))
+                    _input.Create_Button(_party.LookUp_PartyMember(i).name, "Character:" + i);
+            _input.Create_Button_Last("LEAVE", "Leave_Button");
+        }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  TEMPLE  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        if (townStatus == ts.Temple)
+        {
+            _display.Update_Text_Screen("+--------------------------------------+\n" +
+                                        "| Castle                        Temple |\n" +
+                                        "+--------------------------------------+\n\n" +
+                                        "Welcome " + _input._selected_character.name + ",\n\n" +
+                                        "You have " + _input._selected_character.Geld + " G.\n" +
+                                        "You have " + Game_Logic.PARTY.Temple_Favor + " favor.\n\n" +
+                                        "Are you heare to Donate to the temple,\n" +
+                                        "   or to Petition on an afflicted one's\n" +
+                                        "     behalf?");
+            _input.Clear_Buttons();
+            _input.Create_Button("Pool Geld", "Pool_Geld");
+            _input.Create_Button("Donate to CANT", "Donate_button");
+            _input.Create_Button("Petition for Aid", "Petition_button");
             _input.Create_Button_Last("LEAVE", "Leave_Button");
         }
     }
