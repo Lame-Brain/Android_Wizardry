@@ -279,12 +279,12 @@ public class Character_Class
         _result += Llylgamyn_Knight ? "1," : "0,"; //52
         _result += Descendent_of_Diamonds ? "1," : "0,"; //53
         _result += Star_of_Llylgamyn ? "1," : "0,"; //54
-        _result += Strength;                     //55
-        _result += IQ;                           //56
-        _result += Piety;                        //57
-        _result += Vitality;                     //58
-        _result += Agility;                      //59
-        _result += Luck;                         //60
+        _result += Strength + ",";                     //55
+        _result += IQ + ",";                           //56
+        _result += Piety + ",";                        //57
+        _result += Vitality + ",";                     //58
+        _result += Agility + ",";                      //59
+        _result += Luck + ",";                         //60
         string _ms = "", _mc = "", _ps = "", _pc = "";
         for (int i = 0; i < 7; i++)
         {

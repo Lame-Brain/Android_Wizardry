@@ -4209,6 +4209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Temple_Favor: 0
   BoltacStock: 
+  mem: 
 --- !u!1 &849582447
 GameObject:
   m_ObjectHideFlags: 0
@@ -9878,6 +9879,7 @@ MonoBehaviour:
   Align_Panel: {fileID: 877979691}
   Next_Button: {fileID: 228671599}
   Select_Marker: {fileID: 16611292}
+  TMPIF: {fileID: 2134473084}
   Name_Text: {fileID: 457453926}
   Name_Text_Input: {fileID: 598271529}
   Name_Text_Placeholder: {fileID: 697475846}

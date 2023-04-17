@@ -6,7 +6,7 @@ using BlobberEngine;
 public class Character_Gen_Controller : MonoBehaviour
 {
     public GameObject Name_Panel, Race_Panel, Stats_Panel, Class_Panel, Final_Panel, Align_Panel, Next_Button, Select_Marker;
-
+    public TMPro.TMP_InputField TMPIF;
     public TMPro.TextMeshProUGUI Name_Text, Name_Text_Input, Name_Text_Placeholder,
         Race_Text, Race_Text_Human, Race_Text_Elf, Race_Text_Dwarf, Race_Text_Gnome, Race_Text_Hobbit,
         Stat_Text, Stat_Text_Strength, Stat_Text_IQ, Stat_Text_Piety, Stat_Text_Vitality, Stat_Text_Agility, Stat_Text_Luck, Stat_Text_Bonus,
@@ -90,6 +90,7 @@ public class Character_Gen_Controller : MonoBehaviour
 
         if (_page == 1)
         {
+            TMPIF.text = "";
             Name_Panel.SetActive(false);
             Align_Panel.SetActive(true);
             Race_Panel.SetActive(false);
@@ -234,7 +235,7 @@ public class Character_Gen_Controller : MonoBehaviour
                 good_name = false;
                 Name_Text.text = "That name is Taken, please enter another.";
             }
-
+        
         Next_Button.SetActive(good_name);
     }
     public void Choose_Alignment(int _val)
@@ -315,6 +316,7 @@ public class Character_Gen_Controller : MonoBehaviour
             Set_Cursor(Race_Text_Hobbit.transform);
         }
         //Assign bonus points
+        _str_mod = 0; _iq_mod = 0; _pie_mod = 0; _vit_mod = 0; _agi_mod = 0; _lk_mod = 0;
         _bonus = Random.Range(0, 4) + 7;
         if (Random.Range(0, 11) == 0) _bonus += 10;
         if (_bonus < 20 && Random.Range(0, 11) == 0) _bonus += 10;
@@ -434,37 +436,37 @@ public class Character_Gen_Controller : MonoBehaviour
         if(_val == 1)
         {
             _class = Enum._Class.mage;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Mage.transform);
         }
         if(_val == 2)
         {
             _class = Enum._Class.priest;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Priest.transform);
         }
         if(_val == 3)
         {
             _class = Enum._Class.thief;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Thief.transform);
         }
         if(_val == 4)
         {
             _class = Enum._Class.bishop;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Bishop.transform);
         }
         if(_val == 5)
         {
             _class = Enum._Class.samurai;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Samurai.transform);
         }
         if(_val == 6)
         {
             _class = Enum._Class.lord;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Lord.transform);
         }
         if(_val == 7)
         {
             _class = Enum._Class.ninja;
-            Set_Cursor(Class_Text_Fighter.transform);
+            Set_Cursor(Class_Text_Ninja.transform);
         }
 
         Next_Button.SetActive(true);
@@ -586,7 +588,7 @@ public class Character_Gen_Controller : MonoBehaviour
 
         //WRITE THIS CHARACTER TO THE ROSTER
         Game_Logic.ROSTER.Add(New_Character);
-
+        Game_Logic.instance.SaveGame();
         this.gameObject.SetActive(false);
     }
 }

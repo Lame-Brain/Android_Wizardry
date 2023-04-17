@@ -23,6 +23,8 @@ public class Text_Input_Panel_Controller : MonoBehaviour
         Message.fontSize = _display.FONT_SIZE;
         InputPlaceHolder.fontSize = _display.FONT_SIZE;
         InputText.fontSize = _display.FONT_SIZE;
+        input.onValidateInput += delegate (string s, int i, char c) { return char.ToUpper(c); };
+        input.onFocusSelectAll = true;
     }
 
     public void Show_Text_Input_Panel(string _text, string token = "TextInput:")

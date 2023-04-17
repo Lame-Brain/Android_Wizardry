@@ -59,8 +59,6 @@ public class Input_Screen_Controller : MonoBehaviour
 
     public void Button_Clicked(string _button)
     {
-        Debug.Log("Button Clicked! Received input: " + _button);
-
         //<<<<<<<<<<   MARKET   >>>>>>>>>>>>>>>>>>>>>>>
         if (_castle.townStatus == Castle_Logic.ts.Market)
         {
@@ -166,6 +164,7 @@ public class Input_Screen_Controller : MonoBehaviour
         {
             if (_button == "Add_Member")
             {
+                _display.Block_Buttons();
                 _display.Text_Input_Controller.GetComponent<Text_Input_Panel_Controller>().Show_Text_Input_Panel("WHO WOULD YOU LIKE TO ADD?");
             }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using BlobberEngine;
 
@@ -34,10 +35,11 @@ public class Game_Logic : MonoBehaviour
         PARTY = FindObjectOfType<Party_Class>();
         PARTY.InitParty();
         LoadCSVs();
-        //LoadSave();
+        LoadGame();
+       // SaveGame();
 
         //Debug
-        Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
+        /*Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
         test.name = "Ethan"; test.race = Enum._Race.human;  test.alignment = Enum._Alignment.good;
         test.Strength = 14; test.IQ = 13;  test.Vitality = 16; test.Luck = 18;
         test.ageInWeeks = 52 * 45; test.level = 12;
@@ -62,10 +64,55 @@ public class Game_Logic : MonoBehaviour
 
         ROSTER.Add(test);
         ROSTER.Add(another_test);
-        ROSTER.Add(third_test);
+        ROSTER.Add(third_test); SaveGame();
         PARTY.AddMember(0);        
         PARTY.AddMember(1);
         //PARTY.AddMember(2);
+        */
+    }
+
+    public void SaveGame()
+    {
+        System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        if (File.Exists(Application.persistentDataPath + "/Roster.wiz")) File.Delete(Application.persistentDataPath + "/Roster.wiz");
+        FileStream file = File.Create(Application.persistentDataPath + "/Roster.wiz");
+        
+        Save_Game_Class SaveGame = new Save_Game_Class(ITEM.Count);        
+        for (int i = 0; i < ROSTER.Count; i++) SaveGame.SG_ROSTER.Add(ROSTER[i].Save_Character());
+        for (int z = 0; z < 10; z++)
+            for (int y = 0; y < 20; y++)
+                for (int x = 0; x < 20; x++)
+                    SaveGame.SG_map[x, y, z] = PARTY.tile_visited[x, y, z];
+        SaveGame.SG_TempleFavor = PARTY.Temple_Favor;
+        for (int i = 0; i < ITEM.Count; i++) SaveGame.SG_BoltacStock[i] = PARTY.BoltacStock[i];
+        SaveGame.SG_mem = PARTY.mem;
+
+        bf.Serialize(file, SaveGame);
+        file.Close();
+    }
+
+    public void LoadGame()
+    {
+        if (!File.Exists(Application.persistentDataPath + "/Roster.wiz")) return;
+
+        System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        FileStream file = File.Open(Application.persistentDataPath + "/Roster.wiz", FileMode.Open);
+        Save_Game_Class sd = (Save_Game_Class)bf.Deserialize(file);
+        file.Close();
+
+        ROSTER.Clear();
+        for (int i = 0; i < sd.SG_ROSTER.Count; i++)
+        {
+            Character_Class _newToon = new Character_Class();
+            _newToon.Load_Character(sd.SG_ROSTER[i]);
+            ROSTER.Add(_newToon);
+        }
+        for (int z = 0; z < 10; z++) for (int y = 0; y < 20; y++) for (int x = 0; x < 20; x++)
+                    PARTY.tile_visited[x, y, z] = sd.SG_map[x, y, z];
+        PARTY.Temple_Favor = sd.SG_TempleFavor;
+        for (int i = 0; i < sd.SG_BoltacStock.Length; i++)
+            PARTY.BoltacStock[i] = sd.SG_BoltacStock[i];
+        PARTY.mem = sd.SG_mem;
     }
 
     private void LoadCSVs()

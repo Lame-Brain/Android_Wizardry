@@ -8,6 +8,7 @@ public class Party_Class : MonoBehaviour
     public bool[,,] tile_visited;
     public int Temple_Favor;
     public int[] BoltacStock;
+    public string mem;
 
     private int[] Party;
     private Enum._Alignment PartyAlign;
