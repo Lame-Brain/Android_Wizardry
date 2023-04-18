@@ -10,7 +10,7 @@ public class Display_Screen_Controller : MonoBehaviour
     public RectTransform Input_Panel;
     public GameObject Button_Block_Panel, Message_Pop_Up, Text_Input_Controller, Character_Gen;
 
-    public float FONT_SIZE;
+    private float _font_size;
 
     private int pp_NumOfPages, pp_currentPage;
     private string[] pp_message;
@@ -31,10 +31,11 @@ public class Display_Screen_Controller : MonoBehaviour
         _myScreen.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,_screenH);
 
         Screen_Sizing_String.ForceMeshUpdate();
-        FONT_SIZE = Screen_Sizing_String.fontSize;
+        _font_size = Screen_Sizing_String.fontSize;
         Screen_Sizing_String.gameObject.SetActive(false);
-        Output.fontSize = FONT_SIZE;
-        instructions.fontSize = FONT_SIZE * 0.5f;        
+        Output.fontSize = _font_size;
+        instructions.fontSize = _font_size * 0.5f;
+        Game_Logic.TEXT_FONT = _font_size;
     }
 
     private void Start()
@@ -75,7 +76,7 @@ public class Display_Screen_Controller : MonoBehaviour
 
     private void Show_Pop_Up_Message()
     {
-        Message.fontSize = FONT_SIZE;
+        Message.fontSize = _font_size;
         int _last = 0; string _t = "";
         _last = pp_message.Length - (LINES_PER_PAGE * pp_currentPage);
         if (_last > LINES_PER_PAGE) _last = LINES_PER_PAGE;

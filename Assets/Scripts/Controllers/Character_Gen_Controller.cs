@@ -28,7 +28,7 @@ public class Character_Gen_Controller : MonoBehaviour
     private void OnEnable()
     {
         FindObjectOfType<Display_Screen_Controller>().Block_Buttons();
-        float _FS = FindObjectOfType<Display_Screen_Controller>().FONT_SIZE;
+        float _FS = Game_Logic.TEXT_FONT;
         Name_Text.fontSize = _FS;
         Name_Text_Input.fontSize = _FS;
         Name_Text_Placeholder.fontSize = _FS;

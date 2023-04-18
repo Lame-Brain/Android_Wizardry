@@ -31,7 +31,7 @@ public class Input_Screen_Controller : MonoBehaviour
     {
         GameObject _go = Instantiate(button_prefab, this.transform);
         _go.tag = "Button";
-        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = _display.FONT_SIZE;
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = Game_Logic.TEXT_FONT;
         _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name.ToUpper();
         _go.GetComponent<Name_Button_Controller>().String = command;
     }
@@ -39,7 +39,7 @@ public class Input_Screen_Controller : MonoBehaviour
     {
         GameObject _go = Instantiate(button_prefab, this.transform);
         _go.tag = "Button";
-        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = _display.FONT_SIZE;
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = Game_Logic.TEXT_FONT;
         _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
         _go.GetComponent<Name_Button_Controller>().String = command;
         _go.transform.SetAsFirstSibling();
@@ -48,7 +48,7 @@ public class Input_Screen_Controller : MonoBehaviour
     {
         GameObject _go = Instantiate(button_prefab, this.transform);
         _go.tag = "Button";
-        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = _display.FONT_SIZE;
+        _go.GetComponent<Name_Button_Controller>().ButtonTitle.fontSize = Game_Logic.TEXT_FONT;
         _go.GetComponent<Name_Button_Controller>().ButtonTitle.text = name;
         _go.GetComponent<Name_Button_Controller>().String = command;
         _go.transform.SetAsLastSibling();
@@ -1539,6 +1539,14 @@ public class Input_Screen_Controller : MonoBehaviour
                 _display.PopUpMessage(_txt);
                 _castle._selected_character = null;
                 return;
+            }
+        }
+        //<<<<<<<<<<   MAZE >>>>>>>>>>>>>>>>>>>>>>>
+        if(_castle.townStatus == Castle_Logic.ts.Maze)
+        {
+            if(_button == "Maze_Button")
+            {
+                Game_Logic.instance.SaveGame();
             }
         }
     }

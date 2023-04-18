@@ -6,7 +6,7 @@ using BlobberEngine;
 
 public class Castle_Logic : MonoBehaviour
 {
-    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop_Intro, Shop, Temple_Intro, Temple, Exit, Training, Inspect, See_Mem, Item_Info }
+    public enum ts { Market, Inn_Intro, Inn, Tavern, Tavern_Remove, View_Char, View_Item, Shop_Intro, Shop, Temple_Intro, Temple, Exit, Training, Inspect, See_Mem, Item_Info, Maze }
     public ts townStatus;
     public Character_Class _selected_character;
     public int _selectedRoster;

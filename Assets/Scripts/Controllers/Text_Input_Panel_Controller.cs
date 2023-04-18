@@ -20,9 +20,9 @@ public class Text_Input_Panel_Controller : MonoBehaviour
     {
         _input = FindObjectOfType<Input_Screen_Controller>();
         _display = FindObjectOfType<Display_Screen_Controller>();
-        Message.fontSize = _display.FONT_SIZE;
-        InputPlaceHolder.fontSize = _display.FONT_SIZE;
-        InputText.fontSize = _display.FONT_SIZE;
+        Message.fontSize = Game_Logic.TEXT_FONT;
+        InputPlaceHolder.fontSize = Game_Logic.TEXT_FONT;
+        InputText.fontSize = Game_Logic.TEXT_FONT;
         input.onValidateInput += delegate (string s, int i, char c) { return char.ToUpper(c); };
         input.onFocusSelectAll = true;
     }

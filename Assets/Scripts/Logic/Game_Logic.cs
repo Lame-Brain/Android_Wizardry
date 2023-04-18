@@ -10,6 +10,7 @@ public class Game_Logic : MonoBehaviour
     public static List<Character_Class> ROSTER = new List<Character_Class>();
     public static List<Spell_Class> SPELL = new List<Spell_Class>();
     public static List<Item_Class> ITEM = new List<Item_Class>();
+    public static float TEXT_FONT;
 
     [SerializeField]
     private TextAsset ItemListCSV, SpellListCSV;
@@ -36,39 +37,6 @@ public class Game_Logic : MonoBehaviour
         PARTY.InitParty();
         LoadCSVs();
         LoadGame();
-       // SaveGame();
-
-        //Debug
-        /*Character_Class test = new Character_Class(), another_test = new Character_Class(), third_test = new Character_Class();
-        test.name = "Ethan"; test.race = Enum._Race.human;  test.alignment = Enum._Alignment.good;
-        test.Strength = 14; test.IQ = 13;  test.Vitality = 16; test.Luck = 18;
-        test.ageInWeeks = 52 * 45; test.level = 12;
-        test.Inventory[0] = new Item(1, false, false, true); test.EquipItem(0); test.hitDiceSides = 10;
-        test.Inventory[1] = new Item(7,false,false,true);
-        test.Inventory[2] = new Item(17,false,false,false);
-        //for (int i = 1; i < 8; i++) test.Inventory[i] = new Item(7, false, false, true);
-        //test.Inventory[2] = new Item(1,false,false,true);
-        //test.mageSpells[0] = 1; test.priestSpells[0] = 1;
-        //for (int i = 0; i < SPELL.Count; i++) test.SpellKnown[i] = true;
-        //test.SpellKnown[2] = false; test.SpellKnown[6] = false;
-        test.HP = 5; test.HP_MAX = 5;
-        another_test.name = "Evan";
-        third_test.name = "Roberts"; third_test.location = Enum._Locaton.Temple; third_test.status = Enum._Status.plyze;
-
-        test.Geld = 10000;
-        //string save = test.Save_Character();
-        //Debug.Log(save);
-        //test.name = "FUCKER";
-        //test.Load_Character(save);
-        //Debug.Log(test.name);
-
-        ROSTER.Add(test);
-        ROSTER.Add(another_test);
-        ROSTER.Add(third_test); SaveGame();
-        PARTY.AddMember(0);        
-        PARTY.AddMember(1);
-        //PARTY.AddMember(2);
-        */
     }
 
     public void SaveGame()
@@ -113,6 +81,12 @@ public class Game_Logic : MonoBehaviour
         for (int i = 0; i < sd.SG_BoltacStock.Length; i++)
             PARTY.BoltacStock[i] = sd.SG_BoltacStock[i];
         PARTY.mem = sd.SG_mem;
+
+        //DEBUG
+        for (int i = 0; i < 6; i++)
+        {
+            PARTY.AddMember(i);
+        }
     }
 
     private void LoadCSVs()
