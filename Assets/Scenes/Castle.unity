@@ -8434,6 +8434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61313379fd8dc424f9af0e6662a25cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NotFirstScreen: 0
   Screen_Sizing_String: {fileID: 14527557}
   Output: {fileID: 2034187983}
   Message: {fileID: 1921319119}
@@ -8443,7 +8444,6 @@ MonoBehaviour:
   Message_Pop_Up: {fileID: 1697067677}
   Text_Input_Controller: {fileID: 1714361936}
   Character_Gen: {fileID: 2021301295}
-  FONT_SIZE: 0
   LINES_PER_PAGE: 22
 --- !u!114 &1612880142
 MonoBehaviour:

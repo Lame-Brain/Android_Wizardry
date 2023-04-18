@@ -6,6 +6,7 @@ using TMPro;
 
 public class Display_Screen_Controller : MonoBehaviour
 {
+    public bool NotFirstScreen;
     public TextMeshProUGUI Screen_Sizing_String, Output, Message, instructions;
     public RectTransform Input_Panel;
     public GameObject Button_Block_Panel, Message_Pop_Up, Text_Input_Controller, Character_Gen;
@@ -18,24 +19,27 @@ public class Display_Screen_Controller : MonoBehaviour
 
     private void OnEnable()
     {
-        RectTransform _myScreen = this.GetComponent<RectTransform>();
-        float _screenW = Screen.width;
-        float _screenH = 0.73f * _screenW;
-        if (_screenH + 550 > Screen.height)
+        if (!NotFirstScreen)
         {
-            _screenW = (_screenH + 550) * (35 / 48);
-            _screenH = Screen.height + 550;
+            RectTransform _myScreen = this.GetComponent<RectTransform>();
+            float _screenW = Screen.width;
+            float _screenH = 0.73f * _screenW;
+            if (_screenH + 550 > Screen.height)
+            {
+                _screenW = (_screenH + 550) * (35 / 48);
+                _screenH = Screen.height + 550;
+            }
+
+            _myScreen.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _screenW);
+            _myScreen.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _screenH);
+
+            Screen_Sizing_String.ForceMeshUpdate();
+            _font_size = Screen_Sizing_String.fontSize;
+            Screen_Sizing_String.gameObject.SetActive(false);
+            Output.fontSize = _font_size;
+            instructions.fontSize = _font_size * 0.5f;
+            Game_Logic.TEXT_FONT = _font_size;
         }
-
-        _myScreen.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _screenW);
-        _myScreen.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical,_screenH);
-
-        Screen_Sizing_String.ForceMeshUpdate();
-        _font_size = Screen_Sizing_String.fontSize;
-        Screen_Sizing_String.gameObject.SetActive(false);
-        Output.fontSize = _font_size;
-        instructions.fontSize = _font_size * 0.5f;
-        Game_Logic.TEXT_FONT = _font_size;
     }
 
     private void Start()
