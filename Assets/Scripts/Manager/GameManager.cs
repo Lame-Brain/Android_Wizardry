@@ -58,9 +58,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _display = FindObjectOfType<Castle_Display_Manager>();
-
-
-        //DEBUG
-        _display.Update_Display("tavern", "");
+        
     }
 }

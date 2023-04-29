@@ -63,9 +63,11 @@ public class Castle_Display_Manager : MonoBehaviour
         _output += "+--------------------------------------+\n";
 
         //Add flavor string
+        _output += flavor_string;
 
         //output the string
         _output = _output.ToUpper();
+        _output = _output.Replace("[D]", "d");        
         Display.fontSize = GameManager.FONT;
         Display.text = _output;
     }

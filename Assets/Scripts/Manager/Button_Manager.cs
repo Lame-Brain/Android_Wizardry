@@ -5,10 +5,11 @@ using UnityEngine;
 public class Button_Manager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI myName;
-    private string command;
+    public string command;
     
     public void UpdateButton(string name, string _command)
     {
+        Debug.Log("Called Update Button: " + name + ", " + _command);
         myName.fontSize = GameManager.FONT;
         myName.text = name.ToUpper();
         command = _command;
