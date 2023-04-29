@@ -253,7 +253,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 887813652}
-  command: 
 --- !u!114 &52746859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -710,7 +709,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 1909940452}
-  command: 
 --- !u!114 &211632799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -967,7 +965,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 1063649876}
-  command: 
 --- !u!114 &342123431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1272,7 +1269,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 1312100620}
-  command: 
 --- !u!114 &800906090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1529,7 +1525,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 1375221334}
-  command: 
 --- !u!114 &814970696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1651,7 +1646,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 805931545}
-  command: 
 --- !u!114 &825339407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1908,7 +1902,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 1925156197}
-  command: 
 --- !u!114 &990975923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2030,7 +2023,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 234789884}
-  command: 
 --- !u!114 &1054974309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2287,7 +2279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 1882728492}
-  command: 
 --- !u!114 &1279638002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2763,6 +2754,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef25f7d4bc4b1ed42a322d7fd0f16f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button:
+  - {fileID: 1054974308}
+  - {fileID: 52746858}
+  - {fileID: 990975922}
+  - {fileID: 342123430}
+  - {fileID: 800906089}
+  - {fileID: 814970695}
+  - {fileID: 1622162194}
+  - {fileID: 1279638001}
+  - {fileID: 211632798}
+  - {fileID: 825339406}
 --- !u!114 &1566083789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3026,7 +3028,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myName: {fileID: 115278071}
-  command: 
 --- !u!114 &1622162195
 MonoBehaviour:
   m_ObjectHideFlags: 0
