@@ -61,6 +61,6 @@ public class GameManager : MonoBehaviour
 
 
         //DEBUG
-        _display.Update_Display("inn", "");
+        _display.Update_Display("tavern", "");
     }
 }
