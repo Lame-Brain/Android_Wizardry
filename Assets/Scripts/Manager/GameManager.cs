@@ -5,7 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public float SetFloatDefault;
     public static float FONT;
+    public static Party_Class PARTY;
+    public static List<Character_Class> ROSTER = new List<Character_Class>();
+    public static List<Spell_Class> SPELL = new List<Spell_Class>();
+    public static List<Item_Class> ITEM = new List<Item_Class>();
+
+
     public GameObject _initCanvas, _initPanel;
     public TMPro.TextMeshProUGUI Screen_Sizing_String;
 
@@ -27,6 +34,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Initialize screen
+        FONT = SetFloatDefault;
         if(FONT == 0)
         {
             _initCanvas.SetActive(true); _initPanel.SetActive(true);
@@ -41,11 +49,18 @@ public class GameManager : MonoBehaviour
             FONT = Screen_Sizing_String.fontSize;
             _initPanel.SetActive(false); _initCanvas.SetActive(false);
         }
+
+        //initialize party
+        PARTY = FindObjectOfType<Party_Class>();
+        PARTY.InitParty();
     }
 
     private void Start()
     {
         _display = FindObjectOfType<Castle_Display_Manager>();
+
+
+        //DEBUG
         _display.Update_Display("inn", "");
     }
 }
