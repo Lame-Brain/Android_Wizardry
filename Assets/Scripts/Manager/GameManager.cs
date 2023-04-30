@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
         PARTY.InitParty();
         LoadCSVs();
-        //LoadGame();
+        LoadGame();
 
         FindObjectOfType<Castle_Logic_Manager>().StartCastle();
     }

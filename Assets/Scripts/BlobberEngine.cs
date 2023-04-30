@@ -13,7 +13,7 @@ namespace BlobberEngine
         public enum _Damage_type { physical, fire, cold }
         public enum _Status {  OK, afraid, asleep, plyze, stoned, dead, ashes, lost }
         public enum _Item_Type { Weapon, Armor, Shield, Helmet, Gauntlets, Special, Misc, Consumable }
-        public enum _Locaton { Roster, Dungeon, Temple }
+        public enum _Locaton { Roster, Dungeon, Party }
     }
     public class Dice
     {

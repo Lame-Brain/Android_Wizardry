@@ -77,8 +77,9 @@ public class Castle_Logic_Manager : MonoBehaviour
                     "the bar, simultaneuosly pouring drinks  \n" +
                     "while maintaining several conversations \n" +
                     "at once.\n\n" +
-                    "You find a seat and wait to be noticed. \n";
+                    "You find a table in the corner. \n";
             _input.SetButton(0, "Add Party Member", "add_party_member");
+            _input.SetButton(1, "Review Roster of Characters", "review_roster");
             _input.SetButton(2, "Remove Party member", "remove_party_member");
             _input.SetButton(4, "Divvy Geld", "divvy_geld");
             _input.SetButton(9, "Leave Tavern", "goto_street");
@@ -114,7 +115,7 @@ public class Castle_Logic_Manager : MonoBehaviour
                 _input.SetButton(4, "Economy, 50g", "sleep, 50, 3");
                 _input.SetButton(6, "Merchant, 200g", "sleep, 200, 5");
                 _input.SetButton(8, "Royal, 500g", "sleep, 500, 7");
-                _input.SetButton(9, "Leave the Inn", "goto_street");                     
+                _input.SetButton(9, "Leave the Inn", "goto_inn");                     
             }
         }
 
@@ -125,7 +126,7 @@ public class Castle_Logic_Manager : MonoBehaviour
             {
                        //1234567890123456789012345678901234567890
                 _desc = "A stout dwarf, apparently Boltac,     \n" +
-                        "  glares at you. He bellows at you:   \n" +
+                        "  glares at you. He bellows:          \n" +
                         "  \"it's a small shop! one at a time!\"\n" +
                         "   He then spits and waves you in.    \n\n" +
                         "Who will enter?";
@@ -144,7 +145,7 @@ public class Castle_Logic_Manager : MonoBehaviour
                 _input.SetButton(2, "Sell Something", "goto_sell_menu");
                 _input.SetButton(4, "Uncurse Something", "goto_uncurse_menu");
                 _input.SetButton(6, "Identify Something", "goto_identify_menu");
-                _input.SetButton(9, "Leave Shop", "goto_street");
+                _input.SetButton(9, "Leave Shop", "goto_trader");
             }
         }
 
@@ -182,8 +183,15 @@ public class Castle_Logic_Manager : MonoBehaviour
 
     public void ReceiveButtonPress(string _text)
     {
-        if(_text == "goto_street")
+        if(_text.Contains("goto"))
         {
+            CurrentScreen = Screen.Street;
+            if(_text == "goto_tavern") CurrentScreen = Screen.Tavern;
+            if(_text == "goto_inn") CurrentScreen = Screen.Inn;
+            if(_text == "goto_trader") CurrentScreen = Screen.Trader;
+            if(_text == "goto_temple") CurrentScreen = Screen.Temple;
+            if(_text == "goto_trainer") CurrentScreen = Screen.Trainer;
+
             Selected_Character = null;
             Selected_Item = null;
             Selected_Item_Class = null;
@@ -192,8 +200,23 @@ public class Castle_Logic_Manager : MonoBehaviour
             Selected_Inventory_Slot = -1;
             Selected_Item_Index = -1;
             CurrentPage = 0;
-            CurrentScreen = Screen.Street;
+            
             UpdateScreen();
-        }                
+        }
+
+        if(_text == "review_roster")
+        {
+            string _roster = "Roster\n------------\n";
+            for (int i = 0; i < GameManager.ROSTER.Count; i++)
+            {
+                _roster += GameManager.ROSTER[i].name + " level " + GameManager.ROSTER[i].level + " " + 
+                    GameManager.ROSTER[i].race + " " + GameManager.ROSTER[i].character_class + " (" + 
+                    GameManager.ROSTER[i].status + ") ";
+                if (GameManager.ROSTER[i].location == BlobberEngine.Enum._Locaton.Dungeon ||
+                    GameManager.ROSTER[i].location == BlobberEngine.Enum._Locaton.Party) _roster += "out";
+                _roster += "\n";
+            }
+            _display.PopUp_Panel.Show_Message(_roster);
+        }
     }
 }

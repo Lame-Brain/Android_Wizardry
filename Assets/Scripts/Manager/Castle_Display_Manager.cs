@@ -5,6 +5,7 @@ using UnityEngine;
 public class Castle_Display_Manager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI Display;
+    public Castle_Pop_Up_Manager PopUp_Panel;
 
     public void Update_Display(string location_string, string flavor_string)
     {
