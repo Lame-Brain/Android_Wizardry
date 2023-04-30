@@ -9,7 +9,7 @@ public class Button_Manager : MonoBehaviour
     
     public void UpdateButton(string name, string _command)
     {
-        Debug.Log("Called Update Button: " + name + ", " + _command);
+        //Debug.Log("Called Update Button: " + name + ", " + _command);
         myName.fontSize = GameManager.FONT;
         myName.text = name.ToUpper();
         command = _command;

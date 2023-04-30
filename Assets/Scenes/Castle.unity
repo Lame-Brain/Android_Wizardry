@@ -622,6 +622,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SetFloatDefault: 0
+  ItemListCSV: {fileID: 4900000, guid: acdefca942848d14a9694d2d1b266cb0, type: 3}
+  SpellListCSV: {fileID: 4900000, guid: 05b54e7e671347d43b68bbd0858e753c, type: 3}
   _initCanvas: {fileID: 1713130986}
   _initPanel: {fileID: 1336515613}
   Screen_Sizing_String: {fileID: 591113879}

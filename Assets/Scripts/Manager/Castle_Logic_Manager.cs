@@ -19,11 +19,11 @@ public class Castle_Logic_Manager : MonoBehaviour
     private void Start()
     {
     }
-    private void OnEnable()
+    public void StartCastle()
     {
         _input = FindObjectOfType<Castle_Button_Manager>();
         _display = FindObjectOfType<Castle_Display_Manager>();
-        _party = FindObjectOfType<Party_Class>();
+        _party = FindObjectOfType<Party_Class>();        
         CurrentPage = 0;
         CurrentScreen = Screen.Street;
         UpdateScreen();
@@ -32,7 +32,7 @@ public class Castle_Logic_Manager : MonoBehaviour
     public void UpdateScreen()
     {
         //Check for Party
-        if (_party.Get_Roster_Index(0) == -1) CurrentScreen = Screen.Tavern;
+        //if (_party.Get_Roster_Index(0) == -1) CurrentScreen = Screen.Tavern;
         
         //DEBUG
         //{ 
