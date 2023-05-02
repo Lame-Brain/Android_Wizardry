@@ -7,7 +7,7 @@ public class Castle_Button_Manager : MonoBehaviour
     public Button_Manager[] button;
 
     public void ClearButtons()
-    {
+    {        
         //Debug.Log("Called ClearButtons()");
         for (int i = 0; i < button.Length; i++) button[i].UpdateButton("", "");
     }

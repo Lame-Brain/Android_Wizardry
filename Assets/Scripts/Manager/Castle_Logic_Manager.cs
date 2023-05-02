@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BlobberEngine;
 
 public class Castle_Logic_Manager : MonoBehaviour
 {
     public enum Screen { Street, Tavern, Inn, Trader, Temple, Trainer, Maze }
     public Screen CurrentScreen;
     public int CurrentPage;
-    [HideInInspector] public Character_Class Selected_Character;
+    [HideInInspector] public Character_Class Selected_Character, Other_Character;
     [HideInInspector] public Item Selected_Item;
     [HideInInspector] public Item_Class Selected_Item_Class;
-    [HideInInspector] public int Selected_Party_Slot, Selected_Roster_Slot, Selected_Inventory_Slot, Selected_Item_Index;
+    [HideInInspector] public int Selected_Party_Slot, Other_Party_Slot, Selected_Roster_Slot, Other_Roster_Slot, Selected_Inventory_Slot, Selected_Item_Index;
 
     private Castle_Button_Manager _input;
     private Castle_Display_Manager _display;
     private Party_Class _party;
 
-    private void Start()
-    {
-    }
     public void StartCastle()
     {
         _input = FindObjectOfType<Castle_Button_Manager>();
@@ -27,6 +25,12 @@ public class Castle_Logic_Manager : MonoBehaviour
         CurrentPage = 0;
         CurrentScreen = Screen.Street;
         UpdateScreen();
+    }
+
+    public void RefreshCharacterSheet()
+    {
+        _display.Character_Sheet.gameObject.SetActive(false);
+        _display.Character_Sheet.gameObject.SetActive(true);
     }
 
     public void UpdateScreen()
@@ -71,18 +75,33 @@ public class Castle_Logic_Manager : MonoBehaviour
         if (CurrentScreen == Screen.Tavern)
         {
             _name = "tavern";
-                   //1234567890123456789012345678901234567890
-            _desc = "Gilgamesh's Tavern noisy and crowded.   \n" +
-                    "Gilgamesh himself is happily busy behind\n" +
-                    "the bar, simultaneuosly pouring drinks  \n" +
-                    "while maintaining several conversations \n" +
-                    "at once.\n\n" +
-                    "You find a table in the corner. \n";
-            _input.SetButton(0, "Add Party Member", "add_party_member");
-            _input.SetButton(1, "Review Roster of Characters", "review_roster");
-            _input.SetButton(2, "Remove Party member", "remove_party_member");
-            _input.SetButton(4, "Divvy Geld", "divvy_geld");
-            _input.SetButton(9, "Leave Tavern", "goto_street");
+            if (CurrentPage == 0)
+            {
+                       //1234567890123456789012345678901234567890
+                _desc = "Gilgamesh's Tavern noisy and crowded.   \n" +
+                        "Gilgamesh himself is happily busy behind\n" +
+                        "the bar, simultaneuosly pouring drinks  \n" +
+                        "while maintaining several conversations \n" +
+                        "at once.\n\n" +
+                        "You find a table in the corner. \n";
+                _input.SetButton(0, "Add Party Member", "add_party_member");
+                _input.SetButton(1, "Review Roster of Characters", "review_roster");
+                _input.SetButton(2, "Remove Party member", "remove_party_member");
+                _input.SetButton(3, "View Character Sheet", "view_party_member");
+                _input.SetButton(4, "Divvy Geld", "divvy_geld");
+                _input.SetButton(9, "Leave Tavern", "goto_street");
+            }
+            if(CurrentPage == 1)
+            {
+                _desc = "Which Character would you like to View?";
+                for (int i = 0; i < 6; i++)
+                    if (_party.Get_Roster_Index(i) > -1) _input.SetButton(i, _party.LookUp_PartyMember(i).name, ("select_roster:" + i));
+                _input.SetButton(9, "Back", "goto_tavern");
+            }
+            if (CurrentPage == 2)
+            {
+                _display.Character_Sheet.gameObject.SetActive(true);
+            }
         }
 
         if(CurrentScreen == Screen.Inn)
@@ -95,7 +114,7 @@ public class Castle_Logic_Manager : MonoBehaviour
                         "   who steps forward?";
                 for (int i = 0; i < 6; i++)
                     if (_party.Get_Roster_Index(i) > -1) _input.SetButton(i, _party.LookUp_PartyMember(i).name, ("select_roster:"+i));
-                _input.SetButton(9, "Cancel", "goto_street");
+                _input.SetButton(9, "Back", "goto_street");
             }
 
             if (CurrentPage == 1)
@@ -109,13 +128,15 @@ public class Castle_Logic_Manager : MonoBehaviour
                         "A simple Cot (10g/week, 1[d]8 HP.)      \n" +
                         "Economy Room (50g/week, 3[d]8 HP.)      \n" +
                         "Merchant Suite (200g/week, 5[d]8 HP.)   \n" +
-                        "Royal Suite (500g/week, 7[d]8 HP.)      \n";
-                _input.SetButton(0, "Stables, Free", "sleep, 0, 0");
-                _input.SetButton(2, "Cot, 10g", "sleep, 10, 1");
-                _input.SetButton(4, "Economy, 50g", "sleep, 50, 3");
-                _input.SetButton(6, "Merchant, 200g", "sleep, 200, 5");
-                _input.SetButton(8, "Royal, 500g", "sleep, 500, 7");
-                _input.SetButton(9, "Leave the Inn", "goto_inn");                     
+                        "Royal Suite (500g/week, 7[d]8 HP.)      \n\n" +
+                        Selected_Character.name + " has " + Selected_Character.Geld + "g.";
+
+                _input.SetButton(0, "Stables, Free", "sleep,0,0");
+                _input.SetButton(2, "Cot, 10g", "sleep,10,1");
+                _input.SetButton(4, "Economy, 50g", "sleep,50,3");
+                _input.SetButton(6, "Merchant, 200g", "sleep,200,5");
+                _input.SetButton(8, "Royal, 500g", "sleep,500,7");
+                _input.SetButton(9, "Back", "goto_inn");                     
             }
         }
 
@@ -140,7 +161,8 @@ public class Castle_Logic_Manager : MonoBehaviour
                 _desc = "Boltac sizes you up. \"Well? you lookin'\n" +
                         "   to buy, or you got loot to sell?\"   \n" +
                         "   He grunts. \"I can also look at any  \n" +
-                        "   cursed or unidentified gear you got.\"\n\n";
+                        "   cursed or unidentified gear you got.\"\n\n\n" +
+                        Selected_Character.name + " has " + Selected_Character.Geld + "g.";
                 _input.SetButton(0, "Buy Something", "goto_buy_menu");
                 _input.SetButton(2, "Sell Something", "goto_sell_menu");
                 _input.SetButton(4, "Uncurse Something", "goto_uncurse_menu");
@@ -183,6 +205,7 @@ public class Castle_Logic_Manager : MonoBehaviour
 
     public void ReceiveButtonPress(string _text)
     {
+        //NAVIGATION
         if(_text.Contains("goto"))
         {
             CurrentScreen = Screen.Street;
@@ -202,8 +225,10 @@ public class Castle_Logic_Manager : MonoBehaviour
             CurrentPage = 0;
             
             UpdateScreen();
+            return;
         }
 
+        //ROSTER
         if(_text == "review_roster")
         {
             string _roster = "Roster\n------------\n";
@@ -217,6 +242,439 @@ public class Castle_Logic_Manager : MonoBehaviour
                 _roster += "\n";
             }
             _display.PopUp_Panel.Show_Message(_roster);
+            return;
+        }
+
+        //Add member to party
+        if(_text == "add_party_member")
+        {
+            _display.TextInput_Panel.Show_Text_Input_Panel("ENTER NAME", "add_party_input:");
+        }
+        if (_text.Contains("ADD_PARTY_INPUT:"))
+        {
+            _text = _text.Replace("ADD_PARTY_INPUT:", "");
+            //Debug.Log("GOT THIS NAME: " + _text);
+            string _output = "";
+            bool _found = false;
+
+            for (int i = 0; i < GameManager.ROSTER.Count; i++)
+            {
+                string _RosterName = GameManager.ROSTER[i].name.ToUpper();
+                if(_text == _RosterName)
+                {
+                    _found = true;
+                    Selected_Character = GameManager.ROSTER[i];
+                    Selected_Roster_Slot = i;
+                }
+            }
+            
+            if (_found)
+            {
+                if(Selected_Character.location == BlobberEngine.Enum._Locaton.Dungeon)
+                {
+                    _output = "That character is already out!";
+                }
+                else if(Selected_Character.status == BlobberEngine.Enum._Status.lost)
+                {
+                    _output = "That character is Lost!";
+                }
+                else if(Selected_Character.location == BlobberEngine.Enum._Locaton.Party)
+                {
+                    _output = "That character is already in a party!";
+                }
+                else
+                {
+                    _output = Selected_Character.name + " has been added to the party";
+                    GameManager.PARTY.AddMember(Selected_Roster_Slot);
+                    _display.Refresh_Display();
+                }
+            }
+            else
+            {
+                _output = "NO CHARACTER BY THAT NAME";
+            }
+
+            _display.PopUp_Panel.Show_Message(_output);
+            return;
+        }
+
+        //Remove member from party
+        if(_text == "remove_party_member")
+        {
+            _display.Update_Display("Tavern", "Which Party Member would you like to remove?");
+            
+            _input.ClearButtons();
+            
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i)) _input.SetButton(i, "Remove " + GameManager.PARTY.LookUp_PartyMember(i).name, "remove_party_member#" + i);
+            
+            _input.SetButton(9, "Cancel", "goto_tavern");
+            
+            return;
+        }
+        if (_text.Contains("remove_party_member#"))
+        {
+            _text = _text.Replace("remove_party_member#", "");
+            int _input = int.Parse(_text);
+            if (_input >= 0 && _input <= 5) GameManager.PARTY.RemoveMember(_input);
+            UpdateScreen();
+            return;
+        }
+
+        if(_text == "view_party_member")
+        {
+            CurrentPage++;
+            UpdateScreen();
+        }
+
+        //Divvy Geld at Tavern
+        if (_text == "divvy_geld")
+        {
+            int _pool = 0, _num = 0, _share = 0, _remainder = 0;
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i))
+                {
+                    _num++;
+                    _pool += GameManager.PARTY.LookUp_PartyMember(i).Geld;
+                    GameManager.PARTY.LookUp_PartyMember(i).Geld = 0;
+                }
+            if (_num > 0)
+            {
+                _share = (int)(_pool / _num);
+                _remainder = _pool % _num;
+                for (int i = 0; i < 6; i++)
+                    if (!GameManager.PARTY.EmptySlot(i))
+                    {
+                        GameManager.PARTY.LookUp_PartyMember(i).Geld = _share;
+                    }
+                GameManager.PARTY.LookUp_PartyMember(0).Geld += _remainder;
+                string _txt = "Each party memeber receives " + _share + "g.";
+                if (_remainder > 0) _txt += "\n" + GameManager.PARTY.LookUp_PartyMember(0).name + " receives the extra " + _remainder + "g.";
+                _display.PopUp_Panel.Show_Message(_txt);
+            }
+            UpdateScreen();
+            return;
+        }
+
+        //Enter Anything
+        if (_text.Contains("select_roster:"))
+        {
+            _text = _text.Replace("select_roster:", "");
+            int _num = int.Parse(_text);
+            if(_num >= 0 && _num <= 5)
+            {
+                Selected_Party_Slot = _num;
+                Selected_Character = GameManager.PARTY.LookUp_PartyMember(_num);
+                Selected_Roster_Slot = GameManager.PARTY.Get_Roster_Index(_num);
+                CurrentPage++;
+            }
+            UpdateScreen();
+            return;
+        }
+
+        //Inn
+        if (_text.Contains("sleep"))
+        {
+            _text = _text.Replace("sleep,", "");
+            string[] data = _text.Split(",");
+            int _stay_cost = int.Parse(data[0]);
+            int _dice = int.Parse(data[1]);
+            int _delta = Selected_Character.xp_nnl - Selected_Character.xp;
+
+            if (Selected_Character.Geld < _stay_cost)
+            {
+                _display.PopUp_Panel.Show_Message(Selected_Character.name + " does not have enough Geld!");
+                UpdateScreen();
+                return;
+            }
+            else 
+            {
+                //subtract Geld
+                Selected_Character.Geld = -_stay_cost;
+
+                //Heal HP
+                if (_dice > 0) 
+                    for (int i = 0; i < _dice; i++) 
+                        Selected_Character.HP += Random.Range(0, 8) + 1;
+                if (Selected_Character.HP > Selected_Character.HP_MAX) Selected_Character.HP = Selected_Character.HP_MAX;
+
+                //Restore spells
+                for (int i = 0; i < 7; i++)
+                {
+                    Selected_Character.mageSpellsCast[i] = 0;
+                    Selected_Character.priestSpellsCast[i] = 0;
+                }
+
+                //check for levelup
+                if (_delta > 0)
+                { //no
+                    _display.PopUp_Panel.Show_Message(Selected_Character.name + " needs " + _delta + " XP to Level Up.");
+                    CurrentPage = 0;
+                    UpdateScreen();
+                    return;
+                }
+                else
+                { //yes
+                    LevelUp(Selected_Character);
+                    CurrentPage = 0;
+                    UpdateScreen();
+                    return;
+                }
+            }
+        }
+
+        //Boltac's
+        if(_text == "goto_buy_menu")
+        {
+
         }
     }
+
+
+    #region LEVEL_UP
+
+    public void LevelUp(Character_Class _me)
+    {
+        bool _newSpells = false;
+        int _deltaStr = 0, _deltaIQ = 0, _deltaPi = 0, _deltaVit = 0, _deltaAgi = 0, _deltaLk = 0;
+
+        //Increase level and assign new nnl        
+        _me.level++; _me.xp_nnl = new XPTable().LookupNNL(_me.level, _me.character_class);
+
+        //Each attrib has a 75% chance to change
+        int VAL = 65;
+        bool _strChange = Random.Range(0, 101) <= VAL ? true : false;
+        bool _IQChange = Random.Range(0, 101) <= VAL ? true : false;
+        bool _PiChange = Random.Range(0, 101) <= VAL ? true : false;
+        bool _VitChange = Random.Range(0, 101) <= VAL ? true : false;
+        bool _AgiChange = Random.Range(0, 101) <= VAL ? true : false;
+        bool _LkChange = Random.Range(0, 101) <= VAL ? true : false;
+
+        //if attrib changes, there is a chance it decreases, otherwise it increases
+        float _downOdds = (_me.ageInWeeks / 52) / 130f; Debug.Log("Odds of decreasing " + _downOdds * 100);
+        if (_strChange)
+            if (Random.Range(0f, 1f) < _downOdds)
+            { _deltaStr = -1; }
+            else { _deltaStr = 1; }
+        if (_IQChange)
+            if (Random.Range(0f, 1f) < _downOdds)
+            { _deltaIQ = -1; }
+            else { _deltaIQ = 1; }
+        if (_PiChange)
+            if (Random.Range(0f, 1f) < _downOdds)
+            { _deltaPi = -1; }
+            else { _deltaPi = 1; }
+        if (_VitChange)
+            if (Random.Range(0f, 1f) < _downOdds)
+            { _deltaVit = -1; }
+            else { _deltaVit = 1; }
+        if (_AgiChange)
+            if (Random.Range(0f, 1f) < _downOdds)
+            { _deltaAgi = -1; }
+            else { _deltaAgi = 1; }
+        if (_LkChange)
+            if (Random.Range(0f, 1f) < _downOdds)
+            { _deltaLk = -1; }
+            else { _deltaLk = 1; }
+        // If Attribs are 18 and delta is -1, 5 in 6 chance that they do not change
+        if (_me.Strength == 18 && _deltaStr == -1 && Random.Range(0, 6) > 0) _deltaStr = 0;
+        if (_me.IQ == 18 && _deltaIQ == -1 && Random.Range(0, 6) > 0) _deltaIQ = 0;
+        if (_me.Piety == 18 && _deltaPi == -1 && Random.Range(0, 6) > 0) _deltaPi = 0;
+        if (_me.Vitality == 18 && _deltaVit == -1 && Random.Range(0, 6) > 0) _deltaVit = 0;
+        if (_me.Agility == 18 && _deltaAgi == -1 && Random.Range(0, 6) > 0) _deltaAgi = 0;
+        if (_me.Luck == 18 && _deltaLk == -1 && Random.Range(0, 6) > 0) _deltaLk = 0;
+        //Apply attrib changes
+        _me.Strength += _deltaStr;
+        _me.IQ += _deltaIQ;
+        _me.Piety += _deltaPi;
+        _me.Vitality += _deltaVit;
+        _me.Agility += _deltaAgi;
+        _me.Luck += _deltaLk;
+        //Bound Attribs
+        if (_me.Strength > 18) { _me.Strength = 18; _deltaStr = 0; }
+        if (_me.Strength < 1) { _me.Strength = 1; _deltaStr = 0; }
+        if (_me.IQ > 18) { _me.IQ = 18; _deltaIQ = 0; }
+        if (_me.IQ < 1) { _me.IQ = 1; _deltaIQ = 0; }
+        if (_me.Piety > 18) { _me.Piety = 18; _deltaPi = 0; }
+        if (_me.Piety < 1) { _me.Piety = 1; _deltaPi = 0; }
+        if (_me.Vitality > 18) { _me.Vitality = 18; _deltaVit = 0; }
+        if (_me.Agility > 18) { _me.Agility = 18; _deltaAgi = 0; }
+        if (_me.Agility < 1) { _me.Agility = 1; _deltaAgi = 0; }
+        if (_me.Luck > 18) { _me.Luck = 18; _deltaLk = 0; }
+        if (_me.Luck < 1) { _me.Luck = 1; _deltaLk = 0; }
+        //Vitality below 3 is a special case
+        if (_me.Vitality < 3)
+        {
+            _me.Vitality = 1; _deltaVit = 0;
+            _me.status = BlobberEngine.Enum._Status.dead;
+            _me.inParty = false;
+            GameManager.PARTY.RemoveMember(Selected_Party_Slot);
+            _display.PopUp_Panel.Show_Message(_me.name + " has died of old age.");
+            CurrentPage = 0;
+            CurrentScreen = Screen.Street;
+            UpdateScreen();
+            return;
+        }
+
+        //Swing Count
+        _me.CalculateBaseSwings();
+        if (_me.eqWeapon > -1 && GameManager.ITEM[_me.Inventory[_me.eqWeapon].index].xtra_swings > _me.swing_count) _me.swing_count = GameManager.ITEM[_me.Inventory[_me.eqWeapon].index].xtra_swings;
+        if (_me.eqArmor > -1 && GameManager.ITEM[_me.Inventory[_me.eqArmor].index].xtra_swings > _me.swing_count) _me.swing_count = GameManager.ITEM[_me.Inventory[_me.eqArmor].index].xtra_swings;
+        if (_me.eqShield > -1 && GameManager.ITEM[_me.Inventory[_me.eqShield].index].xtra_swings > _me.swing_count) _me.swing_count = GameManager.ITEM[_me.Inventory[_me.eqShield].index].xtra_swings;
+        if (_me.eqHelmet > -1 && GameManager.ITEM[_me.Inventory[_me.eqHelmet].index].xtra_swings > _me.swing_count) _me.swing_count = GameManager.ITEM[_me.Inventory[_me.eqHelmet].index].xtra_swings;
+        if (_me.eqGauntlet > -1 && GameManager.ITEM[_me.Inventory[_me.eqGauntlet].index].xtra_swings > _me.swing_count) _me.swing_count = GameManager.ITEM[_me.Inventory[_me.eqGauntlet].index].xtra_swings;
+        if (_me.eqMisc > -1 && GameManager.ITEM[_me.Inventory[_me.eqMisc].index].xtra_swings > _me.swing_count) _me.swing_count = GameManager.ITEM[_me.Inventory[_me.eqMisc].index].xtra_swings;
+
+        //ReRoll HP_MAX
+        int _bonus = 0; //Bonus hitpoints based on vitality
+        if (_me.Vitality == 3) _bonus = -3;
+        if (_me.Vitality == 5 || _me.Vitality == 4) _bonus = -1;
+        if (_me.Vitality == 16) _bonus = 1;
+        if (_me.Vitality == 17) _bonus = 2;
+        if (_me.Vitality == 18) _bonus = 3;
+        int _hpDelta = _me.HP_MAX - _me.HP;
+        _me.HP_MAX++;
+        int _newHP = 0; for (int i = 0; i < _me.level; i++) _newHP += Random.Range(1, _me.hitDiceSides + 1) + _bonus; //roll once per level
+        if (_me.character_class == Enum._Class.samurai) _newHP += Random.Range(1, _me.hitDiceSides + 1) + _bonus; //Samurai get 1 extra roll
+        if (_newHP > _me.HP_MAX) _me.HP_MAX = _newHP; //assign newHP if it is greater than HP_MAX + 1
+        _me.HP = _me.HP_MAX - _hpDelta; //Gaining new HP_Max should not widen the gap between HP and HP_Max
+
+        //Wizardry
+        int a = 0, b = 0;
+        //Mage Spells
+        if (_me.character_class == Enum._Class.mage || _me.character_class == Enum._Class.bishop || _me.character_class == Enum._Class.samurai)
+        {
+            int[] _newSP = new int[7]; for (int i = 0; i < 7; i++) _newSP[i] = 0; // New spell points
+            int[] _SpC = new int[7]; for (int i = 0; i < 7; i++) _SpC[i] = 0; // spells per Circle
+                                                                              //Calculate Spell Points per Circle
+            if (_me.character_class == Enum._Class.mage) { a = 0; b = 2; }
+            if (_me.character_class == Enum._Class.bishop) { a = 0; b = 4; }
+            if (_me.character_class == Enum._Class.samurai) { a = 3; b = 3; }
+            for (int i = 0; i < 7; i++) //Calculate new spell points
+            {
+                _newSP[i] = _me.level - a + b - (b * i);
+                if (_newSP[i] < 0) _newSP[i] = 0;
+                if (_newSP[i] > 9) _newSP[i] = 9;
+
+                if (_newSP[i] > _me.mageSpells[i])
+                {
+                    _newSpells = true;
+                    _me.mageSpells[i] = _newSP[i]; //assign spell points if it is higher than current;
+                }
+            }
+            //Learn new Spells
+            float _chanceToLearn = (float)(_me.IQ / 30);
+            for (int i = 29; i < 50; i++)
+                if (_me.mageSpells[GameManager.SPELL[i].circle - 1] > 0 && !_me.SpellKnown[i] && Random.Range(0f, 1f) + GameManager.SPELL[i].learn_bonus <= _chanceToLearn)
+                {
+                    _newSpells = true;
+                    _me.SpellKnown[i] = true;
+                }
+            //Count Spells Known by circle
+            if (_me.SpellKnown[29]) _SpC[0]++;
+            if (_me.SpellKnown[30]) _SpC[0]++;
+            if (_me.SpellKnown[31]) _SpC[0]++;
+            if (_me.SpellKnown[32]) _SpC[0]++;
+            if (_me.SpellKnown[33]) _SpC[1]++;
+            if (_me.SpellKnown[34]) _SpC[1]++;
+            if (_me.SpellKnown[35]) _SpC[2]++;
+            if (_me.SpellKnown[36]) _SpC[2]++;
+            if (_me.SpellKnown[37]) _SpC[3]++;
+            if (_me.SpellKnown[38]) _SpC[3]++;
+            if (_me.SpellKnown[39]) _SpC[3]++;
+            if (_me.SpellKnown[40]) _SpC[4]++;
+            if (_me.SpellKnown[41]) _SpC[4]++;
+            if (_me.SpellKnown[42]) _SpC[4]++;
+            if (_me.SpellKnown[43]) _SpC[5]++;
+            if (_me.SpellKnown[44]) _SpC[5]++;
+            if (_me.SpellKnown[45]) _SpC[5]++;
+            if (_me.SpellKnown[46]) _SpC[5]++;
+            if (_me.SpellKnown[47]) _SpC[6]++;
+            if (_me.SpellKnown[48]) _SpC[6]++;
+            if (_me.SpellKnown[49]) _SpC[6]++;
+            //Make sure that there is at least 1 spell point for each known spell
+            for (int i = 0; i < 7; i++) if (_me.mageSpells[i] < _SpC[i]) _me.mageSpells[i] = _SpC[i];
+        }
+        //Priest Spells
+        if (_me.character_class == Enum._Class.priest || _me.character_class == Enum._Class.bishop || _me.character_class == Enum._Class.lord)
+        {
+            int[] _newSP = new int[7]; for (int i = 0; i < 7; i++) _newSP[i] = 0; // New spell points
+            int[] _SpC = new int[7]; for (int i = 0; i < 7; i++) _SpC[i] = 0; // spells per Circle
+                                                                              //Calculate Spell Points per Circle
+            if (_me.character_class == Enum._Class.priest) { a = 0; b = 2; }
+            if (_me.character_class == Enum._Class.bishop) { a = 3; b = 4; }
+            if (_me.character_class == Enum._Class.lord) { a = 3; b = 2; }
+            for (int i = 0; i < 7; i++) //Calculate new spell points
+            {
+                _newSP[i] = _me.level - a + b - (b * i);
+                if (_newSP[i] < 0) _newSP[i] = 0;
+                if (_newSP[i] > 9) _newSP[i] = 9;
+
+                if (_newSP[i] > _me.priestSpells[i])
+                {
+                    _newSpells = true;
+                    _me.priestSpells[i] = _newSP[i]; //assign spell points if it is higher than current;
+                }
+            }
+            //Learn new Spells
+            float _chanceToLearn = (float)(_me.Piety / 30);
+            for (int i = 0; i < 30; i++)
+                if (_me.priestSpells[GameManager.SPELL[i].circle - 1] > 0 && !_me.SpellKnown[i] && Random.Range(0f, 1f) + GameManager.SPELL[i].learn_bonus <= _chanceToLearn)
+                {
+                    _newSpells = true;
+                    _me.SpellKnown[i] = true;
+                }
+            //Count Spells Known by circle
+            if (_me.SpellKnown[0]) _SpC[0]++;
+            if (_me.SpellKnown[1]) _SpC[0]++;
+            if (_me.SpellKnown[2]) _SpC[0]++;
+            if (_me.SpellKnown[3]) _SpC[0]++;
+            if (_me.SpellKnown[4]) _SpC[0]++;
+            if (_me.SpellKnown[5]) _SpC[1]++;
+            if (_me.SpellKnown[6]) _SpC[1]++;
+            if (_me.SpellKnown[7]) _SpC[1]++;
+            if (_me.SpellKnown[8]) _SpC[1]++;
+            if (_me.SpellKnown[9]) _SpC[2]++;
+            if (_me.SpellKnown[10]) _SpC[2]++;
+            if (_me.SpellKnown[11]) _SpC[2]++;
+            if (_me.SpellKnown[12]) _SpC[2]++;
+            if (_me.SpellKnown[13]) _SpC[3]++;
+            if (_me.SpellKnown[14]) _SpC[3]++;
+            if (_me.SpellKnown[15]) _SpC[3]++;
+            if (_me.SpellKnown[16]) _SpC[3]++;
+            if (_me.SpellKnown[17]) _SpC[4]++;
+            if (_me.SpellKnown[18]) _SpC[4]++;
+            if (_me.SpellKnown[19]) _SpC[4]++;
+            if (_me.SpellKnown[20]) _SpC[4]++;
+            if (_me.SpellKnown[21]) _SpC[4]++;
+            if (_me.SpellKnown[22]) _SpC[4]++;
+            if (_me.SpellKnown[23]) _SpC[5]++;
+            if (_me.SpellKnown[24]) _SpC[5]++;
+            if (_me.SpellKnown[25]) _SpC[5]++;
+            if (_me.SpellKnown[26]) _SpC[5]++;
+            if (_me.SpellKnown[27]) _SpC[6]++;
+            if (_me.SpellKnown[28]) _SpC[6]++;
+            //Make sure that there is at least 1 spell point for each known spell
+            for (int i = 0; i < 7; i++) if (_me.priestSpells[i] < _SpC[i]) _me.priestSpells[i] = _SpC[i];
+        }
+
+        string _levelUpMessage = _me.name + " has leveled up!";
+        if (_newSpells) _levelUpMessage += "\n" + _me.name + " learned new spells!!!";
+        if (_deltaStr < 0) _levelUpMessage += "\n" + _me.name + " has lost Strength.";
+        if (_deltaStr > 0) _levelUpMessage += "\n" + _me.name + " has gained Strength.";
+        if (_deltaIQ < 0) _levelUpMessage += "\n" + _me.name + " has lost I.Q.";
+        if (_deltaIQ > 0) _levelUpMessage += "\n" + _me.name + " has gained I.Q.";
+        if (_deltaPi < 0) _levelUpMessage += "\n" + _me.name + " has lost Piety.";
+        if (_deltaPi > 0) _levelUpMessage += "\n" + _me.name + " has gained Piety.";
+        if (_deltaVit < 0) _levelUpMessage += "\n" + _me.name + " has lost Vitality.";
+        if (_deltaVit > 0) _levelUpMessage += "\n" + _me.name + " has gained Vitality.";
+        if (_deltaAgi < 0) _levelUpMessage += "\n" + _me.name + " has lost Agility.";
+        if (_deltaAgi > 0) _levelUpMessage += "\n" + _me.name + " has gained Agility.";
+        if (_deltaLk < 0) _levelUpMessage += "\n" + _me.name + " has lost Luck.";
+        if (_deltaLk > 0) _levelUpMessage += "\n" + _me.name + " has gained Luck.";
+        _levelUpMessage = _levelUpMessage.ToUpper();
+        _display.PopUp_Panel.Show_Message(_levelUpMessage);
+    }
+
+    #endregion
 }

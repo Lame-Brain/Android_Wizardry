@@ -6,9 +6,16 @@ public class Castle_Display_Manager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI Display;
     public Castle_Pop_Up_Manager PopUp_Panel;
+    public Castle_Text_Input_Manager TextInput_Panel;
+    public Castle_Character_Sheet_Manager Character_Sheet;
 
-    public void Update_Display(string location_string, string flavor_string)
+    private string location_string, flavor_string;
+
+    public void Update_Display(string location_string_, string flavor_string_)
     {
+        location_string = location_string_;
+        flavor_string = flavor_string_;
+
         //build party string
         string[] _partyText = new string[6];
         for (int i = 0; i < 6; i++)
@@ -33,10 +40,15 @@ public class Castle_Display_Manager : MonoBehaviour
                 if (me.HP < 1000) _hp = " " + _hp;
                 if (me.HP < 100) _hp = " " + _hp;
                 if (me.HP < 10) _hp = " " + _hp;
+                string _hpMax = me.HP_MAX.ToString();
+                if (me.HP > 9999) _hpMax = "lots";
+                if (me.HP < 1000) _hpMax = " " + _hpMax;
+                if (me.HP < 100) _hpMax = " " + _hpMax;
+                if (me.HP < 10) _hpMax = " " + _hpMax;
 
                 //Status replacment, for spacing
                 string _stat = me.status.ToString();
-                if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hp;
+                if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hpMax;
 
                 _partyText[i] = " 1 " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
                     me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
@@ -71,5 +83,10 @@ public class Castle_Display_Manager : MonoBehaviour
         _output = _output.Replace("[D]", "d");        
         Display.fontSize = GameManager.FONT;
         Display.text = _output;
+    }
+
+    public void Refresh_Display()
+    {
+        Update_Display(location_string, flavor_string);
     }
 }

@@ -195,6 +195,26 @@ public class GameManager : MonoBehaviour
         {
             PARTY.AddMember(i);
         }
+        PARTY.LookUp_PartyMember(0).xp = 1500;
+        //PARTY.LookUp_PartyMember(0).level = 1;
+        //PARTY.LookUp_PartyMember(0).HP = 100;
+        //PARTY.LookUp_PartyMember(0).HP_MAX = 205;
+        PARTY.LookUp_PartyMember(0).Inventory[0] = new Item(1, false, false, true);
+        PARTY.LookUp_PartyMember(0).Inventory[1] = new Item(1, false, false, false);
+        PARTY.LookUp_PartyMember(0).Inventory[2] = new Item(7, false, false, false);
+        PARTY.LookUp_PartyMember(0).Inventory[3] = new Item(10, false, false, true);
+        PARTY.LookUp_PartyMember(0).Inventory[4] = new Item(14, false, false, true);
+        PARTY.LookUp_PartyMember(0).Inventory[5] = new Item(39, false, false, false);
+        PARTY.LookUp_PartyMember(0).Inventory[6] = new Item(35, false, false, false);
+        PARTY.LookUp_PartyMember(0).mageSpells[0] = 9;
+        PARTY.LookUp_PartyMember(0).priestSpells[0] = 9;
+        for (int i = 0; i < SPELL.Count; i++)
+            PARTY.LookUp_PartyMember(0).SpellKnown[i] = true;
+
+
+        Debug.Log(PARTY.LookUp_PartyMember(0).name + " has " + PARTY.LookUp_PartyMember(0).HP + " / " + PARTY.LookUp_PartyMember(0).HP_MAX);
+
+        //DEBUG
     }
 
 }
