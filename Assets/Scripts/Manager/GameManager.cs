@@ -213,6 +213,10 @@ public class GameManager : MonoBehaviour
 
 
         Debug.Log(PARTY.LookUp_PartyMember(0).name + " has " + PARTY.LookUp_PartyMember(0).HP + " / " + PARTY.LookUp_PartyMember(0).HP_MAX);
+        PARTY.BoltacStock[17] = 2;
+        PARTY.BoltacStock[18] = 1;
+        PARTY.BoltacStock[24] = 1;
+
 
         //DEBUG
     }
