@@ -8,6 +8,7 @@ public class Castle_Display_Manager : MonoBehaviour
     public Castle_Pop_Up_Manager PopUp_Panel;
     public Castle_Text_Input_Manager TextInput_Panel;
     public Castle_Character_Sheet_Manager Character_Sheet;
+    public Castle_Trade_Panel_Manager Trade_Panel;
 
     private string location_string, flavor_string;
 

@@ -163,10 +163,10 @@ public class Castle_Logic_Manager : MonoBehaviour
                         "   He grunts. \"I can also look at any  \n" +
                         "   cursed or unidentified gear you got.\"\n\n\n" +
                         Selected_Character.name + " has " + Selected_Character.Geld + "g.";
-                _input.SetButton(0, "Buy Something", "goto_buy_menu");
-                _input.SetButton(2, "Sell Something", "goto_sell_menu");
-                _input.SetButton(4, "Uncurse Something", "goto_uncurse_menu");
-                _input.SetButton(6, "Identify Something", "goto_identify_menu");
+                _input.SetButton(0, "Buy Something", "buy_menu");
+                _input.SetButton(2, "Sell Something", "sell_menu");
+                _input.SetButton(4, "Uncurse Something", "uncurse_menu");
+                _input.SetButton(6, "Identify Something", "identify_menu");
                 _input.SetButton(9, "Leave Shop", "goto_trader");
             }
         }
@@ -424,9 +424,9 @@ public class Castle_Logic_Manager : MonoBehaviour
         }
 
         //Boltac's
-        if(_text == "goto_buy_menu")
+        if(_text == "buy_menu")
         {
-
+            _display.Trade_Panel.gameObject.SetActive(true);
         }
     }
 
@@ -451,7 +451,7 @@ public class Castle_Logic_Manager : MonoBehaviour
         bool _LkChange = Random.Range(0, 101) <= VAL ? true : false;
 
         //if attrib changes, there is a chance it decreases, otherwise it increases
-        float _downOdds = (_me.ageInWeeks / 52) / 130f; Debug.Log("Odds of decreasing " + _downOdds * 100);
+        float _downOdds = (_me.ageInWeeks / 52) / 130f; //Debug.Log("Odds of decreasing " + _downOdds * 100);
         if (_strChange)
             if (Random.Range(0f, 1f) < _downOdds)
             { _deltaStr = -1; }
