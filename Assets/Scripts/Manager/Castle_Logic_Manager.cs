@@ -254,11 +254,19 @@ public class Castle_Logic_Manager : MonoBehaviour
         }
         if (_text.Contains("ADD_PARTY_INPUT:"))
         {
+            //Clean up _text
             _text = _text.Replace("ADD_PARTY_INPUT:", "");
-            //Debug.Log("GOT THIS NAME: " + _text);
+            
+            //determine party alignment
+            Enum._Alignment _partyAlignment = Enum._Alignment.neutral;
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i))
+                    if (_partyAlignment == Enum._Alignment.neutral)
+                        _partyAlignment = GameManager.PARTY.LookUp_PartyMember(i).alignment;
+
+            //search the roster for a match
             string _output = "";
             bool _found = false;
-
             for (int i = 0; i < GameManager.ROSTER.Count; i++)
             {
                 string _RosterName = GameManager.ROSTER[i].name.ToUpper();
@@ -283,6 +291,12 @@ public class Castle_Logic_Manager : MonoBehaviour
                 else if(Selected_Character.location == BlobberEngine.Enum._Locaton.Party)
                 {
                     _output = "That character is already in a party!";
+                }
+                else if (_partyAlignment != Enum._Alignment.neutral && 
+                        Selected_Character.alignment != Enum._Alignment.neutral && 
+                        Selected_Character.alignment != _partyAlignment)
+                {
+                    _output = "That character is the wrong alignment for this party!";
                 }
                 else
                 {
@@ -478,6 +492,31 @@ public class Castle_Logic_Manager : MonoBehaviour
             _display.Trade_Panel.IdentifyScreen();
             return;
         }
+
+        //Temple
+        if (_text == "pay_tithe")
+        {
+            string _txt = "Each character pays 10% of their\n" +
+                          "geld as a tithe.\n" +
+                          "------------------------------------\n";
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i))
+                {
+                    int _tithe = (int)(GameManager.PARTY.LookUp_PartyMember(i).Geld * 0.1f);
+                    _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " tithes " + _tithe + "g\n";
+                    GameManager.PARTY.LookUp_PartyMember(i).Geld -= _tithe;
+                    GameManager.PARTY.Temple_Favor += _tithe;
+                }
+
+            _display.PopUp_Panel.Show_Message(_txt);
+            UpdateScreen();
+            return;
+        }
+        //_input.SetButton(0, "Offer tithe to gain favor.", "pay_tithe");
+        //_input.SetButton(2, "Say a prayer to Cant", "say_prayer");
+        //_input.SetButton(4, "Request Cant's Aid for a fallen character", "cant_heal");
+        //_input.SetButton(9, "Leave Temple", "goto_street");
+
     }
 
 

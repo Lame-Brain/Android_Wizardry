@@ -212,9 +212,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < SPELL.Count; i++)
             PARTY.LookUp_PartyMember(0).SpellKnown[i] = true;
 
-
         Debug.Log(PARTY.LookUp_PartyMember(0).name + " has " + PARTY.LookUp_PartyMember(0).HP + " / " + PARTY.LookUp_PartyMember(0).HP_MAX);
-
 
         //DEBUG
     }
