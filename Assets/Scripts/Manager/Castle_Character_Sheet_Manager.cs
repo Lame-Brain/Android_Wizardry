@@ -85,9 +85,9 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         
 
         _txt += "   AC ";
-        if (_castle.Selected_Character.ArmorClass > 99) _txt += "HI";
-        if (_castle.Selected_Character.ArmorClass > -10 && _castle.Selected_Character.ArmorClass < 100) _txt += _castle.Selected_Character.ArmorClass;
         if (_castle.Selected_Character.ArmorClass < -9) _txt += "LO";
+        if (_castle.Selected_Character.ArmorClass > -10 && _castle.Selected_Character.ArmorClass < 100) _txt += _castle.Selected_Character.ArmorClass;
+        if (_castle.Selected_Character.ArmorClass > 99) _txt += "HI";
         _txt += "\n";
 
         //Luck Line

@@ -307,7 +307,7 @@ public class Character_Class
     public void EquipItem(int _slot)
     {
         //Check if something is already equipped
-        int _challengeSlot = -1;
+       int _challengeSlot = -1;
         if (GameManager.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Weapon) _challengeSlot = eqWeapon;
         if (GameManager.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Armor) _challengeSlot = eqArmor;
         if (GameManager.ITEM[Inventory[_slot].index].item_type == Enum._Item_Type.Shield) _challengeSlot = eqShield;
@@ -334,6 +334,7 @@ public class Character_Class
         if (_temp > 0) this.heal_points += _temp;
 
         //Armor Mod
+        Debug.Log("AC is " + this.ArmorClass + " minus " + GameManager.ITEM[Inventory[_slot].index].armor_mod);
         this.ArmorClass -= GameManager.ITEM[Inventory[_slot].index].armor_mod;
 
         //Swings

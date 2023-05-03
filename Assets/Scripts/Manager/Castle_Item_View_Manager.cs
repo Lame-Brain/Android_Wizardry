@@ -147,7 +147,7 @@ public class Castle_Item_View_Manager : MonoBehaviour
     }
     public void ShowItem(Item _item)
     {
-        string _txt = _castle.Selected_Item.ItemName() + "    ";
+        string _txt = _castle.Selected_Item.ItemName() + "    \n";
         switch (_castle.Selected_Item_Class.item_type)
         {
             //Weapon, Armor, Helmet, Gauntlets, Special, Misc, Consumable

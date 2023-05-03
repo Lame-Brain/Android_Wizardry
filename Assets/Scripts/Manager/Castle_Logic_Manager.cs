@@ -426,7 +426,15 @@ public class Castle_Logic_Manager : MonoBehaviour
         //Boltac's
         if(_text == "buy_menu")
         {
-            _display.Trade_Panel.gameObject.SetActive(true);
+            if (Selected_Character.HasEmptyInventorySlot())
+            {
+                _display.Trade_Panel.BuyScreen();
+                return;
+            }
+            else
+            {
+                _display.PopUp_Panel.Show_Message("You don't have any space to buy anything!\nMaybe sell something first?");
+            }
         }
     }
 

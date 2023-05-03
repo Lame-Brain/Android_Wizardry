@@ -33,6 +33,10 @@ public class Castle_EquipFlowLogic_Controller : MonoBehaviour
         for (int i = 0; i < button.Length; i++) button[i].SetActive(false);
         button[button.Length - 1].SetActive(true);
         phase = 0;
+        //Unequip equipped items. (even cursed ones, they will be equipped later)
+        for (int c = 0; c < 8; c++)
+            if (_castle.Selected_Character.Inventory[c].index > -1 && _castle.Selected_Character.Inventory[c].equipped) 
+                _castle.Selected_Character.UnequipItem(c);
 
         ShowScreen();
     }
@@ -55,9 +59,6 @@ public class Castle_EquipFlowLogic_Controller : MonoBehaviour
 
         for (int c = 0; c < 8; c++)
         {
-            //Unequip equipped items. (even cursed ones, they will be equipped later)
-            if (_castle.Selected_Character.Inventory[c].index > -1) _castle.Selected_Character.UnequipItem(c);
-
             if (_castle.Selected_Character.Inventory[c].index > -1)
                 if (GameManager.ITEM[_castle.Selected_Character.Inventory[c].index].item_type == _type)
                     if (GameManager.ITEM[_castle.Selected_Character.Inventory[c].index].class_use.Contains(_myClass))
