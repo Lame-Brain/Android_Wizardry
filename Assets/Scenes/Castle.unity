@@ -13176,7 +13176,9 @@ MonoBehaviour:
   Slot_Root: {fileID: 51181856}
   Cursor: {fileID: 1770252504}
   View_Item_Panel: {fileID: 359197878}
-  PopUp_Panel: {fileID: 2131120925}
+  Left_Button: {fileID: 495339498}
+  Right_Button: {fileID: 621544367}
+  PopUp_Panel: {fileID: 2131120929}
 --- !u!114 &1563992342
 MonoBehaviour:
   m_ObjectHideFlags: 0

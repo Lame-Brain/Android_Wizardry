@@ -436,6 +436,11 @@ public class Castle_Logic_Manager : MonoBehaviour
                 _display.PopUp_Panel.Show_Message("You don't have any space to buy anything!\nMaybe sell something first?");
             }
         }
+        if(_text == "sell_menu")
+        {
+            _display.Trade_Panel.SellScreen();
+            return;
+        }
     }
 
 
