@@ -132,6 +132,7 @@ public class Castle_Logic_Manager : MonoBehaviour
                         Selected_Character.name + " has " + Selected_Character.Geld + "g.";
 
                 _input.SetButton(0, "Stables, Free", "sleep,0,0");
+                _input.SetButton(1, "Pool Geld", "pool_geld");
                 _input.SetButton(2, "Cot, 10g", "sleep,10,1");
                 _input.SetButton(4, "Economy, 50g", "sleep,50,3");
                 _input.SetButton(6, "Merchant, 200g", "sleep,200,5");
@@ -164,6 +165,7 @@ public class Castle_Logic_Manager : MonoBehaviour
                         "   cursed or unidentified gear you got.\"\n\n\n" +
                         Selected_Character.name + " has " + Selected_Character.Geld + "g.";
                 _input.SetButton(0, "Buy Something", "buy_menu");
+                _input.SetButton(1, "Pool Geld", "pool_geld");
                 _input.SetButton(2, "Sell Something", "sell_menu");
                 _input.SetButton(4, "Uncurse Something", "uncurse_menu");
                 _input.SetButton(6, "Identify Something", "identify_menu");
@@ -327,7 +329,7 @@ public class Castle_Logic_Manager : MonoBehaviour
             UpdateScreen();
         }
 
-        //Divvy Geld at Tavern
+        //Geld Stuff
         if (_text == "divvy_geld")
         {
             int _pool = 0, _num = 0, _share = 0, _remainder = 0;
@@ -352,6 +354,20 @@ public class Castle_Logic_Manager : MonoBehaviour
                 if (_remainder > 0) _txt += "\n" + GameManager.PARTY.LookUp_PartyMember(0).name + " receives the extra " + _remainder + "g.";
                 _display.PopUp_Panel.Show_Message(_txt);
             }
+            UpdateScreen();
+            return;
+        }
+        if (_text == "pool_geld")
+        {
+            int _pool = 0;
+            for (int i = 0; i < 6; i++)
+                if(!GameManager.PARTY.EmptySlot(i))
+                {
+                    _pool += GameManager.PARTY.LookUp_PartyMember(i).Geld;
+                    GameManager.PARTY.LookUp_PartyMember(i).Geld = 0;
+                }
+            Selected_Character.Geld = _pool;
+            _display.PopUp_Panel.Show_Message(Selected_Character.name + " collects " + _pool + " g from the party.");
             UpdateScreen();
             return;
         }
@@ -433,12 +449,33 @@ public class Castle_Logic_Manager : MonoBehaviour
             }
             else
             {
-                _display.PopUp_Panel.Show_Message("You don't have any space to buy anything!\nMaybe sell something first?");
+                _display.PopUp_Panel.Show_Message("Boltac sighs angrily.\n\"You don't have any space to buy anything!\nMaybe sell something first?\"");
             }
         }
         if(_text == "sell_menu")
         {
             _display.Trade_Panel.SellScreen();
+            return;
+        }
+        if(_text == "uncurse_menu")
+        {
+            bool curses = false;
+            for (int i = 0; i < 8; i++)
+                if (Selected_Character.Inventory[i].curse_active) curses = true;
+            if (!curses)
+            {
+                _display.PopUp_Panel.Show_Message("Boltac eyes you carefully.\n\"Nothing seems to be cursed, good.\"");
+                return;
+            }
+            else
+            {
+                _display.Trade_Panel.UncurseScreen();
+                return;
+            }
+        }
+        if (_text == "identify_menu")
+        {
+            _display.Trade_Panel.IdentifyScreen();
             return;
         }
     }

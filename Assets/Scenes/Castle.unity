@@ -13178,6 +13178,7 @@ MonoBehaviour:
   View_Item_Panel: {fileID: 359197878}
   Left_Button: {fileID: 495339498}
   Right_Button: {fileID: 621544367}
+  View_button: {fileID: 239147817}
   PopUp_Panel: {fileID: 2131120929}
 --- !u!114 &1563992342
 MonoBehaviour:

@@ -8,7 +8,7 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
     public TextMeshProUGUI Title_Message, Left_btn, Right_btn, View_btn, Buy_btn, Cancel_btn, View_Item, vi_Done_btn;
     public TextMeshProUGUI[] Slot_btn;
     public Transform Slot_Root;
-    public GameObject Cursor, View_Item_Panel, Left_Button, Right_Button;
+    public GameObject Cursor, View_Item_Panel, Left_Button, Right_Button, View_button;
     public Castle_Pop_Up_Manager PopUp_Panel;
 
     private int _selected_int = -1, _page = 0, _stock_count = 0;
@@ -51,11 +51,26 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
         UpdateSellScreen();
     }
 
+    public void UncurseScreen()
+    {
+        _mode = "uncurse";
+        this.gameObject.SetActive(true);
+        UpdateUncurseScreen();
+    }
+
+    public void IdentifyScreen()
+    {
+        _mode = "identify";
+        this.gameObject.SetActive(true);
+        UpdateIdentifyScreen();
+    }
+
     private void UpdateBuyScreen()
     {
         Buy_btn.text = "Buy";
         Left_Button.SetActive(true);
         Right_Button.SetActive(true);
+        View_button.SetActive(true);
         //Display the number of resources
         Title_Message.text = _castle.Selected_Character.name + " has " + _castle.Selected_Character.Geld + "g.";
 
@@ -100,7 +115,8 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
         Buy_btn.text = "Sell";
         Left_Button.SetActive(false);
         Right_Button.SetActive(false);
-        Title_Message.text = "What would ya like to sell?";
+        View_button.SetActive(true);
+        Title_Message.text = "Boltac nods. \"What would ya like to sell?\"";
         
         //clear screen
         for (int i = 0; i < Slot_btn.Length; i++)
@@ -132,6 +148,83 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
         }
     }
 
+    private void UpdateUncurseScreen()
+    {
+        Buy_btn.text = "Uncurse";
+        Left_Button.SetActive(false);
+        Right_Button.SetActive(false);
+        View_button.SetActive(false);
+        Title_Message.text = "Boltac grimaces. \"That is a nasty curse alright.\"";
+
+        //clear screen
+        for (int i = 0; i < Slot_btn.Length; i++)
+            Slot_btn[i].text = "";
+
+        //Uncurse stock
+        for (int i = 0; i < 8; i++)
+        {
+            if (_castle.Selected_Character.Inventory[i].index > -1 && _castle.Selected_Character.Inventory[i].curse_active)
+            {
+                int _price = (int)GameManager.ITEM[_castle.Selected_Character.Inventory[i].index].price / 2;
+                string _str = "",
+                       _alpha = " " + _castle.Selected_Character.Inventory[i].ItemName() + " ",
+                       _delta = "",
+                       _omega = " " + _price + " G",
+                       _classBit = _castle.Selected_Character.character_class.ToString().Substring(0, 1).ToLower();
+                while (_alpha.Length + _delta.Length + _omega.Length < 26)
+                    _delta += ".";
+                _str = _alpha + _delta + _omega;
+
+                //Modify item name based on class restriction
+                if (!GameManager.ITEM[_castle.Selected_Character.Inventory[i].index].class_use.Contains(_classBit)) _str += " UNUSABLE";
+                Slot_btn[i].text = _str;
+            }
+            else
+            {
+                Slot_btn[i].text = "";
+            }
+        }
+    }
+
+    private void UpdateIdentifyScreen()
+    {
+        Buy_btn.text = "Identify";
+        Left_Button.SetActive(false);
+        Right_Button.SetActive(false);
+        View_button.SetActive(false);
+        Title_Message.text = "Boltac rubs his hands. \"What do you want to know more about?\"";
+
+        //clear screen
+        for (int i = 0; i < Slot_btn.Length; i++)
+            Slot_btn[i].text = "";
+
+        //Unidentified stock
+        for (int i = 0; i < 8; i++)
+        {
+            if (_castle.Selected_Character.Inventory[i].index > -1 && !_castle.Selected_Character.Inventory[i].identified)
+            {
+                int _price = (int)GameManager.ITEM[_castle.Selected_Character.Inventory[i].index].price / 2;
+                string _str = "",
+                       _alpha = " " + _castle.Selected_Character.Inventory[i].ItemName() + " ",
+                       _delta = "",
+                       _omega = " " + _price + " G",
+                       _classBit = _castle.Selected_Character.character_class.ToString().Substring(0, 1).ToLower();
+                while (_alpha.Length + _delta.Length + _omega.Length < 26)
+                    _delta += ".";
+                _str = _alpha + _delta + _omega;
+
+                //Modify item name based on class restriction
+                if (!GameManager.ITEM[_castle.Selected_Character.Inventory[i].index].class_use.Contains(_classBit)) _str += " UNUSABLE";
+                Slot_btn[i].text = _str;
+            }
+            else
+            {
+                Slot_btn[i].text = "";
+            }
+        }
+
+    }
+
     public void ButtonPressed(int _n)
     {
         for (int i = 0; i < Slot_btn.Length; i++)
@@ -148,18 +241,20 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
                     //Debug.Log(_thisItem.name + ", NOT " + GameManager.ITEM[_selected_int].name);
                     return;
                 }
-                if (_mode == "sell" && _n < 8 && _castle.Selected_Character.Inventory[_n].index > -1)
-                {
-                    Cursor.SetActive(true);
-                    Cursor.transform.SetParent(Slot_btn[i].transform);
-                    Cursor.transform.localPosition = Vector3.zero;
-                    Cursor.transform.localScale = Vector3.one;
-                    _selected_int = _n;
-                    Debug.Log("This item is " + _castle.Selected_Character.Inventory[_n].ItemName());
-                    return;
-                }
+                if (_mode == "sell" || _mode == "uncurse" || _mode == "identify")
+                    if(_n < 8 && _castle.Selected_Character.Inventory[_n].index > -1)
+                    {
+                        Cursor.SetActive(true);
+                        Cursor.transform.SetParent(Slot_btn[i].transform);
+                        Cursor.transform.localPosition = Vector3.zero;
+                        Cursor.transform.localScale = Vector3.one;
+                        _selected_int = _n;
+                        Debug.Log("This item is " + _castle.Selected_Character.Inventory[_n].ItemName());
+                        return;
+                    }
             }
         }
+        //Left Button
         if (_n == 100)
         {
             Cursor.SetActive(false);
@@ -168,6 +263,7 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             UpdateBuyScreen();
             return;
         }
+        //Right Button
         if (_n == 200)
         {
             Cursor.SetActive(false);
@@ -176,11 +272,12 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             UpdateBuyScreen();
             return;
         }
+        //View Button
         if (_n == 300)
         {
             if (_selected_int == -1)
             {
-                PopUp_Panel.Show_Message("Examine what? You gotta pick something first!");
+                PopUp_Panel.Show_Message("Boltac looks confused. \"Huh? Examine what? You gotta pick something first!\"");
                 Cursor.SetActive(false);
                 if(_mode == "buy") UpdateBuyScreen();
                 if(_mode == "sell") UpdateSellScreen();
@@ -194,7 +291,7 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
                 _id = true;
                 _thisItem = _STOCK_[_selected_int];
             }
-            if (_mode == "sell") 
+            else
             {
                 _thisItem = GameManager.ITEM[_castle.Selected_Character.Inventory[_selected_int].index];
                 if (_castle.Selected_Character.Inventory[_selected_int].identified) _id = true;
@@ -271,11 +368,12 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             View_Item.text = _txt;
             return;
         }
+        //Action Button
         if (_n == 400)
         {
-            if(_selected_int == -1)
+            if (_selected_int == -1)
             {
-                PopUp_Panel.Show_Message("Buy what? You gotta pick something first!");
+                PopUp_Panel.Show_Message("Boltac looks confused. \"Buy what? You gotta pick something first!\"");
                 Cursor.SetActive(false);
                 if (_mode == "buy") UpdateBuyScreen();
                 if (_mode == "sell") UpdateSellScreen();
@@ -285,7 +383,7 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             {
                 if (_castle.Selected_Character.Geld < _STOCK_[_selected_int].price)
                 {
-                    PopUp_Panel.Show_Message("You do not have enough money!");
+                    PopUp_Panel.Show_Message("Boltac reproaches you. \"You don't have enough money!\"");
                     Cursor.SetActive(false);
                     _selected_int = -1;
                     UpdateBuyScreen();
@@ -295,6 +393,7 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
                 {
                     _castle.Selected_Character.Geld -= (int)_STOCK_[_selected_int].price;
                     _castle.Selected_Character.Inventory[_castle.Selected_Character.GetEmptyInventorySlot()] = new Item(_STOCK_[_selected_int].index, false, false, true);
+                    if (GameManager.PARTY.BoltacStock[_STOCK_[_selected_int].index] > 0) GameManager.PARTY.BoltacStock[_STOCK_[_selected_int].index]--;
                     Cursor.SetActive(false);
                     _selected_int = -1;
                     this.gameObject.SetActive(false);
@@ -306,16 +405,18 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             {
                 if (_castle.Selected_Character.Inventory[_selected_int].curse_active)
                 {
-                    PopUp_Panel.Show_Message("You can't sell a cursed item!");
+                    PopUp_Panel.Show_Message("Boltac looks angry. \"Are you trying sell me a cursed item!?\"");
                     Cursor.SetActive(false);
                     UpdateSellScreen();
                     _selected_int = -1;
                     Cursor.SetActive(false);
                     return;
                 }
-                if (_castle.Selected_Character.Inventory[_selected_int].equipped) 
+                if (_castle.Selected_Character.Inventory[_selected_int].equipped)
                     _castle.Selected_Character.UnequipItem(_selected_int);
                 _castle.Selected_Character.Geld += (int)GameManager.ITEM[_castle.Selected_Character.Inventory[_selected_int].index].price / 2;
+                int _index = _castle.Selected_Character.Inventory[_selected_int].index;
+                if (GameManager.PARTY.BoltacStock[_index] > -1) GameManager.PARTY.BoltacStock[_index]++;
                 _castle.Selected_Character.Inventory[_selected_int] = new Item();
                 Cursor.SetActive(false);
                 _selected_int = -1;
@@ -323,7 +424,51 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
                 _castle.UpdateScreen();
                 return;
             }
+            if (_mode == "uncurse")
+            {
+                int _price = (int)GameManager.ITEM[_castle.Selected_Character.Inventory[_selected_int].index].price / 2;
+                if (_castle.Selected_Character.Geld < _price)
+                {
+                    PopUp_Panel.Show_Message("Boltac reproaches you. \"You don't have enough money!\"");
+                    Cursor.SetActive(false);
+                    _selected_int = -1;
+                    UpdateUncurseScreen();
+                    return;
+                }
+                else
+                {
+                    if (_castle.Selected_Character.Inventory[_selected_int].equipped)
+                        _castle.Selected_Character.UnequipItem(_selected_int);
+                    _castle.Selected_Character.Geld -= _price;
+                    _castle.Selected_Character.Inventory[_selected_int] = new Item();
+                    Cursor.SetActive(false);
+                    _selected_int = -1;
+                    this.gameObject.SetActive(false);
+                    _castle.UpdateScreen();
+                    return;
+                }
+            }
+            if (_mode == "identify")
+            {
+                int _price = (int)GameManager.ITEM[_castle.Selected_Character.Inventory[_selected_int].index].price / 2;
+                if (_castle.Selected_Character.Geld < _price)
+                {
+                    PopUp_Panel.Show_Message("Boltac reproaches you. \"You don't have enough money!\"");
+                    Cursor.SetActive(false);
+                    _selected_int = -1;
+                    UpdateUncurseScreen();
+                    return;
+                }
+                else
+                {
+                    _castle.Selected_Character.Geld -= _price;
+                    _castle.Selected_Character.Inventory[_selected_int].identified = true;
+                    ButtonPressed(300);
+                    return;
+                }
+            }
         }
+        //Done button
         if (_n == 500)
         {
             Cursor.SetActive(false);
@@ -332,9 +477,17 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             _castle.UpdateScreen();
             return;
         }
+        //View_panel Done button
         if (_n == 999)
         {
             View_Item_Panel.SetActive(false);
+            if(_mode == "identify")
+            {
+                Cursor.SetActive(false);
+                _selected_int = -1;
+                this.gameObject.SetActive(false);
+                _castle.UpdateScreen();
+            }
             return;
         }
     }

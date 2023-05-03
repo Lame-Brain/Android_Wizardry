@@ -334,7 +334,7 @@ public class Character_Class
         if (_temp > 0) this.heal_points += _temp;
 
         //Armor Mod
-        Debug.Log("AC is " + this.ArmorClass + " minus " + GameManager.ITEM[Inventory[_slot].index].armor_mod);
+        //Debug.Log("AC is " + this.ArmorClass + " minus " + GameManager.ITEM[Inventory[_slot].index].armor_mod);
         this.ArmorClass -= GameManager.ITEM[Inventory[_slot].index].armor_mod;
 
         //Swings
