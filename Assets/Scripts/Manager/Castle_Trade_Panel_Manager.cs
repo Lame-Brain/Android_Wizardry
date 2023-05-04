@@ -15,6 +15,8 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
     private string[] _slot;
     private Castle_Logic_Manager _castle;
     private List<Item_Class> _STOCK_ = new List<Item_Class>();
+    private List<int> SickRoster_index = new List<int>();
+    private List<int> SickRoster_price = new List<int>();
     private List<string> _SLOT_ = new List<string>();
     private string _mode;
 
@@ -63,6 +65,13 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
         _mode = "identify";
         this.gameObject.SetActive(true);
         UpdateIdentifyScreen();
+    }
+
+    public void HealScreen()
+    {
+        _mode = "heal";
+        this.gameObject.SetActive(true);
+        UpdateHealScreen();
     }
 
     private void UpdateBuyScreen()
@@ -225,6 +234,63 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
 
     }
 
+    private void UpdateHealScreen()
+    {
+        Buy_btn.text = "Heal";
+        Left_Button.SetActive(true);
+        Right_Button.SetActive(true);
+        View_button.SetActive(false);
+        //Display the number of resources
+        Title_Message.text = "The party has " + GameManager.PARTY.Temple_Favor + " favor.";
+
+        //clear screen
+        for (int i = 0; i < Slot_btn.Length; i++)
+            Slot_btn[i].text = "";
+
+        //Stock the SickRoster_index
+        SickRoster_index.Clear();
+        SickRoster_price.Clear();
+        _SLOT_.Clear();
+        for (int i = 0; i < GameManager.ROSTER.Count; i++)
+            if (GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.plyze || GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.stoned ||
+                GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.dead || GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.ashes)
+            {                
+                //determine price of treatment
+                int price = 0;
+                if (GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.plyze) 
+                    price = 100 * GameManager.ROSTER[i].level;
+                if (GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.stoned) 
+                    price = 200 * GameManager.ROSTER[i].level;
+                if (GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.dead) 
+                    price = 250 * GameManager.ROSTER[i].level;
+                if (GameManager.ROSTER[i].status == BlobberEngine.Enum._Status.ashes) 
+                    price = 500 * GameManager.ROSTER[i].level;
+
+                //build string
+                string _str = "",
+                       _alpha = " " + GameManager.ROSTER[i].name + " ",
+                       _delta = "",
+                       _omega = " " + price + " G";
+                while (_alpha.Length + _delta.Length + _omega.Length < 35)
+                    _delta += ".";
+                _str = _alpha + _delta + _omega;
+
+                SickRoster_index.Add(i);
+                SickRoster_price.Add(price);
+                _SLOT_.Add(_str);
+            }
+        _stock_count = SickRoster_index.Count;
+
+        //Choose which _STOCK_ to show on this page
+        for (int i = 0; i < Slot_btn.Length; i++)
+        {
+            int c = (_page * Slot_btn.Length) + i;
+            if (c < _stock_count)
+                Slot_btn[i].text = _SLOT_[c];
+        }
+
+    }
+
     public void ButtonPressed(int _n)
     {
         for (int i = 0; i < Slot_btn.Length; i++)
@@ -252,6 +318,15 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
                         Debug.Log("This item is " + _castle.Selected_Character.Inventory[_n].ItemName());
                         return;
                     }
+                if (_mode == "heal" && (_page * Slot_btn.Length) + _n < _stock_count)
+                {
+                    Cursor.SetActive(true);
+                    Cursor.transform.SetParent(Slot_btn[i].transform);
+                    Cursor.transform.localPosition = Vector3.zero;
+                    Cursor.transform.localScale = Vector3.one;
+                    _selected_int = (_page * Slot_btn.Length) + _n;                    
+                    return;
+                }
             }
         }
         //Left Button
@@ -260,7 +335,8 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             Cursor.SetActive(false);
             _selected_int = -1;
             if (_page > 0) _page--;
-            UpdateBuyScreen();
+            if (_mode == "buy") UpdateBuyScreen();
+            if (_mode == "heal") UpdateHealScreen();
             return;
         }
         //Right Button
@@ -269,7 +345,8 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
             Cursor.SetActive(false);
             _selected_int = -1;
             if ((_page + 1) * Slot_btn.Length <= _stock_count) _page++;
-            UpdateBuyScreen();
+            if (_mode == "buy") UpdateBuyScreen();
+            if (_mode == "heal") UpdateHealScreen();
             return;
         }
         //View Button
@@ -465,6 +542,82 @@ public class Castle_Trade_Panel_Manager : MonoBehaviour
                     _castle.Selected_Character.Inventory[_selected_int].identified = true;
                     ButtonPressed(300);
                     return;
+                }
+            }
+            if (_mode == "heal")
+            {
+                //Not enough favor
+                if(GameManager.PARTY.Temple_Favor < SickRoster_price[_selected_int])
+                {
+                    PopUp_Panel.Show_Message("The priest is apologetic, but firm.\n\"I am sorry, you do not have enough favor to aid this adventurer. " +
+                        "However, our god rewards those who are diligent in their devotions! return later!\"");
+                    Cursor.SetActive(false);
+                    _selected_int = -1;
+                    UpdateHealScreen();
+                    return;
+                }
+                GameManager.PARTY.Temple_Favor -= SickRoster_price[_selected_int];
+                if (GameManager.ROSTER[SickRoster_index[_selected_int]].status == BlobberEngine.Enum._Status.plyze ||
+                    GameManager.ROSTER[SickRoster_index[_selected_int]].status == BlobberEngine.Enum._Status.stoned)
+                {
+                    GameManager.ROSTER[SickRoster_index[_selected_int]].status = BlobberEngine.Enum._Status.OK;
+                    PopUp_Panel.Show_Message(GameManager.ROSTER[SickRoster_index[_selected_int]].name + " is healed!!!");
+                    Cursor.SetActive(false);
+                    _selected_int = -1;
+                    this.gameObject.SetActive(false);
+                    _castle.UpdateScreen();
+                    return;
+                }
+                if (GameManager.ROSTER[SickRoster_index[_selected_int]].status == BlobberEngine.Enum._Status.dead)
+                {
+                    float _chance = (GameManager.ROSTER[SickRoster_index[_selected_int]].Vitality * 3) + 50;
+                    float _roll = Random.Range(0f, 100f) + 1;
+                    Debug.Log("Chance is " + _chance + ", Roll is " + _roll);
+                    if (_roll <= _chance)
+                    {
+                        GameManager.ROSTER[SickRoster_index[_selected_int]].status = BlobberEngine.Enum._Status.OK;
+                        PopUp_Panel.Show_Message(GameManager.ROSTER[SickRoster_index[_selected_int]].name + " is restored to life!!!");
+                        Cursor.SetActive(false);
+                        _selected_int = -1;
+                        this.gameObject.SetActive(false);
+                        _castle.UpdateScreen();
+                        return;
+                    }
+                    else
+                    {
+                        GameManager.ROSTER[SickRoster_index[_selected_int]].status = BlobberEngine.Enum._Status.ashes;
+                        PopUp_Panel.Show_Message("OH NO!" + GameManager.ROSTER[SickRoster_index[_selected_int]].name + " is reduced to ashes!!!");
+                        Cursor.SetActive(false);
+                        _selected_int = -1;
+                        UpdateHealScreen();
+                        return;
+                    }
+                }
+                if (GameManager.ROSTER[SickRoster_index[_selected_int]].status == BlobberEngine.Enum._Status.ashes)
+                {
+                    float _chance = (GameManager.ROSTER[SickRoster_index[_selected_int]].Vitality * 3) + 40;
+                    float _roll = Random.Range(0f, 100f) + 1;
+                    Debug.Log("Chance is " + _chance + ", Roll is " + _roll);
+
+                    if (_roll <= _chance)
+                    {
+                        GameManager.ROSTER[SickRoster_index[_selected_int]].status = BlobberEngine.Enum._Status.OK;
+                        PopUp_Panel.Show_Message(GameManager.ROSTER[SickRoster_index[_selected_int]].name + " is restored from ashes!!!");
+                        Cursor.SetActive(false);
+                        _selected_int = -1;
+                        this.gameObject.SetActive(false);
+                        _castle.UpdateScreen();
+                        return;
+                    }
+                    else
+                    {
+                        GameManager.ROSTER[SickRoster_index[_selected_int]].status = BlobberEngine.Enum._Status.ashes;
+                        PopUp_Panel.Show_Message("OH NO!" + GameManager.ROSTER[SickRoster_index[_selected_int]].name + " failed to be restored!!!");
+                        Cursor.SetActive(false);
+                        _selected_int = -1;
+                        UpdateHealScreen();
+                        return;
+                    }
                 }
             }
         }

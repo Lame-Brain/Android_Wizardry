@@ -512,11 +512,43 @@ public class Castle_Logic_Manager : MonoBehaviour
             UpdateScreen();
             return;
         }
-        //_input.SetButton(0, "Offer tithe to gain favor.", "pay_tithe");
-        //_input.SetButton(2, "Say a prayer to Cant", "say_prayer");
-        //_input.SetButton(4, "Request Cant's Aid for a fallen character", "cant_heal");
-        //_input.SetButton(9, "Leave Temple", "goto_street");
-
+        if (_text == "say_prayer")
+        {
+            string _txt = "Each character says a prayer to CANT\n" +
+                          "------------------------------------\n";
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i))
+                {
+                    if (GameManager.PARTY.LookUp_PartyMember(i).Piety < 5) 
+                        _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " has angered CANT.\n";
+                    if (GameManager.PARTY.LookUp_PartyMember(i).Piety > 4 && GameManager.PARTY.LookUp_PartyMember(i).Piety < 10) 
+                        _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " feels nothing.\n";
+                    if (GameManager.PARTY.LookUp_PartyMember(i).Piety > 9 && GameManager.PARTY.LookUp_PartyMember(i).Piety < 16) 
+                        _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " feels warm.\n";
+                    if (GameManager.PARTY.LookUp_PartyMember(i).Piety > 15 && GameManager.PARTY.LookUp_PartyMember(i).Piety < 18) 
+                        _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " feels welcome.\n";
+                    if (GameManager.PARTY.LookUp_PartyMember(i).Piety == 18)
+                    {
+                        _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " feels bliss.\n";
+                        GameManager.PARTY.LookUp_PartyMember(i).HP++;
+                        if (GameManager.PARTY.LookUp_PartyMember(i).HP > GameManager.PARTY.LookUp_PartyMember(i).HP_MAX) 
+                            GameManager.PARTY.LookUp_PartyMember(i).HP = GameManager.PARTY.LookUp_PartyMember(i).HP_MAX;
+                        for (int c = 0; c < 7; c++)
+                        {
+                            Selected_Character.mageSpellsCast[c] = 0;
+                            Selected_Character.priestSpellsCast[c] = 0;
+                        }
+                    }
+                }
+            _display.PopUp_Panel.Show_Message(_txt);
+            UpdateScreen();
+            return;
+        }
+        if (_text == "cant_heal")
+        {
+            _display.Trade_Panel.HealScreen();
+            return;
+        }
     }
 
 

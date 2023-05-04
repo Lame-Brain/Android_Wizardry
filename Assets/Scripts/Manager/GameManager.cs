@@ -214,6 +214,18 @@ public class GameManager : MonoBehaviour
 
         Debug.Log(PARTY.LookUp_PartyMember(0).name + " has " + PARTY.LookUp_PartyMember(0).HP + " / " + PARTY.LookUp_PartyMember(0).HP_MAX);
 
+
+        for (int i = 0; i < 25; i++)
+        {
+            Character_Class _new = new Character_Class();
+            _new.name = "NewToon" + (i + 6);
+            int _R = Random.Range(0, 4);
+            if (_R == 0) { _new.status = Enum._Status.plyze; }
+            if (_R == 1) { _new.status = Enum._Status.stoned; }
+            if (_R == 2) { _new.status = Enum._Status.dead; }
+            if (_R == 3) { _new.status = Enum._Status.ashes; }
+            ROSTER.Add(_new);
+        }
         //DEBUG
     }
 
