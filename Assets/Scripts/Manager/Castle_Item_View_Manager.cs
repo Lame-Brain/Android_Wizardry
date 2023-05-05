@@ -19,6 +19,8 @@ public class Castle_Item_View_Manager : MonoBehaviour
     private Castle_Logic_Manager _castle;
     public bool tradeGeld = false; 
 
+    private bool _isRoster = false;
+
     private void OnEnable()
     {
         _castle = FindObjectOfType<Castle_Logic_Manager>();
@@ -132,10 +134,11 @@ public class Castle_Item_View_Manager : MonoBehaviour
         }
     }
 
-    public void ChooseItem()
+    public void ChooseItem(bool _Roster = false)
     {
         this.gameObject.SetActive(true);
         ClearButtons();
+        _isRoster = _Roster;
         main.text = "Which item will you view?";
         done3_button.SetActive(true);
         for (int i = 0; i < 8; i++)
@@ -224,9 +227,18 @@ public class Castle_Item_View_Manager : MonoBehaviour
         }
         main.text = _txt;
         ClearButtons();
-        trade_button.SetActive(true);
-        drop_button.SetActive(true);
-        done1_button.SetActive(true);
+        if (!_isRoster)
+        {
+            trade_button.SetActive(true);
+            drop_button.SetActive(true);
+            done1_button.SetActive(true);
+        }
+        else
+        {
+            trade_button.SetActive(false);
+            drop_button.SetActive(false);
+            done1_button.SetActive(true);
+        }
     }
     public void ShowMagic()
     {

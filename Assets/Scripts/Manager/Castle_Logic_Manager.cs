@@ -100,7 +100,7 @@ public class Castle_Logic_Manager : MonoBehaviour
             }
             if (CurrentPage == 2)
             {
-                _display.Character_Sheet.gameObject.SetActive(true);
+                _display.Character_Sheet.ShowCharacterSheet();
             }
         }
 
@@ -198,7 +198,7 @@ public class Castle_Logic_Manager : MonoBehaviour
                     "      themselves.";
             _input.SetButton(0, "Create New Character", "create_character");
             _input.SetButton(2, "Review Roster of Characters", "review_roster");
-            _input.SetButton(4, "View a Roster Character", "view_roster_character");
+            _input.SetButton(4, "View Character Details", "view_roster_character");
             _input.SetButton(9, "Leave Training Ground", "goto_street");
         }
 
@@ -236,9 +236,7 @@ public class Castle_Logic_Manager : MonoBehaviour
             string _roster = "Roster\n------------\n";
             for (int i = 0; i < GameManager.ROSTER.Count; i++)
             {
-                _roster += GameManager.ROSTER[i].name + " level " + GameManager.ROSTER[i].level + " " + 
-                    GameManager.ROSTER[i].race + " " + GameManager.ROSTER[i].character_class + " (" + 
-                    GameManager.ROSTER[i].status + ") ";
+                _roster += GameManager.ROSTER[i].name + " (" + GameManager.ROSTER[i].status + ") ";
                 if (GameManager.ROSTER[i].location == BlobberEngine.Enum._Locaton.Dungeon ||
                     GameManager.ROSTER[i].location == BlobberEngine.Enum._Locaton.Party) _roster += "out";
                 _roster += "\n";
@@ -547,6 +545,64 @@ public class Castle_Logic_Manager : MonoBehaviour
         if (_text == "cant_heal")
         {
             _display.Trade_Panel.HealScreen();
+            return;
+        }
+
+        //Trainer
+        if(_text == "view_roster_character")
+        {
+            _display.TextInput_Panel.Show_Text_Input_Panel("ENTER NAME", "trainer_view_input:");
+            
+        }
+        if (_text.Contains("TRAINER_VIEW_INPUT:"))
+        {
+            _text = _text.Replace("TRAINER_VIEW_INPUT:", "");
+            _text = _text.ToUpper();
+
+            //search the roster for a match
+            bool _found = false;
+            for (int i = 0; i < GameManager.ROSTER.Count; i++)
+            {
+                string _RosterName = GameManager.ROSTER[i].name.ToUpper();
+                if (_text == _RosterName)
+                {
+                    _found = true;
+                    Selected_Character = GameManager.ROSTER[i];
+                    Selected_Roster_Slot = i;
+                }
+            }
+            if (_found)
+            {
+                _display.Character_Sheet.ShowCharacterSheet(true);
+                return;
+            }
+            else
+            {
+                _display.PopUp_Panel.Show_Message("No Character by that name.");
+                return;
+            }
+        }
+        if (_text.Contains("RENAME_CHARACTER:"))
+        {
+            _text = _text.Replace("RENAME_CHARACTER:", "");
+            _text = _text.ToUpper();
+            //search the roster for a match
+            bool _found = false;
+            for (int i = 0; i < GameManager.ROSTER.Count; i++)
+            {
+                string _RosterName = GameManager.ROSTER[i].name.ToUpper();
+                if (_text == _RosterName)
+                    _found = true;
+            }
+            if (_found)
+            {
+                _display.PopUp_Panel.Show_Message("Another character already has that name!");
+            }
+            else
+            {
+                Selected_Character.name = _text;
+            }
+            _display.Character_Sheet.ShowCharacterSheet(true);
             return;
         }
     }

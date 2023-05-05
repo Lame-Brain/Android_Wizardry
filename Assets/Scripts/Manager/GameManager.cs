@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
         //PARTY.LookUp_PartyMember(0).level = 1;
         //PARTY.LookUp_PartyMember(0).HP = 100;
         //PARTY.LookUp_PartyMember(0).HP_MAX = 205;
-        PARTY.LookUp_PartyMember(0).Geld = 50000;
+        //PARTY.LookUp_PartyMember(0).Geld = 50000;
         PARTY.LookUp_PartyMember(0).Inventory[0] = new Item(1, false, false, true);
         PARTY.LookUp_PartyMember(0).Inventory[1] = new Item(1, false, false, false);
         PARTY.LookUp_PartyMember(0).Inventory[2] = new Item(7, false, false, false);
@@ -207,25 +207,26 @@ public class GameManager : MonoBehaviour
         PARTY.LookUp_PartyMember(0).Inventory[4] = new Item(14, false, false, true);
         PARTY.LookUp_PartyMember(0).Inventory[5] = new Item(39, false, false, false);
         PARTY.LookUp_PartyMember(0).Inventory[6] = new Item(32, false, false, false);
-        PARTY.LookUp_PartyMember(0).mageSpells[0] = 9;
-        PARTY.LookUp_PartyMember(0).priestSpells[0] = 9;
-        for (int i = 0; i < SPELL.Count; i++)
-            PARTY.LookUp_PartyMember(0).SpellKnown[i] = true;
+        //PARTY.LookUp_PartyMember(0).mageSpells[0] = 9;
+        //PARTY.LookUp_PartyMember(0).priestSpells[0] = 9;
+        //for (int i = 0; i < SPELL.Count; i++)
+        //    PARTY.LookUp_PartyMember(0).SpellKnown[i] = true;
 
         Debug.Log(PARTY.LookUp_PartyMember(0).name + " has " + PARTY.LookUp_PartyMember(0).HP + " / " + PARTY.LookUp_PartyMember(0).HP_MAX);
 
 
-        for (int i = 0; i < 25; i++)
-        {
-            Character_Class _new = new Character_Class();
-            _new.name = "NewToon" + (i + 6);
-            int _R = Random.Range(0, 4);
-            if (_R == 0) { _new.status = Enum._Status.plyze; }
-            if (_R == 1) { _new.status = Enum._Status.stoned; }
-            if (_R == 2) { _new.status = Enum._Status.dead; }
-            if (_R == 3) { _new.status = Enum._Status.ashes; }
-            ROSTER.Add(_new);
-        }
+        //for (int i = 0; i < 25; i++)
+        //{
+        //    Character_Class _new = new Character_Class();
+        //    _new.name = "NewToon" + (i + 6);
+        //    int _R = Random.Range(0, 4);
+        //   if (_R == 0) { _new.status = Enum._Status.plyze; }
+        //    if (_R == 1) { _new.status = Enum._Status.stoned; }
+        //    if (_R == 2) { _new.status = Enum._Status.dead; }
+        //    if (_R == 3) { _new.status = Enum._Status.ashes; }
+        //    ROSTER.Add(_new);
+        //}
+
         //DEBUG
     }
 

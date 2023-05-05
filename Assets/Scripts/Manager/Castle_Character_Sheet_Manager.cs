@@ -6,10 +6,13 @@ using TMPro;
 public class Castle_Character_Sheet_Manager : MonoBehaviour
 {
     public TextMeshProUGUI body, equip_button, viewItem_button, readMagic_button, tradeGeld_button, back_button;
+    public GameObject Equip_Button_GO, ViewItem_Button_GO, ReadMagic_Button_GO, TradeGeld_Button_GO, Rename_Button_GO, Delete_Button_GO;
     public GameObject Equip_Flow_Panel;
     public GameObject View_Item_Panel;
 
     private Castle_Logic_Manager _castle;
+    private Castle_Display_Manager _display;
+    private bool _isRoster = false;
 
     private void OnEnable()
     {        
@@ -21,8 +24,14 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         back_button.fontSize = GameManager.FONT;
         _castle = FindObjectOfType<Castle_Logic_Manager>();
         //_input = FindObjectOfType<Castle_Button_Manager>();
-        //_display = FindObjectOfType<Castle_Display_Manager>();
+        _display = FindObjectOfType<Castle_Display_Manager>();
         //_party = FindObjectOfType<Party_Class>();
+    }
+
+    public void ShowCharacterSheet(bool _isRosterCharacter = false)
+    {
+        this.gameObject.SetActive(true);
+        _isRoster = _isRosterCharacter;
 
         string _txt = _castle.Selected_Character.name + " " + _castle.Selected_Character.race.ToString() + " " + _castle.Selected_Character.alignment.ToString()[0] + "-" + _castle.Selected_Character.character_class.ToString() + " ";
         if (_castle.Selected_Character.Trebor_Honor_Guard) _txt += ">";
@@ -73,7 +82,7 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         if (_castle.Selected_Character.HP > 99 && _castle.Selected_Character.HP < 1000) _txt += " ";
         if (_castle.Selected_Character.HP > 9 && _castle.Selected_Character.HP < 100) _txt += "  ";
         if (_castle.Selected_Character.HP < 10) _txt += "   ";
-        
+
         _txt += _castle.Selected_Character.HP.ToString();
 
         _txt += "/" + _castle.Selected_Character.HP_MAX;
@@ -82,7 +91,7 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         if (_castle.Selected_Character.HP_MAX > 99 && _castle.Selected_Character.HP_MAX < 1000) _txt += "";
         if (_castle.Selected_Character.HP_MAX > 9 && _castle.Selected_Character.HP_MAX < 100) _txt += " ";
         if (_castle.Selected_Character.HP_MAX < 10) _txt += "  ";
-        
+
 
         _txt += "   AC ";
         if (_castle.Selected_Character.ArmorClass < -9) _txt += "LO";
@@ -144,6 +153,26 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         _txt += _18inv[6] + _18inv[7] + "\n\n";
         _txt = _txt.ToUpper();
         body.text = _txt;
+
+        if (!_isRosterCharacter)
+        {
+            Equip_Button_GO.SetActive(true);
+            ViewItem_Button_GO.SetActive(true);
+            ReadMagic_Button_GO.SetActive(true);
+            TradeGeld_Button_GO.SetActive(true);
+            Rename_Button_GO.SetActive(false);
+            Delete_Button_GO.SetActive(false);
+        }
+
+        if (_isRosterCharacter)
+        {
+            Equip_Button_GO.SetActive(false);
+            ViewItem_Button_GO.SetActive(true);
+            ReadMagic_Button_GO.SetActive(true);
+            TradeGeld_Button_GO.SetActive(false);
+            Rename_Button_GO.SetActive(true);
+            Delete_Button_GO.SetActive(true);
+        }
     }
 
     public void Button(string _command)
@@ -161,7 +190,7 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         if (_command == "Items")
         {
             View_Item_Panel.SetActive(true);
-            FindObjectOfType<Castle_Item_View_Manager>().ChooseItem();
+            FindObjectOfType<Castle_Item_View_Manager>().ChooseItem(_isRoster);
         }
         if (_command == "Magic")
         {
@@ -173,6 +202,11 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
             View_Item_Panel.SetActive(true);
             FindObjectOfType<Castle_Item_View_Manager>().tradeGeld = true;
             FindObjectOfType<Castle_Item_View_Manager>().ChoosePartyMember();
+        }
+        if ( _command == "Rename")
+        {
+            _display.TextInput_Panel.Show_Text_Input_Panel("Enter new name for this character", "RENAME_CHARACTER:");
+            return;
         }
     }
 }
