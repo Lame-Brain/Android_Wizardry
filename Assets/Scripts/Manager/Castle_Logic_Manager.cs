@@ -607,6 +607,10 @@ public class Castle_Logic_Manager : MonoBehaviour
         }
     }
 
+    public void CreateCharacter()
+    {
+
+    }
 
     #region LEVEL_UP
 
