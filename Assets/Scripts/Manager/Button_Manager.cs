@@ -6,6 +6,7 @@ public class Button_Manager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI myName;
     public string command;
+    public bool isCamp = false;
     
     public void UpdateButton(string name, string _command)
     {
@@ -17,6 +18,7 @@ public class Button_Manager : MonoBehaviour
 
     public void PushButton()
     {
-        FindObjectOfType<Castle_Button_Manager>().Button_Press_Received(command);
+        if(!isCamp) FindObjectOfType<Castle_Button_Manager>().Button_Press_Received(command);
+        //if(isCamp) 
     }
 }
