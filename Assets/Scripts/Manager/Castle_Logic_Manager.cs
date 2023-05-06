@@ -12,6 +12,7 @@ public class Castle_Logic_Manager : MonoBehaviour
     [HideInInspector] public Item Selected_Item;
     [HideInInspector] public Item_Class Selected_Item_Class;
     [HideInInspector] public int Selected_Party_Slot, Other_Party_Slot, Selected_Roster_Slot, Other_Roster_Slot, Selected_Inventory_Slot, Selected_Item_Index;
+    public GameObject Character_Generator_Flow;
 
     private Castle_Button_Manager _input;
     private Castle_Display_Manager _display;
@@ -605,11 +606,10 @@ public class Castle_Logic_Manager : MonoBehaviour
             _display.Character_Sheet.ShowCharacterSheet(true);
             return;
         }
-    }
-
-    public void CreateCharacter()
-    {
-
+        if(_text == "create_character")
+        {
+            Character_Generator_Flow.SetActive(true);
+        }
     }
 
     #region LEVEL_UP

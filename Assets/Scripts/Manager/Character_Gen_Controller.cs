@@ -69,7 +69,6 @@ public class Character_Gen_Controller : MonoBehaviour
     }
     private void OnDisable()
     {
-        GameObject.FindGameObjectWithTag("Button_Block_Panel").SetActive(false);
     }
 
     public void Update_Screen()
