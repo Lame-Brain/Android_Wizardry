@@ -49,6 +49,8 @@ public class Character_Gen_Controller : MonoBehaviour
         str_minus.fontSize = _FS;
         IQ_plus.fontSize = _FS;
         IQ_minus.fontSize = _FS;
+        Pie_plus.fontSize = _FS;
+        Pie_minus.fontSize = _FS;
         Vit_plus.fontSize = _FS;
         Vit_minus.fontSize = _FS;
         Agi_plus.fontSize = _FS;
