@@ -228,7 +228,7 @@ public class Character_Gen_Controller : MonoBehaviour
         _name = _val.ToUpper();
         Name_Text.text = "Tap Next to continue.";
         for (int i = 0; i < GameManager.ROSTER.Count; i++)
-            if (_name == GameManager.ROSTER[i].name.ToUpper())
+            if (_name == GameManager.ROSTER[i].name.ToUpper() || _name == "")
             {
                 good_name = false;
                 Name_Text.text = "That name is Taken, please enter another.";
@@ -562,7 +562,7 @@ public class Character_Gen_Controller : MonoBehaviour
                 New_Character.Save_vs_Spell -= 3;
                 break;
         }
-        New_Character.HP_MAX = Random.Range(0, New_Character.hitDiceSides) + 1; //roll max hp
+        New_Character.HP_MAX = New_Character.hitDiceSides; //roll max hp
         if (New_Character.Vitality == 3) New_Character.HP_MAX -= 2; //Adjust for vitality
         if (New_Character.Vitality == 4 || New_Character.Vitality == 5) New_Character.HP_MAX --;
         if (New_Character.Vitality == 16) New_Character.HP_MAX ++;
@@ -586,7 +586,8 @@ public class Character_Gen_Controller : MonoBehaviour
 
         //WRITE THIS CHARACTER TO THE ROSTER
         GameManager.ROSTER.Add(New_Character);
-        //GameManager.SaveGame();
+        Debug.Log(New_Character.Save_Character());
+        GameManager.instance.SaveGame();
         this.gameObject.SetActive(false);
     }
 }

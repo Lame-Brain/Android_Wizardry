@@ -167,9 +167,42 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void MakeDefaultRoster()
+    {
+        Character_Class fighter1 = new Character_Class();
+        fighter1.Load_Character("19,5,18,27,18,15,20,8,0,0,0,0,0,0,0,0,0,1,1,1,1216,0,-4,0,0,0,0,133,-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;,1,0,1000,10,10,10,10,0,0,1,2,0,0,0,0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,11,8,5,15,8,9,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;,");
+        Character_Class fighter2 = new Character_Class();
+        fighter2.Load_Character("2,1,19,8,0,0,0,0,0,0,0,0,0,0,0,0,0,3,1,2,1072,0,-3,0,-4,0,0,176,-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;,1,0,1000,13,13,10,10,0,0,1,2,0,0,0,0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,11,7,10,18,5,6,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;,");
+        Character_Class priest = new Character_Class();
+        priest.Load_Character("6,1,20,8,5,18,27,7,9,12,0,0,0,0,0,0,0,1,3,1,1020,0,-1,0,0,-3,0,135,-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;,1,0,1050,8,8,8,10,0,0,1,2,0,0,0,0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,8,8,11,10,8,9,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,2;0;0;0;0;0;0;,0;0;0;0;0;0;0;,1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;,");
+        Character_Class thief = new Character_Class();
+        thief.Load_Character("16,5,16,16,19,0,0,0,0,0,0,0,0,0,0,0,0,5,4,2,1168,0,0,0,-3,0,-3,131,-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;,1,0,900,6,6,6,10,0,0,1,2,0,0,0,0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,7,7,7,10,11,18,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;,");
+        Character_Class mage = new Character_Class();
+        mage.Load_Character("20,1,20,20,5,18,19,0,0,0,0,0,0,0,0,0,0,2,2,2,1090,0,0,-2,0,0,-3,121,-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;,1,0,1100,4,4,4,10,0,0,2,1,0,0,0,0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,7,18,10,6,9,17,2;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;,");
+        Character_Class bishop = new Character_Class();
+        bishop.Load_Character("9,19,5,14,0,0,0,0,0,0,0,0,0,0,0,0,0,4,5,1,1000,0,0,-2,0,-4,-2,95,-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;-1||0||0||0||;,1,0,1000,6,6,6,10,0,0,1,2,0,0,0,0,-1,-1,-1,-1,-1,-1,0,0,0,0,0,7,12,12,8,10,9,2;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;,0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;,");
+        ROSTER.Add(fighter1);
+        ROSTER.Add(fighter2); 
+        ROSTER.Add(priest);
+        ROSTER.Add(thief); 
+        ROSTER.Add(mage);
+        ROSTER.Add(bishop);
+
+        //DEBUG
+        for (int i = 0; i < 6; i++)
+        {
+            PARTY.AddMember(i);
+        }
+        //DEBUG
+    }
+
     public void LoadGame()
     {
-        if (!File.Exists(Application.persistentDataPath + "/Roster.wiz")) return;
+        if (!File.Exists(Application.persistentDataPath + "/Roster.wiz"))
+        {
+            MakeDefaultRoster();
+            return;
+        }
 
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
         FileStream file = File.Open(Application.persistentDataPath + "/Roster.wiz", FileMode.Open);
@@ -181,6 +214,10 @@ public class GameManager : MonoBehaviour
         {
             Character_Class _newToon = new Character_Class();
             _newToon.Load_Character(sd.SG_ROSTER[i]);
+
+            Debug.Log("This is " + _newToon.name);
+            Debug.Log(_newToon.Save_Character());
+
             ROSTER.Add(_newToon);
         }
         for (int z = 0; z < 10; z++) for (int y = 0; y < 20; y++) for (int x = 0; x < 20; x++)
@@ -189,45 +226,26 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < sd.SG_BoltacStock.Length; i++)
             PARTY.BoltacStock[i] = sd.SG_BoltacStock[i];
         PARTY.mem = sd.SG_mem;
+    }
 
-        //DEBUG
-        for (int i = 0; i < 6; i++)
-        {
-            PARTY.AddMember(i);
-        }
-        PARTY.LookUp_PartyMember(0).xp = 1500;
-        //PARTY.LookUp_PartyMember(0).level = 1;
-        //PARTY.LookUp_PartyMember(0).HP = 100;
-        //PARTY.LookUp_PartyMember(0).HP_MAX = 205;
-        //PARTY.LookUp_PartyMember(0).Geld = 50000;
-        PARTY.LookUp_PartyMember(0).Inventory[0] = new Item(1, false, false, true);
-        PARTY.LookUp_PartyMember(0).Inventory[1] = new Item(1, false, false, false);
-        PARTY.LookUp_PartyMember(0).Inventory[2] = new Item(7, false, false, false);
-        PARTY.LookUp_PartyMember(0).Inventory[3] = new Item(10, false, false, true);
-        PARTY.LookUp_PartyMember(0).Inventory[4] = new Item(14, false, false, true);
-        PARTY.LookUp_PartyMember(0).Inventory[5] = new Item(39, false, false, false);
-        PARTY.LookUp_PartyMember(0).Inventory[6] = new Item(32, false, false, false);
-        //PARTY.LookUp_PartyMember(0).mageSpells[0] = 9;
-        //PARTY.LookUp_PartyMember(0).priestSpells[0] = 9;
-        //for (int i = 0; i < SPELL.Count; i++)
-        //    PARTY.LookUp_PartyMember(0).SpellKnown[i] = true;
+    public void SaveGame()
+    {
+        System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        if (File.Exists(Application.persistentDataPath + "/Roster.wiz")) File.Delete(Application.persistentDataPath + "/Roster.wiz");
+        FileStream file = File.Create(Application.persistentDataPath + "/Roster.wiz");
 
-        Debug.Log(PARTY.LookUp_PartyMember(0).name + " has " + PARTY.LookUp_PartyMember(0).HP + " / " + PARTY.LookUp_PartyMember(0).HP_MAX);
+        Save_Game_Class SaveGame = new Save_Game_Class(ITEM.Count);
+        for (int i = 0; i < ROSTER.Count; i++) SaveGame.SG_ROSTER.Add(ROSTER[i].Save_Character());
+        for (int z = 0; z < 10; z++)
+            for (int y = 0; y < 20; y++)
+                for (int x = 0; x < 20; x++)
+                    SaveGame.SG_map[x, y, z] = PARTY.tile_visited[x, y, z];
+        SaveGame.SG_TempleFavor = PARTY.Temple_Favor;
+        for (int i = 0; i < ITEM.Count; i++) SaveGame.SG_BoltacStock[i] = PARTY.BoltacStock[i];
+        SaveGame.SG_mem = PARTY.mem;
 
-
-        //for (int i = 0; i < 25; i++)
-        //{
-        //    Character_Class _new = new Character_Class();
-        //    _new.name = "NewToon" + (i + 6);
-        //    int _R = Random.Range(0, 4);
-        //   if (_R == 0) { _new.status = Enum._Status.plyze; }
-        //    if (_R == 1) { _new.status = Enum._Status.stoned; }
-        //    if (_R == 2) { _new.status = Enum._Status.dead; }
-        //    if (_R == 3) { _new.status = Enum._Status.ashes; }
-        //    ROSTER.Add(_new);
-        //}
-
-        //DEBUG
+        bf.Serialize(file, SaveGame);
+        file.Close();
     }
 
 }
