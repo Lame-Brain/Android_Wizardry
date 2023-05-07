@@ -19,6 +19,6 @@ public class Button_Manager : MonoBehaviour
     public void PushButton()
     {
         if(!isCamp) FindObjectOfType<Castle_Button_Manager>().Button_Press_Received(command);
-        //if(isCamp) 
+        if(isCamp) FindObjectOfType<Camp_Logic_Manager>().Button_Press_Received(command);
     }
 }

@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         LoadGame();
 
         if(FindObjectOfType<Castle_Logic_Manager>()) FindObjectOfType<Castle_Logic_Manager>().StartCastle();
+        if(FindObjectOfType<Dungeon_Logic_Manager>()) FindObjectOfType<Dungeon_Logic_Manager>().StartDungeon();
     }
 
     private void LoadCSVs()
