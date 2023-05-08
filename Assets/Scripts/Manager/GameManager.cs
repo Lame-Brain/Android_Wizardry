@@ -229,6 +229,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < sd.SG_BoltacStock.Length; i++)
             PARTY.BoltacStock[i] = sd.SG_BoltacStock[i];
         PARTY.mem = sd.SG_mem;
+
+        //DEBUG
+        PARTY.AddMember(0);
+        PARTY.AddMember(1);
+        PARTY.AddMember(2);
+        PARTY.AddMember(3);
+        PARTY.AddMember(4);
+        PARTY.AddMember(5);
+        //DEBUG
     }
 
     public void SaveGame()

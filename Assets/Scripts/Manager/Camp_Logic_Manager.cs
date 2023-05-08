@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class Camp_Logic_Manager : MonoBehaviour
 {
-    public enum Camp_Logic_States { main = 0, reorder_party }
+    public enum Camp_Logic_States { main = 0, reorder_party = 1, choose_member = 3 }
     public Camp_Logic_States state;
     public Button_Manager[] button;
     public TMPro.TextMeshProUGUI Message;
 
+    public GameObject CharacterSheet;
 
     private List<int> _toons = new List<int>();
     private List<int> _newParty = new List<int>();
+
+    public Character_Class Selected_Character, Other_Character;
+    public int Selected_Party_Slot, Selected_Roster_Slot, Selected_Inventory_Slot, Other_Party_Slot, Other_Roster_Slot, Other_Inventory_Slot;
+    public Item_Class Selected_Item_Class;
+    public Item Selected_Item;
 
     private void OnEnable()
     {
@@ -123,6 +129,14 @@ public class Camp_Logic_Manager : MonoBehaviour
             SetButton(10, "Cancel", "cancel");
         }
 
+        if(state == Camp_Logic_States.choose_member)
+        {
+            _output += "Which Party Member?";
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i)) SetButton(i, GameManager.PARTY.LookUp_PartyMember(i).name, "choose_member:" + i);
+            SetButton(10, "Cancel", "cancel");
+        }
+
         //output the string
         _output = _output.ToUpper();
         _output = _output.Replace("[D]", "d");
@@ -134,7 +148,7 @@ public class Camp_Logic_Manager : MonoBehaviour
     public void Button_Press_Received(string _command)
     {
 
-        if(_command == "cancel")
+        if (_command == "cancel")
         {
             state = Camp_Logic_States.main;
             UpdateScreen();
@@ -180,6 +194,28 @@ public class Camp_Logic_Manager : MonoBehaviour
                 }
                 UpdateScreen();
                 return;
+            }
+        }
+
+        if (_command == "inspect_member")
+        {
+            state = Camp_Logic_States.choose_member;
+            UpdateScreen();
+            return;
+        }
+
+        if (_command.Contains("choose_member:"))
+        {
+            _command = _command.Replace("choose_member:", "");
+            int _chosen1 = -1;
+            int.TryParse(_command, out _chosen1);
+            if (_chosen1 > -1)
+            {
+                Selected_Party_Slot = _chosen1;
+                Selected_Character = GameManager.PARTY.LookUp_PartyMember(_chosen1);
+                Selected_Roster_Slot = GameManager.PARTY.Get_Roster_Index(_chosen1);
+                state = Camp_Logic_States.main;
+                //CharacterSheet.SetActive(true);
             }
         }
     }

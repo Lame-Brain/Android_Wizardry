@@ -19049,6 +19049,8 @@ MonoBehaviour:
   viewItem_button: {fileID: 888596980}
   readMagic_button: {fileID: 1035816515}
   tradeGeld_button: {fileID: 1883528551}
+  rename_button: {fileID: 2054639530}
+  delete_button: {fileID: 1450381530}
   back_button: {fileID: 1666083078}
   Equip_Button_GO: {fileID: 378907823}
   ViewItem_Button_GO: {fileID: 1099775385}

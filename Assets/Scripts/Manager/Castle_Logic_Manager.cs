@@ -249,7 +249,20 @@ public class Castle_Logic_Manager : MonoBehaviour
         //Add member to party
         if(_text == "add_party_member")
         {
-            _display.TextInput_Panel.Show_Text_Input_Panel("ENTER NAME", "add_party_input:");
+            //Room for one more?
+            bool _room = false;
+            for (int i = 0; i < 6; i++)
+                if (GameManager.PARTY.EmptySlot(i))
+                    _room = true;
+
+            if (_room)
+            {
+                _display.TextInput_Panel.Show_Text_Input_Panel("ENTER NAME", "add_party_input:");
+            }
+            else
+            {
+                _display.PopUp_Panel.Show_Message("Party is full already");
+            }
         }
         if (_text.Contains("ADD_PARTY_INPUT:"))
         {

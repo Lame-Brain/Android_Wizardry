@@ -5,7 +5,7 @@ using TMPro;
 
 public class Castle_Character_Sheet_Manager : MonoBehaviour
 {
-    public TextMeshProUGUI body, equip_button, viewItem_button, readMagic_button, tradeGeld_button, back_button;
+    public TextMeshProUGUI body, equip_button, viewItem_button, readMagic_button, tradeGeld_button, rename_button, delete_button, back_button;
     public GameObject Equip_Button_GO, ViewItem_Button_GO, ReadMagic_Button_GO, TradeGeld_Button_GO, Rename_Button_GO, Delete_Button_GO;
     public GameObject Equip_Flow_Panel;
     public GameObject View_Item_Panel;
@@ -22,10 +22,10 @@ public class Castle_Character_Sheet_Manager : MonoBehaviour
         readMagic_button.fontSize = GameManager.FONT;
         tradeGeld_button.fontSize = GameManager.FONT;
         back_button.fontSize = GameManager.FONT;
+        rename_button.fontSize = GameManager.FONT;
+        delete_button.fontSize = GameManager.FONT;  
         _castle = FindObjectOfType<Castle_Logic_Manager>();
-        //_input = FindObjectOfType<Castle_Button_Manager>();
         _display = FindObjectOfType<Castle_Display_Manager>();
-        //_party = FindObjectOfType<Party_Class>();
     }
 
     public void ShowCharacterSheet(bool _isRosterCharacter = false)
