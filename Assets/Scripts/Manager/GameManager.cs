@@ -190,10 +190,12 @@ public class GameManager : MonoBehaviour
         ROSTER.Add(bishop);
 
         //DEBUG
-        for (int i = 0; i < 6; i++)
-        {
-            PARTY.AddMember(i);
-        }
+        PARTY.AddMember(0);
+        PARTY.AddMember(1);
+        PARTY.AddMember(2);
+        PARTY.AddMember(3);
+        PARTY.AddMember(4);
+        PARTY.AddMember(5);
         //DEBUG
     }
 

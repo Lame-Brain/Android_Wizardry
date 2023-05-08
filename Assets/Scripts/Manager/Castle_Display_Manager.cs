@@ -51,7 +51,7 @@ public class Castle_Display_Manager : MonoBehaviour
                 string _stat = me.status.ToString();
                 if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hpMax;
 
-                _partyText[i] = " 1 " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
+                _partyText[i] = " " + i + " " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
                     me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
                     _ac + " " + _hp + " " + _stat + "\n";
             }

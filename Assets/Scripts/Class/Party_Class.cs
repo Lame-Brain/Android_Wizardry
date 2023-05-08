@@ -65,4 +65,14 @@ public class Party_Class : MonoBehaviour
             Party[i + 1] = -1;
         }
     }
+
+    public void OverRide_PartySlots(int _PartySlot1, int _PartySlot2, int _PartySlot3, int _PartySlot4, int _PartySlot5, int _PartySlot6)
+    {
+        Party[0] = _PartySlot1;
+        Party[1] = _PartySlot2;
+        Party[2] = _PartySlot3;
+        Party[3] = _PartySlot4;
+        Party[4] = _PartySlot5;
+        Party[5] = _PartySlot6;
+    }
 }
