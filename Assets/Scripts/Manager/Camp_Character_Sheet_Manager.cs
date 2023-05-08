@@ -99,7 +99,15 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         { _txt += "        LUCK  " + _camp.Selected_Character.Luck + "  STATUS "; }
         else
         { _txt += "        LUCK " + _camp.Selected_Character.Luck + "  STATUS "; }
-        _txt += _camp.Selected_Character.status.ToString() + "\n\n";
+        if (_camp.Selected_Character.status == BlobberEngine.Enum._Status.OK && _camp.Selected_Character.Poison > 0)
+        {
+            _txt += "Poisoned \n\n";
+        }
+        else
+        {
+            _txt += _camp.Selected_Character.status.ToString() + "\n\n";
+        }
+            
 
         //Spells
         int[] _temp = new int[7];
@@ -170,9 +178,28 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         }
         if (_button == 3)
         {
+
+        }
+        if (_button == 4)
+        {
             if(_camp.Selected_Character.character_class != BlobberEngine.Enum._Class.bishop)
             {
                 _camp.PopUP.Show_Message("Only bishops can identify items this way!");
+                return;
+            }
+
+            bool _itemsToIdentify = false;
+            for (int i = 0; 8 < _camp.Selected_Character.Inventory.Length; i++)
+            {
+                if (_camp.Selected_Character.Inventory[i].index > -1 &&
+                    !_camp.Selected_Character.Inventory[i].identified)
+                    _itemsToIdentify = true;
+                    
+            }
+
+            if (!_itemsToIdentify)
+            {
+                _camp.PopUP.Show_Message("Nothing to identify");
                 return;
             }
 
@@ -203,10 +230,6 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
             if (!_didItWork && _didItCrit) _camp.PopUP.Show_Message("You failed to Identify items, but encountered a curse!");
             if (!_didItWork && !_didItCrit) _camp.PopUP.Show_Message("You failed to Identify items");
             return;
-        }
-        if ( _button == 4)
-        {
-
         }
         if (_button == 99) // Leave
         {             

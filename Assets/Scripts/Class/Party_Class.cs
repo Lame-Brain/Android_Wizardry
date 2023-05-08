@@ -12,6 +12,10 @@ public class Party_Class : MonoBehaviour
 
     public bool _MakeCampOnLoad;
     public Vector3Int _PartyXYL;
+    public int Party_Shield_Bonus = 0;
+    public int Party_Light_Timer = 0;
+    public bool MAPORFIC = false;
+    public bool inBattle = false;
 
     private int[] Party;
     private Enum._Alignment PartyAlign;
@@ -40,6 +44,26 @@ public class Party_Class : MonoBehaviour
     {
         int _result = -1;
         if (!EmptySlot(_partySlot)) _result = Party[_partySlot];        
+        return _result;
+    }
+    public int Get_Party_Index (Character_Class _me)
+    {
+        int _result = -1;
+        for (int i = 0; i < 6; i++)
+        {
+            if(!EmptySlot(i) && GameManager.ROSTER[Party[i]] == _me)
+                _result = i;
+        }        
+        return _result;
+    }
+    public int Get_Party_Index (int _rosterIndex)
+    {
+        int _result = -1;
+        for (int i = 0; i < 6; i++)
+        {
+            if(!EmptySlot(i) && Party[i] == _rosterIndex)
+                _result = i;
+        }        
         return _result;
     }
     public Character_Class LookUp_PartyMember(int _n)

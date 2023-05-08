@@ -84,7 +84,8 @@ public class Camp_Logic_Manager : MonoBehaviour
 
                 //Status replacment, for spacing
                 string _stat = me.status.ToString();
-                if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hpMax;
+                if (me.status == BlobberEngine.Enum._Status.OK && me.Poison != 0) _stat = "POISON";
+                if (me.status == BlobberEngine.Enum._Status.OK && me.Poison == 0) _stat = _hpMax;
 
                 _partyText[i] = " " + (i+1) + " " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
                     me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +

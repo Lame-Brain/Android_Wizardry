@@ -25,6 +25,7 @@ public class Character_Class
     public int ArmorClass;
     public int heal_points;
     public bool crit_hit;
+    public int Poison;
     public int swing_count;
     public Dice hit_dam;
     public Vector3Int lostXYL;
