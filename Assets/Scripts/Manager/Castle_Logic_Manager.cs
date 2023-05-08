@@ -209,14 +209,27 @@ public class Castle_Logic_Manager : MonoBehaviour
     public void ReceiveButtonPress(string _text)
     {
         //NAVIGATION
-        if(_text.Contains("goto"))
+        if (_text.Contains("goto"))
         {
             CurrentScreen = Screen.Street;
-            if(_text == "goto_tavern") CurrentScreen = Screen.Tavern;
-            if(_text == "goto_inn") CurrentScreen = Screen.Inn;
-            if(_text == "goto_trader") CurrentScreen = Screen.Trader;
-            if(_text == "goto_temple") CurrentScreen = Screen.Temple;
-            if(_text == "goto_trainer") CurrentScreen = Screen.Trainer;
+            if (_text == "goto_tavern") CurrentScreen = Screen.Tavern;
+            if (_text == "goto_inn") CurrentScreen = Screen.Inn;
+            if (_text == "goto_trader") CurrentScreen = Screen.Trader;
+            if (_text == "goto_temple") CurrentScreen = Screen.Temple;
+            if (_text == "goto_trainer") CurrentScreen = Screen.Trainer;
+            if (_text == "goto_maze")
+            {
+                if (GameManager.PARTY.EmptySlot(0))
+                {
+                    _display.PopUp_Panel.Show_Message("You must gather a party before venturing forth!");
+                    return;
+                }
+                GameManager.PARTY._MakeCampOnLoad = true;
+                GameManager.PARTY._PartyXYL = new Vector3Int(0, 0, 1);
+                GameManager.instance.SaveGame();
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon");
+                return;
+            }
 
             Selected_Character = null;
             Selected_Item = null;

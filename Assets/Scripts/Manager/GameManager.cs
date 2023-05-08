@@ -242,12 +242,12 @@ public class GameManager : MonoBehaviour
         PARTY.mem = sd.SG_mem;
 
         //DEBUG
-        PARTY.AddMember(0);
-        PARTY.AddMember(1);
-        PARTY.AddMember(2);
-        PARTY.AddMember(3);
-        PARTY.AddMember(4);
-        PARTY.AddMember(5);
+        //PARTY.AddMember(0);
+        //PARTY.AddMember(1);
+        //PARTY.AddMember(2);
+        //PARTY.AddMember(3);
+        //PARTY.AddMember(4);
+        //PARTY.AddMember(5);
         //DEBUG
     }
 

@@ -8,6 +8,8 @@ public class Dungeon_Logic_Manager : MonoBehaviour
 
     public GameObject Camp_Screen, Light_Icon, Shield_Icon;
 
+    public Magic_Logic_Controller Magic;
+
     public void StartDungeon()
     {
         Message.fontSize = GameManager.FONT;

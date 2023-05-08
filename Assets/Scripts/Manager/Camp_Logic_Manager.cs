@@ -10,6 +10,8 @@ public class Camp_Logic_Manager : MonoBehaviour
     public TMPro.TextMeshProUGUI Message;
 
     public Camp_Character_Sheet_Manager CharacterSheet;
+    public Castle_Pop_Up_Manager PopUP;
+    public Magic_Logic_Controller Magic;
 
     private List<int> _toons = new List<int>();
     private List<int> _newParty = new List<int>();
@@ -19,8 +21,10 @@ public class Camp_Logic_Manager : MonoBehaviour
     public Item_Class Selected_Item_Class;
     public Item Selected_Item;
 
+    
+
     private void OnEnable()
-    {
+    {        
         Message.fontSize = GameManager.FONT;
         for (int i = 0; i < button.Length; i++)
             button[i].GetComponentInChildren<TMPro.TextMeshProUGUI>().fontSize = GameManager.FONT;
@@ -82,7 +86,7 @@ public class Camp_Logic_Manager : MonoBehaviour
                 string _stat = me.status.ToString();
                 if (me.status == BlobberEngine.Enum._Status.OK) _stat = _hpMax;
 
-                _partyText[i] = " " + i + " " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
+                _partyText[i] = " " + (i+1) + " " + _tmpNam + " " + me.alignment.ToString()[0] + "-" +
                     me.character_class.ToString()[0] + me.character_class.ToString()[1] + me.character_class.ToString()[2] + " " +
                     _ac + " " + _hp + " " + _stat + "\n";
             }

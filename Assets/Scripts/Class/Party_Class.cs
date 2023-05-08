@@ -10,6 +10,9 @@ public class Party_Class : MonoBehaviour
     public int[] BoltacStock;
     public string mem;
 
+    public bool _MakeCampOnLoad;
+    public Vector3Int _PartyXYL;
+
     private int[] Party;
     private Enum._Alignment PartyAlign;
 

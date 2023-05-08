@@ -5,8 +5,8 @@ using TMPro;
 
 public class Camp_Character_Sheet_Manager : MonoBehaviour
 {
-    public TextMeshProUGUI body, equip_button, viewItem_button, readMagic_button, back_button;
-    public GameObject Equip_Button_GO, ViewItem_Button_GO, ReadMagic_Button_GO;
+    public TextMeshProUGUI body, equip_button, viewItem_button, readMagic_button, back_button, cast_button, identify_button;
+    //public GameObject Equip_Button_GO, ViewItem_Button_GO, ReadMagic_Button_GO;
     public GameObject Equip_Flow_Panel;
     public GameObject View_Item_Panel;
 
@@ -19,6 +19,8 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         viewItem_button.fontSize = GameManager.FONT;
         readMagic_button.fontSize = GameManager.FONT;
         back_button.fontSize = GameManager.FONT;
+        cast_button.fontSize = GameManager.FONT;
+        identify_button.fontSize = GameManager.FONT;
         _camp = FindObjectOfType<Camp_Logic_Manager>();
     }
 
@@ -147,9 +149,9 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         _txt = _txt.ToUpper();
         body.text = _txt;
 
-        Equip_Button_GO.SetActive(true);
-        ViewItem_Button_GO.SetActive(true);
-        ReadMagic_Button_GO.SetActive(true);
+        //Equip_Button_GO.SetActive(true);
+        //ViewItem_Button_GO.SetActive(true);
+        //ReadMagic_Button_GO.SetActive(true);
     }
 
     public void ButtonPressed(int _button)
@@ -162,7 +164,51 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         {
             View_Item_Panel.GetComponent<Camp_Item_View_Manager>().ChooseItem();
         }
-        if (_button == 3) // Leave
+        if (_button == 2)
+        {
+            View_Item_Panel.GetComponent<Camp_Item_View_Manager>().ShowMagic();
+        }
+        if (_button == 3)
+        {
+            if(_camp.Selected_Character.character_class != BlobberEngine.Enum._Class.bishop)
+            {
+                _camp.PopUP.Show_Message("Only bishops can identify items this way!");
+                return;
+            }
+
+            bool _didItWork = false;
+            bool _didItCrit = false;
+            for (int i = 0; i < _camp.Selected_Character.Inventory.Length; i++)
+            {
+                if (_camp.Selected_Character.Inventory[i].index > -1 && !_camp.Selected_Character.Inventory[i].identified)
+                {
+                    int chance = (_camp.Selected_Character.level * 5) + 10;
+                    int roll = Random.Range(0, 100) + 1;
+                    int crit_fail_chance = 35 - (_camp.Selected_Character.level * 3);
+                    int crit_fail_roll = Random.Range(0, 100) + 1;
+                    if (roll <= chance)
+                    {
+                        _camp.Selected_Character.Inventory[i].identified = true;
+                        _didItWork = true;
+                    }
+                    if(crit_fail_roll <= crit_fail_chance)
+                    {
+                        _camp.Selected_Character.Inventory[i].curse_active = GameManager.ITEM[_camp.Selected_Character.Inventory[i].index].cursed;
+                        _didItCrit |= true;
+                    }
+                }
+            }
+            if (_didItWork && _didItCrit) _camp.PopUP.Show_Message("You Identified items, but encountered a curse!");
+            if (_didItWork && !_didItCrit) _camp.PopUP.Show_Message("You succeded in Identifying items");
+            if (!_didItWork && _didItCrit) _camp.PopUP.Show_Message("You failed to Identify items, but encountered a curse!");
+            if (!_didItWork && !_didItCrit) _camp.PopUP.Show_Message("You failed to Identify items");
+            return;
+        }
+        if ( _button == 4)
+        {
+
+        }
+        if (_button == 99) // Leave
         {             
             this.gameObject.SetActive(false);
         }
