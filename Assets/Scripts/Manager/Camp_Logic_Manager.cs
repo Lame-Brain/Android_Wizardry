@@ -9,13 +9,13 @@ public class Camp_Logic_Manager : MonoBehaviour
     public Button_Manager[] button;
     public TMPro.TextMeshProUGUI Message;
 
-    public GameObject CharacterSheet;
+    public Camp_Character_Sheet_Manager CharacterSheet;
 
     private List<int> _toons = new List<int>();
     private List<int> _newParty = new List<int>();
 
     public Character_Class Selected_Character, Other_Character;
-    public int Selected_Party_Slot, Selected_Roster_Slot, Selected_Inventory_Slot, Other_Party_Slot, Other_Roster_Slot, Other_Inventory_Slot;
+    public int Selected_Party_Slot, Selected_Roster_Slot, Selected_Inventory_Slot, Selected_Item_Index, Other_Party_Slot, Other_Roster_Slot, Other_Inventory_Slot;
     public Item_Class Selected_Item_Class;
     public Item Selected_Item;
 
@@ -40,8 +40,14 @@ public class Camp_Logic_Manager : MonoBehaviour
         button[_num].UpdateButton(_name, _command);
     }
 
+    public void RefreshCharacterSheet()
+    {
+        CharacterSheet.UpdateScreen();
+    }
+
     public void UpdateScreen()
     {
+        ClearButtons();
         //build party string
         string[] _partyText = new string[6];
         for (int i = 0; i < 6; i++)
@@ -215,9 +221,13 @@ public class Camp_Logic_Manager : MonoBehaviour
                 Selected_Character = GameManager.PARTY.LookUp_PartyMember(_chosen1);
                 Selected_Roster_Slot = GameManager.PARTY.Get_Roster_Index(_chosen1);
                 state = Camp_Logic_States.main;
-                //CharacterSheet.SetActive(true);
+                CharacterSheet.UpdateScreen();
             }
         }
-    }
 
+        if ( _command == "break_camp")
+        {
+            this.gameObject.SetActive(false);
+        }
+    }
 }

@@ -190,6 +190,17 @@ public class GameManager : MonoBehaviour
         ROSTER.Add(bishop);
 
         //DEBUG
+        ROSTER[0].Inventory[0] = new Item(1, false, false, true);
+        ROSTER[0].Inventory[1] = new Item(11, false, false, true);
+        ROSTER[0].Inventory[2] = new Item(8, false, false, true);
+        ROSTER[0].Inventory[3] = new Item(14, false, false, true);
+        ROSTER[1].Inventory[0] = new Item(1, false, false, true);
+        ROSTER[1].Inventory[1] = new Item(11, false, false, true);
+        ROSTER[1].Inventory[2] = new Item(8, false, false, true);
+        ROSTER[1].Inventory[3] = new Item(14, false, false, true);
+        ROSTER[2].Inventory[0] = new Item(3, false, false, true);
+        ROSTER[2].Inventory[1] = new Item(11, false, false, true);
+        ROSTER[2].Inventory[2] = new Item(8, false, false, true);
         PARTY.AddMember(0);
         PARTY.AddMember(1);
         PARTY.AddMember(2);

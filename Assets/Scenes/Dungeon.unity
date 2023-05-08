@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 348145}
   - component: {fileID: 348144}
   m_Layer: 5
-  m_Name: Button (5)
+  m_Name: Button (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -303,14 +303,14 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Character_Sheet_Manager, Assembly-CSharp
-          m_MethodName: Button
-          m_Mode: 5
+        - m_Target: {fileID: 2038235856}
+          m_TargetAssemblyTypeName: Camp_Character_Sheet_Manager, Assembly-CSharp
+          m_MethodName: ButtonPressed
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 3
             m_FloatArgument: 0
             m_StringArgument: Leave
             m_BoolArgument: 0
@@ -626,8 +626,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -834,8 +834,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -1097,194 +1097,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06e6d0cb70e9f014e82709fc9b7482f4, type: 3}
---- !u!1 &133660162
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 133660163}
-  - component: {fileID: 133660166}
-  - component: {fileID: 133660165}
-  - component: {fileID: 133660164}
-  m_Layer: 5
-  m_Name: InputField (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &133660163
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133660162}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2032565400}
-  m_Father: {fileID: 627310401}
-  m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.25, y: 0.75}
-  m_AnchorMax: {x: 0.75, y: 0.8}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &133660164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133660162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 133660165}
-  m_TextViewport: {fileID: 2032565400}
-  m_TextComponent: {fileID: 731205437}
-  m_Placeholder: {fileID: 1382311579}
-  m_VerticalScrollbar: {fileID: 0}
-  m_VerticalScrollbarEventHandler: {fileID: 0}
-  m_LayoutGroup: {fileID: 0}
-  m_ScrollSensitivity: 1
-  m_ContentType: 2
-  m_InputType: 0
-  m_AsteriskChar: 42
-  m_KeyboardType: 4
-  m_LineType: 0
-  m_HideMobileInput: 0
-  m_HideSoftKeyboard: 0
-  m_CharacterValidation: 2
-  m_RegexValue: 
-  m_GlobalPointSize: 14
-  m_CharacterLimit: 0
-  m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
-        m_MethodName: ThisMuchGeld
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelect:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeselect:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnTextSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnEndTextSelection:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnValueChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnTouchScreenKeyboardStatusChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_CustomCaretColor: 0
-  m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
-  m_CaretBlinkRate: 0.85
-  m_CaretWidth: 1
-  m_ReadOnly: 0
-  m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 015fe045c09a16341a70371c38fbde78, type: 2}
-  m_OnFocusSelectAll: 1
-  m_ResetOnDeActivation: 1
-  m_RestoreOriginalTextOnEscape: 1
-  m_isRichTextEditingAllowed: 0
-  m_LineLimit: 0
-  m_InputValidator: {fileID: 0}
---- !u!114 &133660165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133660162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &133660166
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133660162}
-  m_CullTransparentMesh: 1
 --- !u!1 &193355881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,8 +1154,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -1763,8 +1575,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -1891,8 +1703,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -2121,8 +1933,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -2621,8 +2433,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -3094,7 +2906,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &458415190
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3181,6 +2993,14 @@ MonoBehaviour:
   - {fileID: 702226389}
   - {fileID: 200068505}
   Message: {fileID: 1725361225}
+  CharacterSheet: {fileID: 2038235856}
+  Selected_Party_Slot: 0
+  Selected_Roster_Slot: 0
+  Selected_Inventory_Slot: 0
+  Selected_Item_Index: 0
+  Other_Party_Slot: 0
+  Other_Roster_Slot: 0
+  Other_Inventory_Slot: 0
 --- !u!1 &466337471
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,8 +3353,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -3910,8 +3730,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -4131,8 +3951,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -4348,6 +4168,7 @@ GameObject:
   - component: {fileID: 627310401}
   - component: {fileID: 627310403}
   - component: {fileID: 627310402}
+  - component: {fileID: 627310404}
   m_Layer: 5
   m_Name: ItemView_Panel
   m_TagString: Untagged
@@ -4388,7 +4209,6 @@ RectTransform:
   - {fileID: 2137036653}
   - {fileID: 17335764}
   - {fileID: 2000413630}
-  - {fileID: 133660163}
   m_Father: {fileID: 2038235855}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4435,6 +4255,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627310400}
   m_CullTransparentMesh: 1
+--- !u!114 &627310404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627310400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 584c429d56bd2354daa34a1f1b3788fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  main: {fileID: 1612163780}
+  drop_btn_title: {fileID: 391483078}
+  trade_btn_title: {fileID: 1131376874}
+  done1_btn_title: {fileID: 986548919}
+  done2_btn_title: {fileID: 1861190745}
+  done3_btn_title: {fileID: 110757202}
+  confirm_btn_title: {fileID: 2093608052}
+  charSlot_btn_title:
+  - {fileID: 1767835862}
+  - {fileID: 1119274041}
+  - {fileID: 1272174237}
+  - {fileID: 643933889}
+  - {fileID: 425300084}
+  - {fileID: 1314138368}
+  invn_slot_btn_title:
+  - {fileID: 1739052101}
+  - {fileID: 1372113644}
+  - {fileID: 456993442}
+  - {fileID: 1377603492}
+  - {fileID: 981959913}
+  - {fileID: 1563021356}
+  - {fileID: 1475256361}
+  - {fileID: 1035201291}
+  trade_button: {fileID: 1536109785}
+  drop_button: {fileID: 1895217400}
+  done1_button: {fileID: 1832992934}
+  done2_button: {fileID: 386462608}
+  done3_button: {fileID: 2000413629}
+  confirm_button: {fileID: 1100692576}
+  charSlot_button:
+  - {fileID: 1311664187}
+  - {fileID: 1022195420}
+  - {fileID: 1766441983}
+  - {fileID: 517742386}
+  - {fileID: 1226667194}
+  - {fileID: 193355881}
+  invnSlot_button:
+  - {fileID: 2045222427}
+  - {fileID: 364745854}
+  - {fileID: 1730099252}
+  - {fileID: 488322392}
+  - {fileID: 1093123884}
+  - {fileID: 415952961}
+  - {fileID: 2137036652}
+  - {fileID: 17335763}
 --- !u!1 &636089879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4818,8 +4695,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -4946,16 +4823,16 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Character_Sheet_Manager, Assembly-CSharp
-          m_MethodName: Button
-          m_Mode: 5
+        - m_Target: {fileID: 2038235856}
+          m_TargetAssemblyTypeName: Camp_Character_Sheet_Manager, Assembly-CSharp
+          m_MethodName: ButtonPressed
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 2
             m_FloatArgument: 0
-            m_StringArgument: Magic
+            m_StringArgument: Leave
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!114 &664248984
@@ -5188,16 +5065,16 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Character_Sheet_Manager, Assembly-CSharp
-          m_MethodName: Button
-          m_Mode: 5
+        - m_Target: {fileID: 2038235856}
+          m_TargetAssemblyTypeName: Camp_Character_Sheet_Manager, Assembly-CSharp
+          m_MethodName: ButtonPressed
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Equip
+            m_StringArgument: Leave
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!114 &672196860
@@ -5988,141 +5865,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &731205435
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 731205436}
-  - component: {fileID: 731205438}
-  - component: {fileID: 731205437}
-  m_Layer: 5
-  m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &731205436
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731205435}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2032565400}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &731205437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731205435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: "\u200B"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 015fe045c09a16341a70371c38fbde78, type: 2}
-  m_sharedMaterial: {fileID: -8334810432760111461, guid: 015fe045c09a16341a70371c38fbde78, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 16
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 1
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &731205438
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731205435}
-  m_CullTransparentMesh: 1
 --- !u!1 &784362558
 GameObject:
   m_ObjectHideFlags: 0
@@ -6862,7 +6604,7 @@ GameObject:
   - component: {fileID: 856089995}
   - component: {fileID: 856089998}
   - component: {fileID: 856089997}
-  - component: {fileID: 856089996}
+  - component: {fileID: 856089999}
   m_Layer: 5
   m_Name: Equip_Flow_Panel
   m_TagString: Untagged
@@ -6901,40 +6643,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &856089996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 856089994}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 317c34691d2cac24bb2e8b10f0cbeb66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  top: {fileID: 718350811}
-  mid: {fileID: 716633334}
-  button_message:
-  - {fileID: 1937488736}
-  - {fileID: 238219150}
-  - {fileID: 1276743623}
-  - {fileID: 456672641}
-  - {fileID: 670779894}
-  - {fileID: 409686105}
-  - {fileID: 563007263}
-  - {fileID: 470032254}
-  - {fileID: 489894710}
-  button:
-  - {fileID: 658705797}
-  - {fileID: 325408544}
-  - {fileID: 64478215}
-  - {fileID: 1722526442}
-  - {fileID: 570610179}
-  - {fileID: 1558808948}
-  - {fileID: 1489480651}
-  - {fileID: 1659158824}
-  - {fileID: 1073233327}
 --- !u!114 &856089997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6973,6 +6681,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856089994}
   m_CullTransparentMesh: 1
+--- !u!114 &856089999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856089994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 330dfa6e0b1432147bff16958d499998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  top: {fileID: 718350811}
+  mid: {fileID: 716633334}
+  button_message:
+  - {fileID: 1937488736}
+  - {fileID: 238219150}
+  - {fileID: 1276743623}
+  - {fileID: 456672641}
+  - {fileID: 670779894}
+  - {fileID: 409686105}
+  - {fileID: 563007263}
+  - {fileID: 470032254}
+  - {fileID: 489894710}
+  button:
+  - {fileID: 658705797}
+  - {fileID: 325408544}
+  - {fileID: 64478215}
+  - {fileID: 1722526442}
+  - {fileID: 570610179}
+  - {fileID: 1558808948}
+  - {fileID: 1489480651}
+  - {fileID: 1659158824}
+  - {fileID: 1073233327}
 --- !u!1 &887323043
 GameObject:
   m_ObjectHideFlags: 0
@@ -7524,8 +7266,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -7889,8 +7631,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -7996,8 +7738,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -8103,8 +7845,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -8615,8 +8357,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -9262,8 +9004,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -9811,162 +9553,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1377603490}
   m_CullTransparentMesh: 1
---- !u!1 &1382311576
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1382311577}
-  - component: {fileID: 1382311580}
-  - component: {fileID: 1382311579}
-  - component: {fileID: 1382311578}
-  m_Layer: 5
-  m_Name: Placeholder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1382311577
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382311576}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2032565400}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1382311578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382311576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 1
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
---- !u!114 &1382311579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382311576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: Enter text...
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 015fe045c09a16341a70371c38fbde78, type: 2}
-  m_sharedMaterial: {fileID: -8334810432760111461, guid: 015fe045c09a16341a70371c38fbde78, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 18
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 1
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1382311580
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1382311576}
-  m_CullTransparentMesh: 1
 --- !u!1 &1427638026
 GameObject:
   m_ObjectHideFlags: 0
@@ -10294,16 +9880,16 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Character_Sheet_Manager, Assembly-CSharp
-          m_MethodName: Button
-          m_Mode: 5
+        - m_Target: {fileID: 2038235856}
+          m_TargetAssemblyTypeName: Camp_Character_Sheet_Manager, Assembly-CSharp
+          m_MethodName: ButtonPressed
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 1
             m_FloatArgument: 0
-            m_StringArgument: Items
+            m_StringArgument: Leave
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!114 &1477728940
@@ -10462,8 +10048,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -10915,8 +10501,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -11124,8 +10710,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -11577,8 +11163,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -11942,8 +11528,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 856089996}
-          m_TargetAssemblyTypeName: Castle_EquipFlowLogic_Controller, Assembly-CSharp
+        - m_Target: {fileID: 856089999}
+          m_TargetAssemblyTypeName: Camp_EquipFlowLogic_Controller, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 3
           m_Arguments:
@@ -12205,8 +11791,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -12447,8 +12033,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -12824,8 +12410,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -13433,8 +13019,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -13920,8 +13506,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -13970,59 +13556,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000413629}
   m_CullTransparentMesh: 1
---- !u!1 &2032565399
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2032565400}
-  - component: {fileID: 2032565401}
-  m_Layer: 5
-  m_Name: Text Area
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2032565400
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032565399}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1382311577}
-  - {fileID: 731205436}
-  m_Father: {fileID: 133660163}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.5}
-  m_SizeDelta: {x: -20, y: -13}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2032565401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2032565399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding: {x: -8, y: -5, z: -8, w: -5}
-  m_Softness: {x: 0, y: 0}
 --- !u!1 &2034738895
 GameObject:
   m_ObjectHideFlags: 0
@@ -14176,7 +13709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2038235855
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14212,19 +13745,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a2a4ef64828e145a4ffa9aeafc6479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 0}
-  equip_button: {fileID: 0}
-  viewItem_button: {fileID: 0}
-  readMagic_button: {fileID: 0}
-  back_button: {fileID: 0}
-  Equip_Button_GO: {fileID: 0}
-  ViewItem_Button_GO: {fileID: 0}
-  ReadMagic_Button_GO: {fileID: 0}
-  TradeGeld_Button_GO: {fileID: 0}
-  Rename_Button_GO: {fileID: 0}
-  Delete_Button_GO: {fileID: 0}
-  Equip_Flow_Panel: {fileID: 0}
-  View_Item_Panel: {fileID: 0}
+  body: {fileID: 2056200524}
+  equip_button: {fileID: 839481129}
+  viewItem_button: {fileID: 1917059378}
+  readMagic_button: {fileID: 590948815}
+  back_button: {fileID: 495522296}
+  Equip_Button_GO: {fileID: 664248981}
+  ViewItem_Button_GO: {fileID: 1477728937}
+  ReadMagic_Button_GO: {fileID: 664248981}
+  Equip_Flow_Panel: {fileID: 856089994}
+  View_Item_Panel: {fileID: 627310400}
 --- !u!114 &2038235857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14320,8 +13850,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
@@ -14967,8 +14497,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Castle_Item_View_Manager, Assembly-CSharp
+        - m_Target: {fileID: 627310404}
+          m_TargetAssemblyTypeName: Camp_Item_View_Manager, Assembly-CSharp
           m_MethodName: Button
           m_Mode: 5
           m_Arguments:
