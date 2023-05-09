@@ -8,6 +8,7 @@ public class Spell_Class
     public string book; //mage or priest spell?
     public int circle; //what level of spell?
     public int learn_bonus; //first spells of a circle are easier to learn
+    public string target;
     public bool camp, combat; //where can you cast this spell?
     public string description;
 }

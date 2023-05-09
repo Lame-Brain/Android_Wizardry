@@ -160,9 +160,10 @@ public class GameManager : MonoBehaviour
             _n = 2; _spl.book = _splData[_n];
             _n = 3; _spl.name = _splData[_n];
             _n = 4; _spl.word = _splData[_n];
-            _n = 5; _spl.camp = _splData[_n] == "TRUE" ? true : false;
-            _n = 6; _spl.combat = _splData[_n] == "TRUE" ? true : false;
-            _n = 7; _spl.learn_bonus = int.Parse(_splData[_n]);
+            _n = 5; _spl.target = _splData[_n];
+            _n = 6; _spl.camp = _splData[_n] == "TRUE" ? true : false;
+            _n = 7; _spl.combat = _splData[_n] == "TRUE" ? true : false;
+            _n = 8; _spl.learn_bonus = int.Parse(_splData[_n]);
 
             SPELL.Add(_spl);
         }
@@ -207,6 +208,7 @@ public class GameManager : MonoBehaviour
         PARTY.AddMember(3);
         PARTY.AddMember(4);
         PARTY.AddMember(5);
+        ROSTER[0].HP = 4;
         //DEBUG
     }
 

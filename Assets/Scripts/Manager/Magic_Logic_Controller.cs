@@ -6,12 +6,13 @@ using BlobberEngine;
 public class Magic_Logic_Controller : MonoBehaviour
 {
 
-    public bool CanCastSpell(Character_Class _caster, string _spell)
+    public Spell_Class CanCastSpell(Character_Class _caster, string _spell)
     {
-        bool result = false;
+        Spell_Class result = null;
         int _spellCircle = -1;
         string _spellBook = "nil";
         bool _spellKnown = false;
+        Spell_Class _thisSpell = null;
         for (int i = 0; i < GameManager.SPELL.Count; i++)
         {
             if(_spell.ToLower() == GameManager.SPELL[i].name.ToLower())
@@ -21,32 +22,29 @@ public class Magic_Logic_Controller : MonoBehaviour
                 if (_caster.SpellKnown[i]) _spellKnown = true;
                 if (GameManager.PARTY.inBattle && !GameManager.SPELL[i].combat) _spellBook = "nil";
                 if (!GameManager.PARTY.inBattle && !GameManager.SPELL[i].camp) _spellBook = "nil";
+                _thisSpell = GameManager.SPELL[i];
             }
         }
-        if(_spellBook == "Priest" && _spellKnown && _caster.priestSpells[_spellCircle-1] - _caster.priestSpellsCast[_spellCircle - 1] > 0) result = true;
-        if(_spellBook == "Mage" && _spellKnown && _caster.mageSpells[_spellCircle-1] - _caster.mageSpellsCast[_spellCircle - 1] > 0) result = true;
+        if(_spellBook == "Priest" && _spellKnown && _caster.priestSpells[_spellCircle-1] - _caster.priestSpellsCast[_spellCircle - 1] > 0) result = _thisSpell;
+        if(_spellBook == "Mage" && _spellKnown && _caster.mageSpells[_spellCircle-1] - _caster.mageSpellsCast[_spellCircle - 1] > 0) result = _thisSpell;
 
         return result;
     }
 
-    public void Cast_Spell(Character_Class _caster, string _spell, Character_Class _target = null)
+    public void Cast_Spell(Character_Class _caster, Spell_Class _spell, Character_Class _target = null)
     {
-        Spell_Class _thisSpell = null;
-        for (int i = 0; i < GameManager.SPELL.Count; i++)
-            if (_spell.ToLower() == GameManager.SPELL[i].name.ToLower())
-                _thisSpell = GameManager.SPELL[i];
-
-        if(CanCastSpell(_caster, _spell))
+        //Debug.Log("Casting " + _spell.name);
+        if(CanCastSpell(_caster, _spell.name) != null)
         {
-            if (_thisSpell.book == "Priest") _caster.priestSpellsCast[_thisSpell.circle - 1]++;
-            if (_thisSpell.book == "Mage") _caster.mageSpellsCast[_thisSpell.circle - 1]++;
+            if (_spell.book == "Priest") _caster.priestSpellsCast[_spell.circle - 1]++;
+            if (_spell.book == "Mage") _caster.mageSpellsCast[_spell.circle - 1]++;
             if(_target != null)
             {
-                Apply_Spell(_target, _spell);
+                Apply_Spell(_target, _spell.name);
             }
             else
             {
-                Apply_Spell(_spell);
+                Apply_Spell(_spell.name);
             }
         }
     }
@@ -54,6 +52,7 @@ public class Magic_Logic_Controller : MonoBehaviour
     public void Apply_Spell(Character_Class _target, string _spell)
     {
         _spell = _spell.ToLower();
+        //Debug.Log("Casting on target: " + _spell + ", " + _target.name);
         if (_spell == "dios")
         {
             Dice _healAmount = new Dice(1, 8);
@@ -106,32 +105,17 @@ public class Magic_Logic_Controller : MonoBehaviour
                 //UPDATE THIS CHARACTER'S LOSTXYL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 return;            
             }
-
+        }
+        if (_spell == "latumofis")
+        {
+            _target.Poison = 0;
         }
     }
 
     public void Apply_Spell(string _spell)
     {
-        if (_spell == "kalki")
-        {
-            GameManager.PARTY.Party_Shield_Bonus = -1;
-        }
-        if (_spell == "kalki")
-        {
-            GameManager.PARTY.Party_Shield_Bonus = -1;
-        }
-        if (_spell == "matu")
-        {
-            GameManager.PARTY.Party_Shield_Bonus = -2;
-        }
-        if (_spell == "bammatu")
-        {
-            GameManager.PARTY.Party_Shield_Bonus = -4;
-        }
-        if (_spell == "masopic")
-        {
-            GameManager.PARTY.Party_Shield_Bonus = -4;
-        }
+        _spell = _spell.ToLower();
+        //Debug.Log("casting on party: " + _spell);
         if (_spell == "maporfic")
         {
             GameManager.PARTY.MAPORFIC = true;
@@ -152,16 +136,6 @@ public class Magic_Logic_Controller : MonoBehaviour
                     if (GameManager.PARTY.LookUp_PartyMember(i).status == BlobberEngine.Enum._Status.plyze ||
                         GameManager.PARTY.LookUp_PartyMember(i).status == BlobberEngine.Enum._Status.stoned)
                         GameManager.PARTY.LookUp_PartyMember(i).status = BlobberEngine.Enum._Status.OK;
-            }
-        }
-
-        if(_spell == "latumofis")
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                if (!GameManager.PARTY.EmptySlot(i))
-                    if (GameManager.PARTY.LookUp_PartyMember(i).Poison > 0)
-                        GameManager.PARTY.LookUp_PartyMember(i).Poison = 0;
             }
         }
     }

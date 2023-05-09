@@ -9,8 +9,14 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
     //public GameObject Equip_Button_GO, ViewItem_Button_GO, ReadMagic_Button_GO;
     public GameObject Equip_Flow_Panel;
     public GameObject View_Item_Panel;
+    public GameObject Cast_Spell_Panel, Cast_on_Who_panel;
+    public TMP_InputField input;
+    public TextMeshProUGUI InputPlaceHolder;
+    public TextMeshProUGUI InputText;
 
     private Camp_Logic_Manager _camp;
+    private Magic_Logic_Controller _magic;
+    private Spell_Class _selected_spell;
 
     private void OnEnable()
     {
@@ -21,7 +27,12 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         back_button.fontSize = GameManager.FONT;
         cast_button.fontSize = GameManager.FONT;
         identify_button.fontSize = GameManager.FONT;
+        InputPlaceHolder.fontSize = GameManager.FONT;
+        InputText.fontSize = GameManager.FONT;
+        input.onValidateInput += delegate (string s, int i, char c) { return char.ToUpper(c); };
+        input.text = "";
         _camp = FindObjectOfType<Camp_Logic_Manager>();
+        _magic = FindObjectOfType<Magic_Logic_Controller>();
     }
 
     public void UpdateScreen()
@@ -178,7 +189,8 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
         }
         if (_button == 3)
         {
-
+            Cast_Spell_Panel.SetActive(true);
+            input.text = "";
         }
         if (_button == 4)
         {
@@ -193,8 +205,7 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
             {
                 if (_camp.Selected_Character.Inventory[i].index > -1 &&
                     !_camp.Selected_Character.Inventory[i].identified)
-                    _itemsToIdentify = true;
-                    
+                    _itemsToIdentify = true;                    
             }
 
             if (!_itemsToIdentify)
@@ -232,9 +243,45 @@ public class Camp_Character_Sheet_Manager : MonoBehaviour
             return;
         }
         if (_button == 99) // Leave
-        {             
+        {
+            _camp.UpdateScreen();
             this.gameObject.SetActive(false);
         }
     }
+    public void TextReceived(string _text)
+    {
+        _text = _text.ToLower();
+        if(_text != "")
+        {
+            _selected_spell = _magic.CanCastSpell(_camp.Selected_Character, _text);
+        }
+        if (_selected_spell != null && _selected_spell.target == "Character")
+        {
+            Cast_on_Who_panel.gameObject.SetActive(true);
+        }
+        else if (_selected_spell != null && _selected_spell.target == "Party")
+        {
+            _magic.Cast_Spell(_camp.Selected_Character, _selected_spell);
+            _camp.RefreshCharacterSheet();
+            Cast_Spell_Panel.SetActive(false);            
+        }
+        else
+        {
+            _camp.PopUP.Show_Message("You are not able to cast that spell");
+            Cast_Spell_Panel.SetActive(false);            
+        }
+        return;
+    }
 
+    public void Cast_Spell_on(int _num)
+    {
+        Debug.Log("Caster = " + _camp.Selected_Character.name);
+        Debug.Log("Spell = " + _selected_spell.name);
+        Debug.Log("Target = " + GameManager.PARTY.LookUp_PartyMember(_num).name);
+        _magic.Cast_Spell(_camp.Selected_Character, _selected_spell, GameManager.PARTY.LookUp_PartyMember(_num));
+        _camp.RefreshCharacterSheet();
+        Cast_on_Who_panel.SetActive(false);
+        Cast_Spell_Panel.SetActive(false);        
+        return;
+    }
 }
