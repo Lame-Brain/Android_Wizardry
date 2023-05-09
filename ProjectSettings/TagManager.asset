@@ -9,6 +9,7 @@ TagManager:
   - Button
   - Temp_Button
   - Button_Block_Panel
+  - Dungeon_Tile
   layers:
   - Default
   - TransparentFX

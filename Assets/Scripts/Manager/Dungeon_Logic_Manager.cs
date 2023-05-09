@@ -5,6 +5,7 @@ using UnityEngine;
 public class Dungeon_Logic_Manager : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI Message, up_btn_txt, left_btn_txt, down_btn_txt, right_btn_txt, one_btn_txt, two_btn_txt;
+    public TextAsset[] Level_data;
 
     public GameObject Camp_Screen, Light_Icon, Shield_Icon;
 
