@@ -12,9 +12,8 @@ public class Party_Class : MonoBehaviour
 
     public bool _MakeCampOnLoad;
     public Vector3Int _PartyXYL;
-    public int Party_Shield_Bonus = 0;
+    public bool Party_Shield_Bonus = false;
     public int Party_Light_Timer = 0;
-    public bool MAPORFIC = false;
     public bool inBattle = false;
 
     private int[] Party;

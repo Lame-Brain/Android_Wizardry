@@ -7,12 +7,14 @@ public class Dungeon_Logic_Manager : MonoBehaviour
     public TMPro.TextMeshProUGUI Message, up_btn_txt, left_btn_txt, down_btn_txt, right_btn_txt, one_btn_txt, two_btn_txt;
     public TextAsset[] Level_data;
 
-    public GameObject Camp_Screen, Light_Icon, Shield_Icon;
+    public GameObject Camp_Screen, Light_Icon, Shield_Icon, Block_Icon;
 
     public Magic_Logic_Controller Magic;
+    private Player_Controller _player;
 
     public void StartDungeon()
     {
+        _player = FindObjectOfType<Player_Controller>();
         Message.fontSize = GameManager.FONT;
         up_btn_txt.fontSize = GameManager.FONT;
         left_btn_txt.fontSize = GameManager.FONT;
@@ -20,15 +22,71 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         right_btn_txt.fontSize = GameManager.FONT;
         one_btn_txt.fontSize = GameManager.FONT;
         two_btn_txt.fontSize = GameManager.FONT;
-        SetButtonText(1, "Examine");
-        SetButtonText(2, "Camp");
+        SetButtonText("u", "Up", "move_forward");
+        SetButtonText("d", "down", "turn_around");
+        SetButtonText("l", "left", "turn_left");
+        SetButtonText("r", "right", "turn_right");
+        SetButtonText("1", "Examine", "examine");
+        SetButtonText("2", "Camp", "make_camp");
         UpdateMessge();
+        UpdateScreen();
     }
 
-    public void SetButtonText(int _buttonNum, string _newText)
+    public void UpdateScreen()
     {
-        if (_buttonNum == 1) one_btn_txt.text = _newText.ToUpper();
-        if (_buttonNum == 2) two_btn_txt.text = _newText.ToUpper();
+        if(GameManager.PARTY.Party_Light_Timer > 0)
+        {
+            Light_Icon.SetActive(true);
+            RenderSettings.fogDensity = 0.25f;
+        }
+        else
+        {
+            Light_Icon.SetActive(false);
+            RenderSettings.fogDensity = 0.95f;
+        }
+
+        if (GameManager.PARTY.Party_Shield_Bonus)
+        {
+            Shield_Icon.SetActive(true);
+        }
+        else
+        {
+            Shield_Icon.SetActive(false);
+        }
+    }
+
+    public void SetButtonText(string _buttonNam, string _newText, string _command)
+    {
+        if (_buttonNam == "u")
+        {
+            up_btn_txt.text = _newText.ToUpper();
+            up_btn_txt.gameObject.GetComponentInParent<Dungeon_Button_Controller>().button_command = _command;
+        }
+        if (_buttonNam == "d")
+        {
+            down_btn_txt.text = _newText.ToUpper();
+            down_btn_txt.gameObject.GetComponentInParent<Dungeon_Button_Controller>().button_command = _command;
+        }
+        if (_buttonNam == "l")
+        {
+            left_btn_txt.text = _newText.ToUpper();
+            left_btn_txt.gameObject.GetComponentInParent<Dungeon_Button_Controller>().button_command = _command;
+        }
+        if (_buttonNam == "r")
+        {
+            right_btn_txt.text = _newText.ToUpper();
+            right_btn_txt.gameObject.GetComponentInParent<Dungeon_Button_Controller>().button_command = _command;
+        }
+        if (_buttonNam == "1")
+        {
+            one_btn_txt.text = _newText.ToUpper();
+            one_btn_txt.gameObject.GetComponentInParent<Dungeon_Button_Controller>().button_command = _command;
+        }
+        if (_buttonNam == "2")
+        {
+            two_btn_txt.text = _newText.ToUpper();
+            two_btn_txt.gameObject.GetComponentInParent<Dungeon_Button_Controller>().button_command = _command;
+        }
     }
     public void UpdateMessge(string _newText = "")
     {
@@ -89,6 +147,10 @@ public class Dungeon_Logic_Manager : MonoBehaviour
             _output += _partyText[4];
             _output += _partyText[5];
         }
+        else
+        {
+            _output = _newText;
+        }
 
 
 
@@ -97,6 +159,11 @@ public class Dungeon_Logic_Manager : MonoBehaviour
 
     public void ButtonPressReceived(string _command)
     {
+        if(_command == "move_forward" || _command == "turn_right" || _command == "turn_around" || _command == "turn_left")
+        {
+            _player.ReceiveCommand(_command);
+        }
+
         if(_command == "make_camp")
         {
             Camp_Screen.SetActive(true);

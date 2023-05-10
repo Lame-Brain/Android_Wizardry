@@ -118,7 +118,7 @@ public class Magic_Logic_Controller : MonoBehaviour
         //Debug.Log("casting on party: " + _spell);
         if (_spell == "maporfic")
         {
-            GameManager.PARTY.MAPORFIC = true;
+            GameManager.PARTY.Party_Shield_Bonus = true;
         }
         if (_spell == "milwa")
         {
