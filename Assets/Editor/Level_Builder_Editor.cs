@@ -25,10 +25,12 @@ public class Level_Builder_Editor : Editor
             for (int y = 0; y < 22; y++)
                 for (int x = 0; x < 22; x++)
                 {
+
                     GameObject _go = Instantiate(host.tilePrefab, new Vector3(x, 0, -y), Quaternion.identity, host.transform);
-                    _go.name = "Tile [" + x + ", " + y + "]";
                     host.Map[x, y] = _go.GetComponent<Tile_Class>();
-                    host.Map[x, y].coordinates = new Vector2Int(x, y);
+                    host.Map[x, y].Map_Coordinates = new Vector2Int(x, y);
+                    host.Map[x, y].Game_Coordinates = new Vector2Int(x - 1, (y * -1) + 20);
+                    _go.name = "Tile [" + host.Map[x, y].Game_Coordinates.x + ", " + host.Map[x, y].Game_Coordinates.y + "]";
                     host.Map[x, y].Wall = new int[4];
                     for (int i = 0; i < 4; i++) host.Map[x, y].Wall[i] = 0;
                 }
@@ -56,7 +58,6 @@ public class Level_Builder_Editor : Editor
             //Update walls and such
             for (int y = 0; y < 22; y++)
                 for (int x = 0; x < 22; x++)
-
                     for (int z = 0; z < 5; z++)
                     {
 
@@ -64,21 +65,25 @@ public class Level_Builder_Editor : Editor
                         {
                             host.Map[x, y].north_wall.SetActive(true);
                             host.Map[x, y].Wall[0] = 4;
+                            host.Map[x, y].north_wall.GetComponent<MeshRenderer>().material = host.mat[0];
                         }
                         if (_rawData[x, y, z] == 1)
                         {
                             host.Map[x, y].east_wall.SetActive(true);
                             host.Map[x, y].Wall[1] = 4;
+                            host.Map[x, y].east_wall.GetComponent<MeshRenderer>().material = host.mat[0];
                         }
                         if (_rawData[x, y, z] == 2)
                         {
                             host.Map[x, y].south_wall.SetActive(true);
                             host.Map[x, y].Wall[2] = 4;
+                            host.Map[x, y].south_wall.GetComponent<MeshRenderer>().material = host.mat[0];
                         }
                         if (_rawData[x, y, z] == 3)
                         {
                             host.Map[x, y].west_wall.SetActive(true);
                             host.Map[x, y].Wall[3] = 4;
+                            host.Map[x, y].west_wall.GetComponent<MeshRenderer>().material = host.mat[0];
                         }
                         if (_rawData[x, y, z] == 4) // darkness tile
                         {
@@ -88,22 +93,125 @@ public class Level_Builder_Editor : Editor
                         {
                             host.Map[x, y].north_wall.SetActive(true);
                             host.Map[x, y].Wall[0] = 1;
+                            host.Map[x, y].north_wall.GetComponent<MeshRenderer>().material = host.mat[1];
                         }
                         if (_rawData[x, y, z] == 6)
                         {
                             host.Map[x, y].east_wall.SetActive(true);
                             host.Map[x, y].Wall[1] = 1;
+                            host.Map[x, y].east_wall.GetComponent<MeshRenderer>().material = host.mat[1];
                         }
                         if (_rawData[x, y, z] == 7)
                         {
                             host.Map[x, y].south_wall.SetActive(true);
                             host.Map[x, y].Wall[2] = 1;
+                            host.Map[x, y].south_wall.GetComponent<MeshRenderer>().material = host.mat[1];
                         }
                         if (_rawData[x, y, z] == 8)
                         {
                             host.Map[x, y].west_wall.SetActive(true);
                             host.Map[x, y].Wall[3] = 1;
+                            host.Map[x, y].west_wall.GetComponent<MeshRenderer>().material = host.mat[1];
                         }
+                        if (_rawData[x, y, z] == 9) // Rock tile
+                        {
+                            host.Map[x, y].feature = 2;
+                        }
+                        if (_rawData[x, y, z] == 10)
+                        {
+                            host.Map[x, y].north_wall.SetActive(true);
+                            host.Map[x, y].Wall[0] = 2;
+                            host.Map[x, y].north_wall.GetComponent<MeshRenderer>().material = host.mat[0];
+                        }
+                        if (_rawData[x, y, z] == 11)
+                        {
+                            host.Map[x, y].east_wall.SetActive(true);
+                            host.Map[x, y].Wall[1] = 2;
+                            host.Map[x, y].east_wall.GetComponent<MeshRenderer>().material = host.mat[0];
+                        }
+                        if (_rawData[x, y, z] == 12)
+                        {
+                            host.Map[x, y].south_wall.SetActive(true);
+                            host.Map[x, y].Wall[2] = 2;
+                            host.Map[x, y].south_wall.GetComponent<MeshRenderer>().material = host.mat[0];
+                        }
+                        if (_rawData[x, y, z] == 13)
+                        {
+                            host.Map[x, y].west_wall.SetActive(true);
+                            host.Map[x, y].Wall[3] = 2;
+                            host.Map[x, y].west_wall.GetComponent<MeshRenderer>().material = host.mat[0];
+                        }
+                        if (_rawData[x, y, z] == 15) // Anti-Magic tile
+                        {
+                            host.Map[x, y].feature = 4;
+                        }
+                        if (_rawData[x, y, z] == 16) // Teleport tile
+                        {
+                            host.Map[x, y].isWarp = true;
+                        }
+                        if (_rawData[x, y, z] == 17) // Special message or encounter
+                        {
+                            host.Map[x, y].isSpecial = true;
+                            host.Map[x, y].floor.GetComponent<MeshRenderer>().material = host.mat[2];
+                        }
+                        if (_rawData[x, y, z] == 18) // Stairs Up
+                        {
+                            host.Map[x, y].feature = 5;
+                            host.Map[x, y].ceilng.GetComponent<MeshRenderer>().material = host.mat[2];
+                        }
+                        if (_rawData[x, y, z] == 19) // Stairs Down
+                        {
+                            host.Map[x, y].feature = 6;
+                            host.Map[x, y].floor.GetComponent<MeshRenderer>().material = host.mat[2];
+                        }
+                        if (_rawData[x, y, z] == 20) // Chute
+                        {
+                            host.Map[x, y].feature = 8;
+                        }
+                        if (_rawData[x, y, z] == 21) // Elevator
+                        {
+                            host.Map[x, y].feature = 8;
+                            host.Map[x, y].ceilng.GetComponent<MeshRenderer>().material = host.mat[2];
+                            host.Map[x, y].floor.GetComponent<MeshRenderer>().material = host.mat[2];
+                        }
+                        if (_rawData[x, y, z] == 22) // Spinner
+                        {
+                            host.Map[x, y].feature = 3;
+                        }
+                        if (_rawData[x, y, z] == 23) // Pit
+                        {
+                            host.Map[x, y].feature = 9;
+                        }
+                    }
+            //Apply Darkness
+            for (int y = 0; y < 22; y++)
+                for (int x = 0; x < 22; x++)
+                    if (host.Map[x,y].feature == 1)
+                    {
+                        if (!host.Map[x, y - 1].south_wall.activeSelf)
+                        {
+                            host.Map[x, y - 1].south_wall.SetActive(true);
+                            host.Map[x, y - 1].south_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        }
+                        if (!host.Map[x + 1, y].west_wall.activeSelf)
+                        {
+                            host.Map[x + 1, y].west_wall.SetActive(true);
+                            host.Map[x + 1, y].west_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        }
+                        if (!host.Map[x, y + 1].north_wall.activeSelf)
+                        {
+                            host.Map[x, y + 1].north_wall.SetActive(true);
+                            host.Map[x, y + 1].north_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        }
+                        if (!host.Map[x - 1, y].east_wall.activeSelf)
+                        {
+                            host.Map[x - 1, y].east_wall.SetActive(true);
+                            host.Map[x - 1, y].east_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        }
+                        host.Map[x, y].north_wall.SetActive(true); host.Map[x, y].north_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        host.Map[x, y].east_wall.SetActive(true); host.Map[x, y].east_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        host.Map[x, y].south_wall.SetActive(true); host.Map[x, y].south_wall.GetComponent<MeshRenderer>().material = host.mat[3];
+                        host.Map[x, y].west_wall.SetActive(true); host.Map[x, y].west_wall.GetComponent<MeshRenderer>().material = host.mat[3];
                     }
         }
 

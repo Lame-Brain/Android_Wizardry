@@ -7,4 +7,5 @@ public class Level_Builder : MonoBehaviour
     public GameObject tilePrefab;
     public TextAsset leveldata;
     public Tile_Class[,] Map;
+    public Material[] mat;
 }

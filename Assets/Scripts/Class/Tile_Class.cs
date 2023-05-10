@@ -11,6 +11,7 @@ public class Tile_Class : MonoBehaviour
     public int special_code; //triggers special encounters
     public bool isWarp;
     public Vector3Int warp; //location this tile warps you to. (may change levels)
-    public Vector2Int coordinates;
+    public Vector2Int Map_Coordinates;
+    public Vector2Int Game_Coordinates;
     public GameObject ceilng, floor, north_wall, east_wall, south_wall, west_wall;
 }
