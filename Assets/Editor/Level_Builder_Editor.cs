@@ -55,6 +55,19 @@ public class Level_Builder_Editor : Editor
                     }
                 }
             }
+            //parse Rooms
+            int[,] _roomData = new int[25, 25];
+            string[] _roomLines = host.roomdata.text.Split("\n");
+            for (int y = 0; y < _roomLines.Length; y++)
+            {
+                string[] _roomRows = _roomLines[y].Split(",");
+                for (int x = 0; x < _roomRows.Length; x++)
+                {
+                    int _int = -1;
+                    int.TryParse(_roomRows[x], out _int);
+                    _roomData[x, y] = _int;
+                }
+            }
             //Update walls and such
             for (int y = 0; y < 22; y++)
                 for (int x = 0; x < 22; x++)
@@ -186,7 +199,10 @@ public class Level_Builder_Editor : Editor
             //Apply Darkness
             for (int y = 0; y < 22; y++)
                 for (int x = 0; x < 22; x++)
-                    if (host.Map[x,y].feature == 1)
+                {
+                    host.Map[x, y].Room_Number = _roomData[x, y];
+
+                    if (host.Map[x, y].feature == 1)
                     {
                         if (!host.Map[x, y - 1].south_wall.activeSelf)
                         {
@@ -213,6 +229,7 @@ public class Level_Builder_Editor : Editor
                         host.Map[x, y].south_wall.SetActive(true); host.Map[x, y].south_wall.GetComponent<MeshRenderer>().material = host.mat[3];
                         host.Map[x, y].west_wall.SetActive(true); host.Map[x, y].west_wall.GetComponent<MeshRenderer>().material = host.mat[3];
                     }
+                }
         }
 
 

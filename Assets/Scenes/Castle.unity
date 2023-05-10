@@ -27410,10 +27410,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 9091939944907890857, guid: 06e6d0cb70e9f014e82709fc9b7482f4, type: 3}
-      propertyPath: SetFloatDefault
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9091939944907890858, guid: 06e6d0cb70e9f014e82709fc9b7482f4, type: 3}
       propertyPath: m_RootOrder
       value: 2

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using BlobberEngine;
 using UnityEditor.Experimental.GraphView;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Controller : MonoBehaviour
 {
+    public GameObject Light;
     public Enum._Direction facing;
     private bool _canAcceptmovement;
     private string _currentState;
@@ -15,15 +17,16 @@ public class Player_Controller : MonoBehaviour
     private Dungeon_Logic_Manager _dungeon;
     private Level_Logic_Template _level;
 
-    private void Start()
+    public void initPlayer()
     {
         _dungeon = FindObjectOfType<Dungeon_Logic_Manager>();
-        _level = FindObjectOfType<Level_Logic_Template>();        
+        _level = FindObjectOfType<Level_Logic_Template>();
+        transform.position = new Vector3Int(GameManager.PARTY._PartyXYL.x + 1, 0, (20 - GameManager.PARTY._PartyXYL.y) * -1);
+        facing = GameManager.PARTY.facing;
         _canAcceptmovement = true;
         _currentState = "moving";
         SetPlayerFacing();
     }
-
     private void SetPlayerFacing()
     {
         if (facing == Enum._Direction.north) this.transform.eulerAngles = new Vector3(0, 0, 0);
@@ -32,13 +35,78 @@ public class Player_Controller : MonoBehaviour
         if (facing == Enum._Direction.west) this.transform.eulerAngles = new Vector3(0, 270, 0);
     }
 
+    public int WhatIsInFrontOfPlayer()
+    {
+        int _result = 0;
+        _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
+
+        if (facing == Enum._Direction.north) _result = _level.Map[_pos.x, _pos.y].Wall[0];
+        if (facing == Enum._Direction.east) _result = _level.Map[_pos.x, _pos.y].Wall[1];
+        if (facing == Enum._Direction.south) _result = _level.Map[_pos.x, _pos.y].Wall[2];
+        if (facing == Enum._Direction.west) _result = _level.Map[_pos.x, _pos.y].Wall[3];
+
+        return _result;
+    }
+    public Tile_Class WhatRoomAmIin()
+    {
+        _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
+        Tile_Class _result = _level.Map[_pos.x, _pos.y];
+        return _result;
+    }
+
+    public void Check4SecretDoor()
+    {
+        if (WhatIsInFrontOfPlayer() == 2)
+        {
+            if (facing == Enum._Direction.north)
+            {
+                _level.Map[_pos.x, _pos.y].Wall[0] = 3;
+                _level.Map[_pos.x, _pos.y].north_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            }
+            if (facing == Enum._Direction.east)
+            {
+                _level.Map[_pos.x, _pos.y].Wall[1] = 3;
+                _level.Map[_pos.x, _pos.y].east_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            }
+            if (facing == Enum._Direction.south)
+            {
+                _level.Map[_pos.x, _pos.y].Wall[2] = 3;
+                _level.Map[_pos.x, _pos.y].south_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            }
+            if (facing == Enum._Direction.west)
+            {
+                _level.Map[_pos.x, _pos.y].Wall[3] = 3;
+                _level.Map[_pos.x, _pos.y].west_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            }
+            _dungeon.ButtonPressReceived("update_screen");
+        }
+        else
+        {
+            StartCoroutine(Show_Bonk_CR());
+        }
+        _dungeon.TimePass();
+    }
+    public void OpenDoor()
+    {
+        StartCoroutine(Move_CR());
+    }
+    public void SpinPlayer()
+    {
+        Debug.Log("Sipn");
+        int _random = Random.Range(0, 4);
+        if (_random == 0 ) facing = Enum._Direction.north;
+        if (_random == 1 ) facing = Enum._Direction.east;
+        if (_random == 2 ) facing = Enum._Direction.south;
+        if (_random == 3 ) facing = Enum._Direction.west;
+        SetPlayerFacing();
+    }
+
     public void ReceiveCommand(string _command)
     {
         if(_command == "move_forward" && _canAcceptmovement && _currentState == "moving")
         {
             //Debug.Log("Move Forward");
             _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
-            _dungeon.UpdateScreen();
 
             bool _canMove = false;
             //Check if the next node is available to move to.
@@ -55,6 +123,7 @@ public class Player_Controller : MonoBehaviour
                 //StopCoroutine(Show_Bonk_CR());
                 //_dungeon.Block_Icon.SetActive(false);
                 StartCoroutine(Show_Bonk_CR());
+                _dungeon.TimePass();
             }            
         }
 
@@ -90,8 +159,12 @@ public class Player_Controller : MonoBehaviour
             yield return null;
             _timeElapsed += Time.deltaTime;
         }
-        this.transform.position = _endPos;
+        int x = (int)_endPos.x, y = (int)_endPos.y, z = (int)_endPos.z;
+        if (x < 0) x = 20; if (x > 20) x = 0;
+        if (z > -1) z = -20; if (z < -20) z = -1;
+        this.transform.position = new Vector3Int(x, y, z);
         yield return new WaitForSeconds(Move_Delay);
+        _dungeon.TimePass();
         _canAcceptmovement = true;
     }
 
@@ -183,6 +256,7 @@ public class Player_Controller : MonoBehaviour
         }
         SetPlayerFacing();
         yield return new WaitForSeconds(Turn_Delay);
+        _dungeon.ButtonPressReceived("update_screen");
         _canAcceptmovement = true;
     }
 

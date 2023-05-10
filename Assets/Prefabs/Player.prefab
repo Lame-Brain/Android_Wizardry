@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1322102502}
   - component: {fileID: 1322102501}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: Player Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3462b1bd781f2344a584502f3954297, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Light: {fileID: 1322102500}
   facing: 1
   Move_Length: 0.25
   Turn_Length: 0.25

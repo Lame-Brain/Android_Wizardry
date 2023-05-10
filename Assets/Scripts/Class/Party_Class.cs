@@ -11,7 +11,8 @@ public class Party_Class : MonoBehaviour
     public string mem;
 
     public bool _MakeCampOnLoad;
-    public Vector3Int _PartyXYL;
+    public Vector3Int _PartyXYL; 
+    public Enum._Direction facing;
     public bool Party_Shield_Bonus = false;
     public int Party_Light_Timer = 0;
     public bool inBattle = false;
@@ -66,7 +67,7 @@ public class Party_Class : MonoBehaviour
         return _result;
     }
     public Character_Class LookUp_PartyMember(int _n)
-    {
+    {        
         Character_Class _result = GameManager.ROSTER[Party[_n]];
         return _result;
     }

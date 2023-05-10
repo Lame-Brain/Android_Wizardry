@@ -5,6 +5,13 @@ using BlobberEngine;
 
 public class Magic_Logic_Controller : MonoBehaviour
 {
+    private Castle_Pop_Up_Manager _popUp;
+    private Dungeon_Logic_Manager _dungeon;
+    private void Start()
+    {
+        _dungeon = FindObjectOfType<Dungeon_Logic_Manager>();
+        _popUp = _dungeon.PopUp;
+    }
 
     public Spell_Class CanCastSpell(Character_Class _caster, string _spell)
     {
@@ -38,6 +45,11 @@ public class Magic_Logic_Controller : MonoBehaviour
         {
             if (_spell.book == "Priest") _caster.priestSpellsCast[_spell.circle - 1]++;
             if (_spell.book == "Mage") _caster.mageSpellsCast[_spell.circle - 1]++;
+            if (_dungeon._player.WhatRoomAmIin().feature == 4)
+            {
+                _popUp.Show_Message("The Spell Fizzles!");
+                return;
+            }            
             if(_target != null)
             {
                 Apply_Spell(_target, _spell.name);
@@ -123,12 +135,14 @@ public class Magic_Logic_Controller : MonoBehaviour
         if (_spell == "milwa")
         {
             GameManager.PARTY.Party_Light_Timer += Random.Range(0, 15) + 15;
+            _popUp.Show_Message("MILWA spell cast! The dungeon brightens around you!");
         }
         if (_spell == "lomilwa")
         {
             GameManager.PARTY.Party_Light_Timer = -1;
+            _popUp.Show_Message("LOMILWA spell cast! The dungeon brightens around you!");
         }
-        if(_spell == "dialko")
+        if (_spell == "dialko")
         {
             for (int i = 0; i < 6; i++)
             {

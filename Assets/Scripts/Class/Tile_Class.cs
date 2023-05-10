@@ -15,4 +15,5 @@ public class Tile_Class : MonoBehaviour
     public Vector2Int Map_Coordinates;
     public Vector2Int Game_Coordinates;
     public GameObject ceilng, floor, north_wall, east_wall, south_wall, west_wall;
+    public int Room_Number;
 }

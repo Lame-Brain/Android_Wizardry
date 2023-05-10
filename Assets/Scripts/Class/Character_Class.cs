@@ -415,4 +415,14 @@ public class Character_Class
             if (this.Inventory[i].index == -1) _result = i;
         return _result;
     }
+
+    public void TakeDamage(int _dam)
+    {
+        HP = -_dam;
+        if(HP <= 0)
+        {
+            HP = 0;
+            status = Enum._Status.dead;
+        }
+    }
 }

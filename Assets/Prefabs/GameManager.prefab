@@ -407,12 +407,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c782ec9c80ac14db646071265cf1e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SetFloatDefault: 29.35
+  SetFloatDefault: 0
   ItemListCSV: {fileID: 4900000, guid: acdefca942848d14a9694d2d1b266cb0, type: 3}
   SpellListCSV: {fileID: 4900000, guid: 05b54e7e671347d43b68bbd0858e753c, type: 3}
   _initCanvas: {fileID: 9091939943060691034}
   _initPanel: {fileID: 9091939943724648877}
   Screen_Sizing_String: {fileID: 9091939944187214631}
+  _doormat: {fileID: 2100000, guid: 5cb6374993ecfdf4296c2d9996eef3e4, type: 2}
 --- !u!114 &9091939944907890859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,3 +429,9 @@ MonoBehaviour:
   Temple_Favor: 0
   BoltacStock: 
   mem: 
+  _MakeCampOnLoad: 0
+  _PartyXYL: {x: 0, y: 0, z: 0}
+  facing: 1
+  Party_Shield_Bonus: 0
+  Party_Light_Timer: 0
+  inBattle: 0

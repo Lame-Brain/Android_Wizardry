@@ -15,11 +15,11 @@ public class GameManager : MonoBehaviour
     public static List<Item_Class> ITEM = new List<Item_Class>();
     [SerializeField]
     private TextAsset ItemListCSV, SpellListCSV;
-
+    [HideInInspector] public string _Persistent_Message = "";
 
     public GameObject _initCanvas, _initPanel;
     public TMPro.TextMeshProUGUI Screen_Sizing_String;
-
+    public Material _doormat; //weird place to put this, i know.
 
     private Castle_Display_Manager _display;
 
@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour
         LoadCSVs();
         LoadGame();
 
-        if(FindObjectOfType<Castle_Logic_Manager>()) FindObjectOfType<Castle_Logic_Manager>().StartCastle();
-        if(FindObjectOfType<Dungeon_Logic_Manager>()) FindObjectOfType<Dungeon_Logic_Manager>().StartDungeon();
+        if(FindObjectOfType<Castle_Logic_Manager>()) FindObjectOfType<Castle_Logic_Manager>().Start();
+        if(FindObjectOfType<Dungeon_Logic_Manager>()) FindObjectOfType<Dungeon_Logic_Manager>().Start();
     }
 
     private void LoadCSVs()
@@ -208,7 +208,13 @@ public class GameManager : MonoBehaviour
         PARTY.AddMember(3);
         PARTY.AddMember(4);
         PARTY.AddMember(5);
-        ROSTER[0].HP = 4;
+        for (int i = 0; i < SPELL.Count; i++)
+            ROSTER[5].SpellKnown[i] = true;
+        for (int i = 0; i < 7; i++)
+        {
+            ROSTER[5].mageSpells[i] = 9;
+            ROSTER[5].priestSpells[i] = 9;
+        }        
         //DEBUG
     }
 
@@ -231,8 +237,8 @@ public class GameManager : MonoBehaviour
             Character_Class _newToon = new Character_Class();
             _newToon.Load_Character(sd.SG_ROSTER[i]);
 
-            Debug.Log("This is " + _newToon.name);
-            Debug.Log(_newToon.Save_Character());
+            //Debug.Log("This is " + _newToon.name);
+            //Debug.Log(_newToon.Save_Character());
 
             ROSTER.Add(_newToon);
         }
