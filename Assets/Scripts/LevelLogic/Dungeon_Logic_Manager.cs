@@ -200,7 +200,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         UpdateMessge();
 
         //Check for features. 
-        // 0 = none, 1 = darkness, 2 = rock (dead), 3 = spinner, 4 = anti-magic, 5 = stairs going up, 6 = stairs going down, 7 = elevator, 8 = chute, 9 = pit
+        // 0 = none, 1 = darkness, 2 = rock (dead), 3 = spinner, 4 = anti-magic, 5 = stairs going up, 6 = stairs going down, 7 = elevator, 8 = chute, 9 = pit, 10 = elevator2
         Tile_Class _thisRoom = _player.WhatRoomAmIin();
         if(_thisRoom.feature == 1) //Darkness
         {
@@ -289,8 +289,8 @@ public class Dungeon_Logic_Manager : MonoBehaviour
             Enum._Direction _nd = Enum._Direction.none;
             if (_thisRoom.warp_facing == 0) _nd = Enum._Direction.north;
             if (_thisRoom.warp_facing == 1) _nd = Enum._Direction.east;
-            if (_thisRoom.warp_facing == 2) _nd = Enum._Direction.west;
-            if (_thisRoom.warp_facing == 3) _nd = Enum._Direction.south;
+            if (_thisRoom.warp_facing == 2) _nd = Enum._Direction.south;
+            if (_thisRoom.warp_facing == 3) _nd = Enum._Direction.west;
             _player.WarpPlayer(_thisRoom.warp, _nd);
         }
     }

@@ -29,8 +29,8 @@ public class Level2_Logic : Level_Logic_Template
         {
             GameManager.PARTY._MakeCampOnLoad = false;
             GameManager.instance.SaveGame();
-            GameManager.PARTY._PartyXYL = new Vector3Int(0, 0, 3);
-            GameManager.PARTY.facing = Enum._Direction.west;
+            GameManager.PARTY._PartyXYL = new Vector3Int(15, 11, 3);
+            GameManager.PARTY.facing = Enum._Direction.north;
             UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon3");
         }
 
