@@ -2,9 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BlobberEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEditor.VersionControl.Asset;
-using Unity.VisualScripting;
 
 public class Level2_Logic : Level_Logic_Template
 {

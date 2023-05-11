@@ -96,7 +96,6 @@ public class Castle_Logic_Manager : MonoBehaviour
             _input.SetButton(2, "Visit Boltac's Trade Goods", "goto_trader");
             _input.SetButton(3, "Visit Temple of CANT", "goto_temple");
             _input.SetButton(4, "Visit Training Camp", "goto_trainer");
-            _input.SetButton(7, "Kill Roster and quit", "debug_button");
             _input.SetButton(9, "Enter the Labyrinth", "goto_maze");
         }
 
@@ -227,6 +226,8 @@ public class Castle_Logic_Manager : MonoBehaviour
             _input.SetButton(0, "Create New Character", "create_character");
             _input.SetButton(2, "Review Roster of Characters", "review_roster");
             _input.SetButton(4, "View Character Details", "view_roster_character");
+            _input.SetButton(7, "Restore Roster", "debug_button_restore");
+            _input.SetButton(7, "Kill Roster and quit", "debug_button_delete");
             _input.SetButton(9, "Leave Training Ground", "goto_street");
         }
 
@@ -668,7 +669,11 @@ public class Castle_Logic_Manager : MonoBehaviour
             Character_Generator_Flow.SetActive(true);
         }
 
-        if(_text == "debug_button")
+        if(_text == "debug_button_restore")
+        {
+            GameManager.instance.RestoreRoster();
+        }
+        if(_text == "debug_button_delete")
         {
             GameManager.instance.KillRoster();
         }

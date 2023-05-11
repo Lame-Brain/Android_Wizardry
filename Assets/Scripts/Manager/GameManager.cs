@@ -203,12 +203,12 @@ public class GameManager : MonoBehaviour
         ROSTER[2].Inventory[0] = new Item(3, false, false, true);
         ROSTER[2].Inventory[1] = new Item(11, false, false, true);
         ROSTER[2].Inventory[2] = new Item(8, false, false, true);
-        PARTY.AddMember(0);
-        PARTY.AddMember(1);
-        PARTY.AddMember(2);
-        PARTY.AddMember(3);
-        PARTY.AddMember(4);
-        PARTY.AddMember(5);
+        //PARTY.AddMember(0);
+        //PARTY.AddMember(1);
+        //PARTY.AddMember(2);
+        //PARTY.AddMember(3);
+        //PARTY.AddMember(4);
+        //PARTY.AddMember(5);
         for (int i = 0; i < SPELL.Count; i++)
             ROSTER[5].SpellKnown[i] = true;
         for (int i = 0; i < 7; i++)
@@ -281,6 +281,17 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
+    public void RestoreRoster()
+    {
+        for (int i = 5; i > 0; i--)
+            if (!PARTY.EmptySlot(i))
+                PARTY.RemoveMember(i); 
+        for (int i = 0; i < ROSTER.Count; i++)
+        {
+            ROSTER[i].status = Enum._Status.OK;
+            ROSTER[i].location = Enum._Locaton.Roster;
+        }
+    }
     public void KillRoster()
     {
         if (File.Exists(Application.persistentDataPath + "/Roster.wiz")) File.Delete(Application.persistentDataPath + "/Roster.wiz");
