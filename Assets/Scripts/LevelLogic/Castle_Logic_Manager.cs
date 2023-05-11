@@ -226,7 +226,7 @@ public class Castle_Logic_Manager : MonoBehaviour
             _input.SetButton(0, "Create New Character", "create_character");
             _input.SetButton(2, "Review Roster of Characters", "review_roster");
             _input.SetButton(4, "View Character Details", "view_roster_character");
-            _input.SetButton(7, "Restore Roster", "debug_button_restore");
+            _input.SetButton(6, "Restore Roster", "debug_button_restore");
             _input.SetButton(7, "Kill Roster and quit", "debug_button_delete");
             _input.SetButton(9, "Leave Training Ground", "goto_street");
         }
