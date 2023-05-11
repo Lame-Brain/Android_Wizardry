@@ -34,8 +34,8 @@ public class Camp_Logic_Manager : MonoBehaviour
     }
 
     private void OnDisable()
-    {
-        FindObjectOfType<Dungeon_Logic_Manager>().ButtonPressReceived("update_screen");
+    {        
+        FindObjectOfType<Dungeon_Logic_Manager>().TimePass();
     }
 
     public void ClearButtons()

@@ -75,7 +75,9 @@ public class Player_Controller : MonoBehaviour
                 _level.Map[_pos.x, _pos.y].Wall[3] = 3;
                 _level.Map[_pos.x, _pos.y].west_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
             }
-            _dungeon.ButtonPressReceived("update_screen");
+            //1234567890123456789012345678901234567
+            _dungeon.UpdateMessge("      You found a secret door!");
+
         }
         else
         {
@@ -86,26 +88,34 @@ public class Player_Controller : MonoBehaviour
     public void RevealSecretDoors()
     {
         _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
+        bool found = false;
         if (_level.Map[_pos.x, _pos.y].Wall[0] == 2)
         {
             _level.Map[_pos.x, _pos.y].Wall[0] = 3;
             _level.Map[_pos.x, _pos.y].north_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            found = true;
         }
         if (_level.Map[_pos.x, _pos.y].Wall[1] == 2)
         {
             _level.Map[_pos.x, _pos.y].Wall[1] = 3;
             _level.Map[_pos.x, _pos.y].east_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            found = true;   
         }
         if (_level.Map[_pos.x, _pos.y].Wall[2] == 2)
         {
             _level.Map[_pos.x, _pos.y].Wall[2] = 3;
             _level.Map[_pos.x, _pos.y].south_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            found = true;
         }
         if (_level.Map[_pos.x, _pos.y].Wall[3] == 2)
         {
             _level.Map[_pos.x, _pos.y].Wall[3] = 3;
             _level.Map[_pos.x, _pos.y].west_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+            found = true;
         }
+        if(found)
+            _dungeon.UpdateMessge("      You found a secret door!");
+
     }
     public void OpenDoor()
     {
@@ -126,6 +136,22 @@ public class Player_Controller : MonoBehaviour
         if (_newFacing != Enum._Direction.none) facing = _newFacing;
         this.transform.position = _newPos;
         SetPlayerFacing();
+    }
+    public void TotalPartyKill()
+    {
+        _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
+        for (int i = 0; i < 6; i++) // set all characters to dead
+            if (!GameManager.PARTY.EmptySlot(i))
+            {
+                Character_Class _me = GameManager.PARTY.LookUp_PartyMember(i);
+                _me.HP = 0;
+                _me.status = Enum._Status.lost;
+                _me.lostXYL = new Vector3Int(_pos.x, _pos.y, GameManager.PARTY._PartyXYL.z);
+            }
+        for (int i = 0; i < 6; i++)
+            if (!GameManager.PARTY.EmptySlot(0)) GameManager.PARTY.RemoveMember(0);
+        GameManager.instance.SaveGame();
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Castle");
     }
 
     public void ReceiveCommand(string _command)
@@ -187,7 +213,7 @@ public class Player_Controller : MonoBehaviour
             _timeElapsed += Time.deltaTime;
         }
         int x = (int)_endPos.x, y = (int)_endPos.y, z = (int)_endPos.z;
-        if (x < 0) x = 20; if (x > 20) x = 1;
+        if (x < 1) x = 20; if (x > 20) x = 1;
         if (z > -1) z = -20; if (z < -20) z = -1;
         this.transform.position = new Vector3Int(x, y, z);
         yield return new WaitForSeconds(Move_Delay);
@@ -283,7 +309,7 @@ public class Player_Controller : MonoBehaviour
         }
         SetPlayerFacing();
         yield return new WaitForSeconds(Turn_Delay);
-        _dungeon.ButtonPressReceived("update_screen");
+        _dungeon.SetContextButton();
         _canAcceptmovement = true;
     }
 

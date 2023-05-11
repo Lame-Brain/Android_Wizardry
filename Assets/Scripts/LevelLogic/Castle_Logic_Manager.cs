@@ -96,6 +96,7 @@ public class Castle_Logic_Manager : MonoBehaviour
             _input.SetButton(2, "Visit Boltac's Trade Goods", "goto_trader");
             _input.SetButton(3, "Visit Temple of CANT", "goto_temple");
             _input.SetButton(4, "Visit Training Camp", "goto_trainer");
+            _input.SetButton(7, "Kill Roster and quit", "debug_button");
             _input.SetButton(9, "Enter the Labyrinth", "goto_maze");
         }
 
@@ -253,6 +254,9 @@ public class Castle_Logic_Manager : MonoBehaviour
                 GameManager.PARTY._MakeCampOnLoad = true;
                 GameManager.PARTY._PartyXYL = new Vector3Int(0, 0, 1);
                 GameManager.PARTY.facing = Enum._Direction.north;
+                for (int i = 0; i < 6; i++)
+                    if (!GameManager.PARTY.EmptySlot(i))
+                        GameManager.PARTY.LookUp_PartyMember(i).location = Enum._Locaton.Dungeon;
                 GameManager.instance.SaveGame();
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon1");
                 return;
@@ -662,6 +666,11 @@ public class Castle_Logic_Manager : MonoBehaviour
         if(_text == "create_character")
         {
             Character_Generator_Flow.SetActive(true);
+        }
+
+        if(_text == "debug_button")
+        {
+            GameManager.instance.KillRoster();
         }
     }
 

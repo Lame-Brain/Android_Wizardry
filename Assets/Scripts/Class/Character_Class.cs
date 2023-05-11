@@ -418,7 +418,7 @@ public class Character_Class
 
     public void TakeDamage(int _dam)
     {
-        HP = -_dam;
+        HP -= _dam;
         if(HP <= 0)
         {
             HP = 0;

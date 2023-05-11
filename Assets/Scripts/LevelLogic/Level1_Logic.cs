@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using BlobberEngine;
 
 public class Level1_Logic : Level_Logic_Template
 {
@@ -17,7 +18,20 @@ public class Level1_Logic : Level_Logic_Template
     public override void Special_Stuff(string _string)
     {
         Dungeon_Logic_Manager _dungeon = FindObjectOfType<Dungeon_Logic_Manager>();
-        if(_string == "Sign")
+        if(_string == "go_up")
+        {
+            GameManager.instance.SaveGame();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Castle");
+        }
+        if (_string == "go_down")
+        {
+            GameManager.PARTY._MakeCampOnLoad = false;
+            GameManager.instance.SaveGame();
+            GameManager.PARTY._PartyXYL = new Vector3Int(12, 7, 2);
+            GameManager.PARTY.facing = Enum._Direction.west;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon2");
+        }
+        if (_string == "Sign")
         {
             Debug.Log("It worked?");                                  //0123456789012345678901234567890123456789
                                              _dungeon.UpdateMessge("\n\n   A LARGE SIGN ON THE WALL READS:\n" +
@@ -42,6 +56,7 @@ public class Level1_Logic : Level_Logic_Template
         }
         if (_string == "Town_Portal2")
         {
+            GameManager.instance.SaveGame();
             UnityEngine.SceneManagement.SceneManager.LoadScene("Castle");
         }
         if(_string == "Murphys_Ghosts")
@@ -83,6 +98,18 @@ public class Level1_Logic : Level_Logic_Template
         }
         if (_string == "Bronze_Key2")
         {
+            if (GameManager.PARTY.PartyHasItemCheck(97))
+            {   //                         01234567890123456789012345678901234567
+                _dungeon.UpdateMessge("\n\n      You find nothing of value       ");
+                _dungeon.SetButtonText("u", "", "");
+                _dungeon.SetButtonText("r", "", "");
+                _dungeon.SetButtonText("d", "", "");
+                _dungeon.SetButtonText("l", "", "");
+                _dungeon.SetButtonText("1", "OK", "cancel");
+                _dungeon.SetButtonText("2", "", "");
+                return;
+            }
+
             Character_Class _me = null;
             for (int i = 0; i < 6; i++)
                 if (_me == null && !GameManager.PARTY.EmptySlot(i) && GameManager.PARTY.LookUp_PartyMember(i).HasEmptyInventorySlot())
@@ -93,12 +120,24 @@ public class Level1_Logic : Level_Logic_Template
                 _dungeon.UpdateMessge("\n\n        You find a Bronze Key!       \n" +
                                            _me.name + " takes it.");
                 _me.Inventory[_me.GetEmptyInventorySlot()] = new Item(97);
+                _dungeon.SetButtonText("u", "", "");
+                _dungeon.SetButtonText("r", "", "");
+                _dungeon.SetButtonText("d", "", "");
+                _dungeon.SetButtonText("l", "", "");
+                _dungeon.SetButtonText("1", "OK", "cancel");
+                _dungeon.SetButtonText("2", "", "");
             }
             else
             {
                 //                         01234567890123456789012345678901234567
                 _dungeon.UpdateMessge("\n\n     There is a Bronze Key here       \n" +
                                           "   But no one has any room for it!");
+                _dungeon.SetButtonText("u", "", "");
+                _dungeon.SetButtonText("r", "", "");
+                _dungeon.SetButtonText("d", "", "");
+                _dungeon.SetButtonText("l", "", "");
+                _dungeon.SetButtonText("1", "OK", "cancel");
+                _dungeon.SetButtonText("2", "", "");
             }
         }
         if (_string == "Silver_Key")
@@ -122,6 +161,17 @@ public class Level1_Logic : Level_Logic_Template
         }
         if (_string == "Silver_Key2")
         {
+            if (GameManager.PARTY.PartyHasItemCheck(98))
+            {   //                         01234567890123456789012345678901234567
+                _dungeon.UpdateMessge("\n\n      You find nothing of value       ");
+                _dungeon.SetButtonText("u", "", "");
+                _dungeon.SetButtonText("r", "", "");
+                _dungeon.SetButtonText("d", "", "");
+                _dungeon.SetButtonText("l", "", "");
+                _dungeon.SetButtonText("1", "OK", "cancel");
+                _dungeon.SetButtonText("2", "", "");
+                return;
+            }
             Character_Class _me = null;
             for (int i = 0; i < 6; i++)
                 if (_me == null && !GameManager.PARTY.EmptySlot(i) && GameManager.PARTY.LookUp_PartyMember(i).HasEmptyInventorySlot())
@@ -132,12 +182,24 @@ public class Level1_Logic : Level_Logic_Template
                 _dungeon.UpdateMessge("\n\n        You find a Silver Key!       \n" +
                                            _me.name + " takes it.");
                 _me.Inventory[_me.GetEmptyInventorySlot()] = new Item(98);
+                _dungeon.SetButtonText("u", "", "");
+                _dungeon.SetButtonText("r", "", "");
+                _dungeon.SetButtonText("d", "", "");
+                _dungeon.SetButtonText("l", "", "");
+                _dungeon.SetButtonText("1", "OK", "cancel");
+                _dungeon.SetButtonText("2", "", "");
             }
             else
             {
                 //                         01234567890123456789012345678901234567
                 _dungeon.UpdateMessge("\n\n     There is a Silver Key here       \n" +
                                           "   But no one has any room for it!");
+                _dungeon.SetButtonText("u", "", "");
+                _dungeon.SetButtonText("r", "", "");
+                _dungeon.SetButtonText("d", "", "");
+                _dungeon.SetButtonText("l", "", "");
+                _dungeon.SetButtonText("1", "OK", "cancel");
+                _dungeon.SetButtonText("2", "", "");
             }
         }
         if (_string == "PoR_Reference")

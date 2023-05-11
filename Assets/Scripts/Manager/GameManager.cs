@@ -190,7 +190,7 @@ public class GameManager : MonoBehaviour
         ROSTER.Add(mage);
         ROSTER.Add(bishop);
 
-        /*
+        
         //DEBUG
         ROSTER[0].Inventory[0] = new Item(1, false, false, true);
         ROSTER[0].Inventory[1] = new Item(11, false, false, true);
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
             ROSTER[5].priestSpells[i] = 9;
         }        
         //DEBUG
-        */
+        
     }
 
     public void LoadGame()
@@ -279,6 +279,12 @@ public class GameManager : MonoBehaviour
 
         bf.Serialize(file, SaveGame);
         file.Close();
+    }
+
+    public void KillRoster()
+    {
+        if (File.Exists(Application.persistentDataPath + "/Roster.wiz")) File.Delete(Application.persistentDataPath + "/Roster.wiz");
+        Application.Quit();
     }
 
 }

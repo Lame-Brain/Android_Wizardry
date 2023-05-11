@@ -102,4 +102,29 @@ public class Party_Class : MonoBehaviour
         Party[4] = _PartySlot5;
         Party[5] = _PartySlot6;
     }
+
+    public bool PartyHasItemCheck(int _index) 
+    {
+        bool _result = false;
+        for (int i = 0; i < 6; i++)
+            if(!EmptySlot(i))
+                for (int s = 0; s < 8; s++)
+                    if (LookUp_PartyMember(i).Inventory[s].index == _index)
+                        _result = true;
+        return _result;
+    }
+
+    public bool Party_TPK_Check()
+    {
+        bool _TPK = true;
+        for (int i = 0; i < 6; i++)
+            if (!EmptySlot(i))            
+                if (LookUp_PartyMember(i).status != Enum._Status.dead &&
+                    LookUp_PartyMember(i).status != Enum._Status.ashes &&
+                    LookUp_PartyMember(i).status != Enum._Status.lost &&
+                    LookUp_PartyMember(i).status != Enum._Status.stoned &&
+                    LookUp_PartyMember(i).status != Enum._Status.plyze)
+                    _TPK = false;            
+        return _TPK;
+    }
 }

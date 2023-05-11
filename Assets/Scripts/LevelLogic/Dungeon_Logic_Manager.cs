@@ -10,7 +10,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
 
     public Castle_Pop_Up_Manager PopUp;
     public Magic_Logic_Controller Magic;
-    public Player_Controller _player;
+    [HideInInspector]public Player_Controller _player;
     private Level_Logic_Template _level;
 
 
@@ -63,7 +63,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         SetContextButton();
     }
 
-    private void SetContextButton()
+    public void SetContextButton()
     {
         int _faced = _player.WhatIsInFrontOfPlayer();
         if (_faced == 0) SetButtonText("1", "Inspect", "inspect");
@@ -176,6 +176,13 @@ public class Dungeon_Logic_Manager : MonoBehaviour
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public void TimePass()
     {
+        //IS the whole party dead?
+        if (GameManager.PARTY.Party_TPK_Check())
+        {
+            GameManager.instance._Persistent_Message = "Everyone in your party has died, returning to town...";
+            _player.TotalPartyKill();
+        }
+
         //Timers
         if (GameManager.PARTY.Party_Light_Timer > 0) GameManager.PARTY.Party_Light_Timer--;
         for (int i = 0; i < 6; i++) 
@@ -207,11 +214,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         if(_thisRoom.feature == 2) //Rock, kills party
         {
             GameManager.instance._Persistent_Message = "Oh no! Solid Rock! Everyone in the Party is Lost!";
-            for (int i = 0; i < 6; i++)
-                if (!GameManager.PARTY.EmptySlot(i)) GameManager.PARTY.LookUp_PartyMember(i).status = Enum._Status.lost;
-            for (int i = 0; i < 6; i++)
-                if (!GameManager.PARTY.EmptySlot(0)) GameManager.PARTY.RemoveMember(0);
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Castle");            
+            _player.TotalPartyKill();
         }
         if(_thisRoom.feature == 3) // spinner, random direction
         {
@@ -224,13 +227,22 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         }
         if(_thisRoom.feature == 9)
         {
-            Dice _dam = new Dice(GameManager.PARTY._PartyXYL.z, 8,0);
+            string _txt = "        YOU FELL INTO A PIT!!        \n";
+            Dice _dam = new Dice(1, 8, GameManager.PARTY._PartyXYL.z);
             for (int i = 0; i < 6; i++)
-                if (!GameManager.PARTY.EmptySlot(i)) GameManager.PARTY.LookUp_PartyMember(i).TakeDamage(_dam.Roll());
+                if (!GameManager.PARTY.EmptySlot(i))
+                {
+                    int d = _dam.Roll();
+                    GameManager.PARTY.LookUp_PartyMember(i).TakeDamage(d);
+                    _txt += GameManager.PARTY.LookUp_PartyMember(i).name + " takes " + d + " damage!\n";
+                    //Debug.Log(GameManager.PARTY.LookUp_PartyMember(i).name + " takes " + d + " damage!\n");
+                }
+            UpdateMessge(_txt);
+            //Debug.Log(GameManager.PARTY.LookUp_PartyMember(0).name + " has " + GameManager.PARTY.LookUp_PartyMember(0).HP + "Health");
         }
 
         //Light spells reveal secret doors
-        if(GameManager.PARTY.Party_Light_Timer != 0)
+        if (GameManager.PARTY.Party_Light_Timer != 0)
         {
             _player.RevealSecretDoors();
         }
@@ -239,9 +251,9 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         UpdateScreen();
 
         if (_thisRoom.feature == 5)
-        {                   //1234567890123456789012345678901234567890
-            UpdateMessge("\n\n          STAIRS LEADING UP!\n" +
-                             "          TAKE THEM? <Yes/No>");
+        {                   //1234567890123456789012345678901234567
+            UpdateMessge("\n\n        STAIRS LEADING UP!\n" +
+                             "        TAKE THEM? <Yes/No>");
             SetButtonText("u", "", "");
             SetButtonText("d", "", "");
             SetButtonText("l", "", "");
@@ -250,15 +262,19 @@ public class Dungeon_Logic_Manager : MonoBehaviour
             SetButtonText("2", "No", "cancel");
         }
         if (_thisRoom.feature == 6)
-        {                   //1234567890123456789012345678901234567890
-            UpdateMessge("\n\n        STAIRS LEADING DOWN...\n" +
-                             "         TAKE THEM? <Yes/No>");
+        {                   //1234567890123456789012345678901234567
+            UpdateMessge("\n\n      STAIRS LEADING DOWN...\n" +
+                             "       TAKE THEM? <Yes/No>");
             SetButtonText("u", "", "");
             SetButtonText("d", "", "");
             SetButtonText("l", "", "");
             SetButtonText("r", "", "");
-            SetButtonText("1", "Yes", "stairs_up");
+            SetButtonText("1", "Yes", "stairs_down");
             SetButtonText("2", "No", "cancel");
+        }
+        if(_thisRoom.feature == 7) //Elevators
+        {
+            //TO DO: Elevator code
         }
 
         //SPECIAL
@@ -282,8 +298,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
 
     public void ButtonPressReceived(string _command)
     {
-        if(_command == "update_screen") UpdateScreen();
-        if(_command == "move_forward" || _command == "turn_right" || _command == "turn_around" || _command == "turn_left")
+        if (_command == "move_forward" || _command == "turn_right" || _command == "turn_around" || _command == "turn_left")
         {
             _player.ReceiveCommand(_command);
         }
@@ -313,15 +328,11 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         }
         if(_command == "stairs_up")
         {
-            GameManager.instance.SaveGame();
-            if(GameManager.PARTY._PartyXYL.z == 1)
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Castle");
-            }
-            else
-            {
-                Debug.Log("Go up a level");
-            }
+            _level.Special_Stuff("go_up");
+        }
+        if(_command == "stairs_down")
+        {
+            _level.Special_Stuff("go_down");
         }
         if (_command.Contains("Special:"))
         {

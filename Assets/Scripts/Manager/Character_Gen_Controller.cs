@@ -583,7 +583,7 @@ public class Character_Gen_Controller : MonoBehaviour
         }
 
         New_Character.HP = New_Character.HP_MAX; //set Hp to Hp Max
-        New_Character.Geld = Random.Range(0, 100) + 90; //Geld roll
+        New_Character.Geld = Random.Range(0, 150) + 125; //Geld roll
         New_Character.xp_nnl = new XPTable().LookupNNL(1, New_Character.character_class);
 
         //WRITE THIS CHARACTER TO THE ROSTER
