@@ -31,7 +31,7 @@ public class Level3_Logic : Level_Logic_Template
             GameManager.instance.SaveGame();
             GameManager.PARTY._PartyXYL = new Vector3Int(10, 18, 4);
             GameManager.PARTY.facing = Enum._Direction.north;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon3");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon4");
         }
 
         if ( _string == "Message1")
