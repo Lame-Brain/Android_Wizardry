@@ -313,4 +313,14 @@ public class Player_Controller : MonoBehaviour
         _canAcceptmovement = true;
     }
 
+    public string GetDebugData()
+    {
+        _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
+        int x2 = _level.Map[_pos.x, _pos.y].Game_Coordinates.x;
+        int y2 = _level.Map[_pos.x, _pos.y].Game_Coordinates.y;
+        int x3 = (int)_level.Map[_pos.x, _pos.y].transform.position.x;
+        int y3 = (int)_level.Map[_pos.x, _pos.y].transform.position.z;
+        string _result = "(" + x2 + ", " + y2 + ") (" + x3 + ", " + y3 + ") - " + facing;
+        return _result;
+    }
 }

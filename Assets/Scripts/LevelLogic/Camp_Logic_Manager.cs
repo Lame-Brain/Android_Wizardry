@@ -213,6 +213,13 @@ public class Camp_Logic_Manager : MonoBehaviour
             }
         }
 
+        if (_command == "disband_party")
+        {
+            //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            GameManager.instance.SaveGame();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Castle");
+        }
+
         if (_command == "inspect_member")
         {
             state = Camp_Logic_States.choose_member;
