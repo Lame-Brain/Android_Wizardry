@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using BlobberEngine;
 
@@ -41,7 +39,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
     private void UpdateScreen()
     {
         //Icons
-        if(GameManager.PARTY.Party_Light_Timer > 0)
+        if(GameManager.PARTY.Party_Light_Timer != 0)
         {
             Light_Icon.SetActive(true);
             RenderSettings.fogDensity = 0.25f;
@@ -231,6 +229,12 @@ public class Dungeon_Logic_Manager : MonoBehaviour
                 if (!GameManager.PARTY.EmptySlot(i)) GameManager.PARTY.LookUp_PartyMember(i).TakeDamage(_dam.Roll());
         }
 
+        //Light spells reveal secret doors
+        if(GameManager.PARTY.Party_Light_Timer != 0)
+        {
+            _player.RevealSecretDoors();
+        }
+
         //Putting this here because none of the other features invole updating the screen, and I don't want the update to overwrite the message or buttons
         UpdateScreen();
 
@@ -263,6 +267,16 @@ public class Dungeon_Logic_Manager : MonoBehaviour
             _level.Special_Stuff(_thisRoom.special_code);
         }
 
+        //WARP
+        if (_thisRoom.isWarp)
+        {
+            Enum._Direction _nd = Enum._Direction.none;
+            if (_thisRoom.warp_facing == 0) _nd = Enum._Direction.north;
+            if (_thisRoom.warp_facing == 1) _nd = Enum._Direction.east;
+            if (_thisRoom.warp_facing == 2) _nd = Enum._Direction.west;
+            if (_thisRoom.warp_facing == 3) _nd = Enum._Direction.south;
+            _player.WarpPlayer(_thisRoom.warp, _nd);
+        }
     }
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

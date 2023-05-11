@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.ObjectChangeEventStream;
 
 public class Level1_Logic : Level_Logic_Template
 {
@@ -64,5 +63,89 @@ public class Level1_Logic : Level_Logic_Template
         {
 
         }
+        if (_string == "Bronze_Key")
+        {
+            //                     01234567890123456789012345678901234567
+            _dungeon.UpdateMessge("IN THIS ROOM IS A STATUE OF A MONSTER \n" +
+                                  "WITH THE BODY OF A CHICKEN AND THE    \n" +
+                                  "Head OF A CAT.                        \n" +
+                                  "THE STATUE IS MADE OF BRONZE, AND LIES\n" +
+                                  "ON AN ONYX PEDESTAL.                  \n" +
+                                  "THERE ARE UNUSUAL RUNES ON A PLAQUE   \n" +
+                                  "THEREON.                              \n\n" +
+                                  "Do you want to look around? <yes/No>");
+            _dungeon.SetButtonText("u", "", "");
+            _dungeon.SetButtonText("r", "", "");
+            _dungeon.SetButtonText("d", "", "");
+            _dungeon.SetButtonText("l", "", "");
+            _dungeon.SetButtonText("1", "YES", "Special:Bronze_Key2");
+            _dungeon.SetButtonText("2", "NO", "cancel");
+        }
+        if (_string == "Bronze_Key2")
+        {
+            Character_Class _me = null;
+            for (int i = 0; i < 6; i++)
+                if (_me == null && !GameManager.PARTY.EmptySlot(i) && GameManager.PARTY.LookUp_PartyMember(i).HasEmptyInventorySlot())
+                    _me = GameManager.PARTY.LookUp_PartyMember(i);
+            if (_me != null)
+            {
+                //                         01234567890123456789012345678901234567
+                _dungeon.UpdateMessge("\n\n        You find a Bronze Key!       \n" +
+                                           _me.name + " takes it.");
+                _me.Inventory[_me.GetEmptyInventorySlot()] = new Item(97);
+            }
+            else
+            {
+                //                         01234567890123456789012345678901234567
+                _dungeon.UpdateMessge("\n\n     There is a Bronze Key here       \n" +
+                                          "   But no one has any room for it!");
+            }
+        }
+        if (_string == "Silver_Key")
+        {
+            //                     01234567890123456789012345678901234567
+            _dungeon.UpdateMessge("IN THIS ROOM IS A SILVER STATUE OF A  \n" +
+                                  "BOAR. WITH HORNS AND LONG FANGS.      \n" +
+                                  "ON THE WALL BY THE STATUE IS A Partia-\n" +
+                                  "ALLY OBSCURED Message THAT APPEARS TO \n" +
+                                  "HAVE BEEN LEFT BY PASSING ELVES.      \n" +
+                                  "IT IS HARDLY LEGIBLE, BUT seems to be \n" +
+                                  "a WARNING ABOUT GHOSTS AND DEMONS.    \n\n"+
+                                  "Do you want to look around? <yes/No>");
+
+            _dungeon.SetButtonText("u", "", "");
+            _dungeon.SetButtonText("r", "", "");
+            _dungeon.SetButtonText("d", "", "");
+            _dungeon.SetButtonText("l", "", "");
+            _dungeon.SetButtonText("1", "YES", "Special:Silver_Key2");
+            _dungeon.SetButtonText("2", "NO", "cancel");
+        }
+        if (_string == "Silver_Key2")
+        {
+            Character_Class _me = null;
+            for (int i = 0; i < 6; i++)
+                if (_me == null && !GameManager.PARTY.EmptySlot(i) && GameManager.PARTY.LookUp_PartyMember(i).HasEmptyInventorySlot())
+                    _me = GameManager.PARTY.LookUp_PartyMember(i);
+            if (_me != null)
+            {
+                //                         01234567890123456789012345678901234567
+                _dungeon.UpdateMessge("\n\n        You find a Silver Key!       \n" +
+                                           _me.name + " takes it.");
+                _me.Inventory[_me.GetEmptyInventorySlot()] = new Item(98);
+            }
+            else
+            {
+                //                         01234567890123456789012345678901234567
+                _dungeon.UpdateMessge("\n\n     There is a Silver Key here       \n" +
+                                          "   But no one has any room for it!");
+            }
+        }
+        if (_string == "PoR_Reference")
+        {
+            //                     01234567890123456789012345678901234567
+            _dungeon.UpdateMessge("There is a sign on the wall, it says: \n" +
+                                  "What were you expecting? A bow and    \n" +
+                                  "20 magic arrows?\n\n");
+        }       
     }
 }

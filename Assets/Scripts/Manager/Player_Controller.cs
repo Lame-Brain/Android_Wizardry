@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using BlobberEngine;
-using UnityEditor.Experimental.GraphView;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -86,6 +83,30 @@ public class Player_Controller : MonoBehaviour
         }
         _dungeon.TimePass();
     }
+    public void RevealSecretDoors()
+    {
+        _pos = new Vector2Int((int)this.transform.position.x, (int)this.transform.position.z * -1);
+        if (_level.Map[_pos.x, _pos.y].Wall[0] == 2)
+        {
+            _level.Map[_pos.x, _pos.y].Wall[0] = 3;
+            _level.Map[_pos.x, _pos.y].north_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+        }
+        if (_level.Map[_pos.x, _pos.y].Wall[1] == 2)
+        {
+            _level.Map[_pos.x, _pos.y].Wall[1] = 3;
+            _level.Map[_pos.x, _pos.y].east_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+        }
+        if (_level.Map[_pos.x, _pos.y].Wall[2] == 2)
+        {
+            _level.Map[_pos.x, _pos.y].Wall[2] = 3;
+            _level.Map[_pos.x, _pos.y].south_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+        }
+        if (_level.Map[_pos.x, _pos.y].Wall[3] == 2)
+        {
+            _level.Map[_pos.x, _pos.y].Wall[3] = 3;
+            _level.Map[_pos.x, _pos.y].west_wall.GetComponent<MeshRenderer>().material = GameManager.instance._doormat;
+        }
+    }
     public void OpenDoor()
     {
         StartCoroutine(Move_CR());
@@ -98,6 +119,12 @@ public class Player_Controller : MonoBehaviour
         if (_random == 1 ) facing = Enum._Direction.east;
         if (_random == 2 ) facing = Enum._Direction.south;
         if (_random == 3 ) facing = Enum._Direction.west;
+        SetPlayerFacing();
+    }
+    public void WarpPlayer(Vector3 _newPos, Enum._Direction _newFacing)
+    {
+        if (_newFacing != Enum._Direction.none) facing = _newFacing;
+        this.transform.position = _newPos;
         SetPlayerFacing();
     }
 
@@ -160,7 +187,7 @@ public class Player_Controller : MonoBehaviour
             _timeElapsed += Time.deltaTime;
         }
         int x = (int)_endPos.x, y = (int)_endPos.y, z = (int)_endPos.z;
-        if (x < 0) x = 20; if (x > 20) x = 0;
+        if (x < 0) x = 20; if (x > 20) x = 1;
         if (z > -1) z = -20; if (z < -20) z = -1;
         this.transform.position = new Vector3Int(x, y, z);
         yield return new WaitForSeconds(Move_Delay);
