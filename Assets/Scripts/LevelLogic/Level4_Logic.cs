@@ -86,8 +86,10 @@ public class Level4_Logic : Level_Logic_Template
         }
         if (_string == "Alarm_Encounter")
         {
-            if (GameManager.PARTY.mem.Contains("|Alarm_Encounter|"))
-                GameManager.PARTY.mem = GameManager.PARTY.mem.Replace("|Alarm_Encounter|", "");
+            if (!GameManager.PARTY.mem.Contains("|Alarm_Encounter|")) return;
+            
+            Debug.Log("Alarm Encounter");
+            GameManager.PARTY.mem = GameManager.PARTY.mem.Replace("|Alarm_Encounter|", "");
             //TO-DO - Forced encounter
         }
         if (_string == "Bear_Lock")
@@ -244,6 +246,10 @@ public class Level4_Logic : Level_Logic_Template
         }
         if(_string == "GuardianBattle")
         {
+            //DEBUG!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            return;
+
+
             if (GameManager.PARTY.mem.Contains("|DefeatedLvl4Guardians|")) return;
             if (GameManager.PARTY.mem.Contains("|FoughtLvl4Guardians|"))
             {

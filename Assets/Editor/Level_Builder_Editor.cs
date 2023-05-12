@@ -179,7 +179,7 @@ public class Level_Builder_Editor : Editor
                         }
                         if (_rawData[x, y, z] == 20) // Chute
                         {
-                            host.Map[x, y].feature = 8;
+                            host.Map[x, y].feature = 7;
                         }
                         if (_rawData[x, y, z] == 21) // Elevator
                         {

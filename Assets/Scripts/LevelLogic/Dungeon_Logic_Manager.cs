@@ -11,6 +11,8 @@ public class Dungeon_Logic_Manager : MonoBehaviour
     public Castle_Pop_Up_Manager PopUp;
     public Magic_Logic_Controller Magic;
     [HideInInspector]public Player_Controller _player;
+
+    [SerializeField]private Elevator_Controller_Manager _elevator;
     private Level_Logic_Template _level;
 
 
@@ -200,7 +202,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         UpdateMessge();
 
         //Check for features. 
-        // 0 = none, 1 = darkness, 2 = rock (dead), 3 = spinner, 4 = anti-magic, 5 = stairs going up, 6 = stairs going down, 7 = elevator, 8 = chute, 9 = pit, 10 = elevator2
+        // 0 = none, 1 = darkness, 2 = rock (dead), 3 = spinner, 4 = anti-magic, 5 = stairs going up, 6 = stairs going down, 7 = chute, 8 = elevator, 9 = pit, 10 = elevator2
         Tile_Class _thisRoom = _player.WhatRoomAmIin();
         if(_thisRoom.feature == 1) //Darkness
         {
@@ -220,12 +222,17 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         {
             _player.SpinPlayer();
         }
-        if(_thisRoom.feature == 4)
+        if (_thisRoom.feature == 4)
         {
             GameManager.PARTY.Party_Light_Timer = 0;
             GameManager.PARTY.Party_Shield_Bonus = false;
+            GameManager.PARTY.antiMagic = true;
         }
-        if(_thisRoom.feature == 9)
+        else
+        {
+            GameManager.PARTY.antiMagic = false;
+        }
+        if (_thisRoom.feature == 9)
         {
             string _txt = "        YOU FELL INTO A PIT!!        \n";
             Dice _dam = new Dice(1, 8, GameManager.PARTY._PartyXYL.z);
@@ -272,10 +279,11 @@ public class Dungeon_Logic_Manager : MonoBehaviour
             SetButtonText("1", "Yes", "stairs_down");
             SetButtonText("2", "No", "cancel");
         }
-        if(_thisRoom.feature == 7) //Elevators
-        {
-            //TO DO: Elevator code
-        }
+        if(_thisRoom.feature == 8) //Elevators
+            _elevator.EnterElevator(false);
+        if(_thisRoom.feature == 10 && GameManager.PARTY.PartyHasItemCheck(100)) //Elevators
+            _elevator.EnterElevator(true);
+        
 
         //SPECIAL
         if (_thisRoom.isSpecial)
@@ -338,6 +346,34 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         {
             _command = _command.Replace("Special:", "");
             _level.Special_Stuff(_command);
+        }
+        if (_command.Contains("ElevatorA:"))
+        {
+            _command = _command.Replace("ElevatorA:", "");
+            int _num = -1;
+            int.TryParse(_command, out _num);
+            if (_num > 0 && _num < 10) 
+            {
+                GameManager.instance.SaveGame();
+                GameManager.PARTY._MakeCampOnLoad = false;
+                GameManager.PARTY._PartyXYL = new Vector3Int(10, 8, _num);
+                GameManager.PARTY.facing = _player.facing;
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon"+_num);
+            }
+        }
+        if (_command.Contains("ElevatorB:"))
+        {
+            _command = _command.Replace("ElevatorB:", "");
+            int _num = -1;
+            int.TryParse(_command, out _num);
+            if (_num > 0 && _num < 10)
+            {
+                GameManager.instance.SaveGame();
+                GameManager.PARTY._MakeCampOnLoad = false;
+                GameManager.PARTY._PartyXYL = new Vector3Int(10, 0, _num);
+                GameManager.PARTY.facing = _player.facing;
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Dungeon" + _num);
+            }
         }
     }
 

@@ -20,4 +20,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dungeon4.unity
     guid: 99bff81e2a6a53746a1ef20b8a582fc6
+  - enabled: 1
+    path: Assets/Scenes/Dungeon5.unity
+    guid: 2bf5bce37dc9f21499fee0097f9c2627
+  - enabled: 1
+    path: Assets/Scenes/Dungeon6.unity
+    guid: 3af41ff4f6aa5c34db04a1a4e678538a
+  - enabled: 1
+    path: Assets/Scenes/Dungeon7.unity
+    guid: 93bfb4a33553f0e4485ac5dadaadd207
+  - enabled: 1
+    path: Assets/Scenes/Dungeon8.unity
+    guid: f3dac0145fe966349b805a5dcd6890c5
+  - enabled: 1
+    path: Assets/Scenes/Dungeon9.unity
+    guid: d08ecbfb0e816b4468159942defb8046
+  - enabled: 1
+    path: Assets/Scenes/Dungeon10.unity
+    guid: be4299cc688eb6640afc858a9b85f58c
   m_configObjects: {}

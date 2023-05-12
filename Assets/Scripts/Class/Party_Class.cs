@@ -16,6 +16,7 @@ public class Party_Class : MonoBehaviour
     public bool Party_Shield_Bonus = false;
     public int Party_Light_Timer = 0;
     public bool inBattle = false;
+    public bool antiMagic = false;
 
     private int[] Party;
     private Enum._Alignment PartyAlign;

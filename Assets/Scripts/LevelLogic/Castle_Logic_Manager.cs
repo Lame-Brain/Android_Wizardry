@@ -29,27 +29,38 @@ public class Castle_Logic_Manager : MonoBehaviour
         GameManager.PARTY.Party_Light_Timer = 0;
         GameManager.PARTY.Party_Shield_Bonus = false;
         //reset characters
-        for (int i = 0; i < 6; i++)        
-            if (!GameManager.PARTY.EmptySlot(i))
+        if (GameManager.PARTY.EmptySlot(0)) //Party is empty, probably first loading game
+        {
+            for (int i = 0; i < GameManager.ROSTER.Count; i++)
             {
-                GameManager.PARTY.LookUp_PartyMember(i).Poison = 0; //Cure Poison
-                if (GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.afraid || GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.asleep)
-                    GameManager.PARTY.LookUp_PartyMember(i).status = Enum._Status.OK; //Cures Asleep and Afraid
-                if (GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.lost) GameManager.PARTY.LookUp_PartyMember(i).status = Enum._Status.dead; //Lost characers are now dead
-                if (GameManager.PARTY.LookUp_PartyMember(i).location == Enum._Locaton.Dungeon)
-                    GameManager.PARTY.LookUp_PartyMember(i).location = Enum._Locaton.Party; //Dungeon characters return to party
+                //Return characters that were still in the party to the roster
+                if (GameManager.ROSTER[i].location == Enum._Locaton.Party)
+                    GameManager.ROSTER[i].location = Enum._Locaton.Roster;
             }
-        
-        for (int i = 5; i > 0; i--) //remove dead, ashes, stoned, and paralyzed members.
-            if (!GameManager.PARTY.EmptySlot(i))
-            {
-                if (GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.plyze ||
-                    GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.stoned ||
-                    GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.dead ||
-                    GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.ashes)
-                    GameManager.PARTY.RemoveMember(i);
-            }        
-        
+        }
+        else //party is loaded, probably returning from the dungeon
+        {
+            for (int i = 0; i < 6; i++)
+                if (!GameManager.PARTY.EmptySlot(i))
+                {
+                    GameManager.PARTY.LookUp_PartyMember(i).Poison = 0; //Cure Poison
+                    if (GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.afraid || GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.asleep)
+                        GameManager.PARTY.LookUp_PartyMember(i).status = Enum._Status.OK; //Cures Asleep and Afraid
+                    if (GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.lost) GameManager.PARTY.LookUp_PartyMember(i).status = Enum._Status.dead; //Lost characers are now dead
+                    if (GameManager.PARTY.LookUp_PartyMember(i).location == Enum._Locaton.Dungeon)
+                        GameManager.PARTY.LookUp_PartyMember(i).location = Enum._Locaton.Party; //Dungeon characters return to party
+                }
+
+            for (int i = 5; i > 0; i--) //remove dead, ashes, stoned, and paralyzed members.
+                if (!GameManager.PARTY.EmptySlot(i))
+                {
+                    if (GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.plyze ||
+                        GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.stoned ||
+                        GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.dead ||
+                        GameManager.PARTY.LookUp_PartyMember(i).status == Enum._Status.ashes)
+                        GameManager.PARTY.RemoveMember(i);
+                }
+        }
         UpdateScreen();
         if (GameManager.instance._Persistent_Message != "") _display.PopUp_Panel.Show_Message(GameManager.instance._Persistent_Message);
     }
