@@ -16,12 +16,15 @@ public class KANDI_Controller_Manager : MonoBehaviour
 
     private void OnEnable()
     {
+        title.fontSize = GameManager.FONT;
+        done_btn.fontSize = GameManager.FONT;
         _level = FindObjectOfType<Level_Logic_Template>();
         _player = FindObjectOfType<Player_Controller>();
         tile = new Transform[7,7];
         horz_panel = new Transform[7];
-        for (int y = 0; y < 7; y++)
+        for (int y = 0; y < 7; y++)//for (int y = 6; y >= 0; y--)
         {
+            //Debug.Log("on -> " + vert_panel[y].name);
             for (int i = 0; i < 7; i++)
                 horz_panel[i] = vert_panel[y].GetChild(i);
             for (int x = 0; x < 7; x++)
@@ -31,43 +34,59 @@ public class KANDI_Controller_Manager : MonoBehaviour
         }
 
         //Draw the map
-        Vector2Int _loc = _player.WhatRoomAmIin().Game_Coordinates;
-        for (int y = 3; y > -4; y--)
+        Vector2Int _loc = _player.WhatRoomAmIin().Game_Coordinates; Debug.Log("0,0 = " + _level.Map[0, 0].Game_Coordinates);
+        for (int y = -3; y < 4; y++)//for (int y = 3; y >= -3; y--)
             for (int x = -3; x < 4; x++)
             {
                 tile[x + 3, y + 3].gameObject.AddComponent<Image>().sprite = KANDI_tile[0];
+                tile[x + 3, y + 3].gameObject.name = "Tile [" + (x + 3) + ", " + (y + 3) + "]";
 
-                int _newX = _loc.x + x, _newY = _loc.y + y;
-                if (_newX >= 0 && _newX < 21 && _newY >= 0 && _newY < 21)
+                int _newX = _loc.x - 1 + x, _newY = _loc.y - 2 - y;
+                if (_newX+1 >= 0 && _newX+1 < 21 && _newY+20 >= 0 && _newY+20 < 21)
                 {
-                    if (_level.Map[_newX, _newY].Wall[0] == 4)
+                    /*
+                    if(_newX == 0 && _newY == 0)
                     {
-                        GameObject _go = new GameObject("nwall");
+                        GameObject _go = new GameObject("debug_marker");
                         _go.transform.SetParent(tile[x + 3, y + 3]);
+                        _go.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
+                        _go.AddComponent<Image>().sprite = KANDI_tile[3];
+                        Debug.Log("name " + _level.Map[_newX+1, _newY + 20].name);
+                        Debug.Log("north = " + _level.Map[_newX+1, _newY+20].Wall[0] + "\n" +
+                                  " east = " + _level.Map[_newX+1, _newY+20].Wall[1] + "\n" +
+                                  "south = " + _level.Map[_newX+1, _newY+20].Wall[2] + "\n" +
+                                  " west = " + _level.Map[_newX+1, _newY+20].Wall[3] + "\n");
+                    }*/
+                    
+                    if (_level.Map[_newX+1, _newY+20].Wall[0] == 4)
+                    {
+                        GameObject _go = new GameObject("nwall[" + (x+3) + ", " + (y+3)+"]");
+                        _go.transform.SetParent(tile[x + 3, y + 3]); Debug.Log(" n> " + _go.name);
                         _go.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));
                         _go.AddComponent<Image>().sprite = KANDI_tile[5];
                     }
-                    if (_level.Map[_newX, _newY].Wall[1] == 4)
+                    if (_level.Map[_newX+1, _newY+20].Wall[1] == 4)
                     {
-                        GameObject _go = new GameObject("ewall");
-                        _go.transform.SetParent(tile[x + 3, y + 3]);
+                        GameObject _go = new GameObject("ewall" + (x + 3) + ", " + (y + 3) + "]");
+                        _go.transform.SetParent(tile[x + 3, y + 3]); Debug.Log(" e> " + _go.name);
                         _go.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0,0,270));
                         _go.AddComponent<Image>().sprite = KANDI_tile[5];
                     }
-                    if (_level.Map[_newX, _newY].Wall[2] == 4)
+                    if (_level.Map[_newX+1, _newY+20].Wall[2] == 4)
                     {
-                        GameObject _go = new GameObject("swall");
-                        _go.transform.SetParent(tile[x + 3, y + 3]);
+                        GameObject _go = new GameObject("swall" + (x + 3) + ", " + (y + 3) + "]");
+                        _go.transform.SetParent(tile[x + 3, y + 3]); Debug.Log(" s> " + _go.name);
                         _go.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0,0,180));
                         _go.AddComponent<Image>().sprite = KANDI_tile[5];
                     }
-                    if (_level.Map[_newX, _newY].Wall[3] == 4)
+                    if (_level.Map[_newX+1, _newY+20].Wall[3] == 4)
                     {
-                        GameObject _go = new GameObject("swall");
-                        _go.transform.SetParent(tile[x + 3, y + 3]);
+                        GameObject _go = new GameObject("wwall" + (x + 3) + ", " + (y + 3) + "]");
+                        _go.transform.SetParent(tile[x + 3, y + 3]); Debug.Log(" w> " + _go.name);
                         _go.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0,0,90));
                         _go.AddComponent<Image>().sprite = KANDI_tile[5];
                     }
+                    
                 }
                 // 0 value = no wall, 1 value = door, 2 value = secret door (hidden), 3 value = secret door (revealed), 4 value = wall
             }
