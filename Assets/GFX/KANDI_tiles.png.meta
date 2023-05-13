@@ -133,6 +133,111 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfddfae6cbe861f4eb09535630a300b5
+      internalID: -1269327494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_nwall
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01a836c569b466f4bb11d1328087d90d
+      internalID: 1645802041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_ewall
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2f74d3bd7134f34d927c440f862472a
+      internalID: -1184062870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_swall
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af7cbf0f4ad046642a63bc2f39f7c9e1
+      internalID: 1964112159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_wwall
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 660ae24bdff23e2488088c3481402103
+      internalID: 823425067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_special
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 100
         width: 100
         height: 100
@@ -143,14 +248,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8679d6c97e69bf14ba8773e32522fe1f
-      internalID: -1269327494
+      spriteID: 8ec59052865230b4789894681c044222
+      internalID: -1371106574
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: KANDI_wall
+      name: KANDI_ndoor
       rect:
         serializedVersion: 2
         x: 100
@@ -164,14 +269,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c06a63620a86df348b4a6653e64239c9
-      internalID: -796000182
+      spriteID: 7e16816bde970d24e93012ad229195de
+      internalID: -499490718
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: KANDI_door
+      name: KANDI_edoor
       rect:
         serializedVersion: 2
         x: 200
@@ -185,14 +290,56 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 35687264bf7bfb14faaecd7da81ec60e
-      internalID: 483165149
+      spriteID: 5cb4499de7149ce4287060212fcd6cb3
+      internalID: 585864271
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: KANDI_corner
+      name: KANDI_sdoor
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 518041fce6364c949bdafe87bd729f85
+      internalID: 2100757401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_wdoor
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f17ee1a693a0ae64ba7c1c3af69e9063
+      internalID: -1827848166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_marker
       rect:
         serializedVersion: 2
         x: 0
@@ -206,14 +353,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ccc58294c033e0342bf89f998e2b7906
-      internalID: 1347538386
+      spriteID: 881ab0983655de74fa11910d50187e0b
+      internalID: 1243904165
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: KANDI_special
+      name: KANDI_nwcorner
       rect:
         serializedVersion: 2
         x: 100
@@ -227,14 +374,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6db9d9b638f7b6648af43d65f2424061
-      internalID: -1371106574
+      spriteID: cb3d7a35ee5e4a545a483974cac81d4f
+      internalID: 41420287
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: KANDI_lost
+      name: KANDI_necorner
       rect:
         serializedVersion: 2
         x: 200
@@ -248,8 +395,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b17bce2a348cb440b42337c4140b0fd
-      internalID: 1036778545
+      spriteID: 6c1f8bd971a942b47aba41ee7e357407
+      internalID: -135820003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_secorner
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0055278679e0174286206517408a07a
+      internalID: 876489449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: KANDI_swcorner
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e66fbbf46a5a8274e933185ce1c17ab6
+      internalID: 233450760
       vertices: []
       indices: 
       edges: []
@@ -265,12 +454,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      KANDI_swcorner: 233450760
+      KANDI_necorner: -135820003
       KANDI_bg: -1269327494
-      KANDI_corner: 1347538386
-      KANDI_door: 483165149
-      KANDI_lost: 1036778545
+      KANDI_edoor: 585864271
+      KANDI_wwall: 823425067
+      KANDI_sdoor: 2100757401
+      KANDI_nwcorner: 41420287
+      KANDI_wdoor: -1827848166
+      KANDI_marker: 1243904165
+      KANDI_ewall: -1184062870
+      KANDI_secorner: 876489449
+      KANDI_ndoor: -499490718
       KANDI_special: -1371106574
-      KANDI_wall: -796000182
+      KANDI_swall: 1964112159
+      KANDI_nwall: 1645802041
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

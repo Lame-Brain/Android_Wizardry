@@ -10,6 +10,7 @@ TagManager:
   - Temp_Button
   - Button_Block_Panel
   - Dungeon_Tile
+  - DUMAPIC_tile
   layers:
   - Default
   - TransparentFX

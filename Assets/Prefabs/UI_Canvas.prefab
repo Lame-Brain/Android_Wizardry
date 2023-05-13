@@ -1133,7 +1133,7 @@ GameObject:
   - component: {fileID: 2944873051595200469}
   - component: {fileID: 4264235382449236674}
   m_Layer: 5
-  m_Name: KANDI_Panel
+  m_Name: DUMAPIC_Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1212,13 +1212,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30af7192ad918a2489c9c117846ae049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KANDI_tile:
+  DUMAPIC_tile:
   - {fileID: -1269327494, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
-  - {fileID: 1347538386, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
-  - {fileID: 483165149, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
-  - {fileID: 1036778545, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 1645802041, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: -1184062870, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 1964112159, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 823425067, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
   - {fileID: -1371106574, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
-  - {fileID: -796000182, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: -499490718, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 585864271, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 2100757401, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: -1827848166, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 1243904165, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 41420287, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: -135820003, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 876489449, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
+  - {fileID: 233450760, guid: 1b7eaeb1ef072304db85770de7dccb3d, type: 3}
   title: {fileID: 6073069854319530139}
   done_btn: {fileID: 3837841499634878679}
   vert_panel:
