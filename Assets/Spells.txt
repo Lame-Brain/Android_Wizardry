@@ -41,10 +41,10 @@
 40,5,Mage,MADALTO,Frost,Group,FALSE,TRUE,0,Causes 8d8 (8-64) points of cold damage
 41,5,Mage,MAKANITO,Deadly Air,All Enemies,FALSE,TRUE,100,Kills any monsters of less than 8th level (about 35-40 hit points)
 42,5,Mage,MAMORLIS,Terror,All Enemies,FALSE,TRUE,0,Causes all monsters to fear the party
-43,6,Mage,HAMAN,Change,Special,TRUE,TRUE,0,Has random effects* and drains the caster one level (see below).
+43,6,Mage,HAMAN,Change,Party,FALSE,TRUE,0,Has random effects* and drains the caster one level (see below).
 44,6,Mage,LAKANITO,Suffocation,Group,FALSE,TRUE,0,Kills all monsters affected by this spell; some monsters are immune.
 45,6,Mage,MASOPIC,Big Glass,Party,FALSE,TRUE,100,Reduces the armor class of the entire party by 4
 46,6,Mage,ZILWAN,Dispel,Enemy,FALSE,TRUE,0,Will destroy any one undead monster
-47,7,Mage,MAHAMAN,Great Change,Party,TRUE,TRUE,0,Does something random* stronger than Haman. Drains the caster one experience level* and is forgotten when cast (see below).
-48,7,Mage,MALOR,Apport,Special,TRUE,TRUE,100,Teleports the party randomly within the current level when used in melee* but when cast in camp* you can decide exactly where you want to go. If a party teleports into stone it is LOST forever* so the spell is best used in conjunction with DUMAPIC.
+47,7,Mage,MAHAMAN,Great Change,Party,FALSE,TRUE,0,Does something random* stronger than Haman. Drains the caster one experience level* and is forgotten when cast (see below).
+48,7,Mage,MALOR,Apport,Party,TRUE,TRUE,100,Teleports the party randomly within the current level when used in melee* but when cast in camp* you can decide exactly where you want to go. If a party teleports into stone it is LOST forever* so the spell is best used in conjunction with DUMAPIC.
 49,7,Mage,TILTOWAIT,Explosion,All Enemies,FALSE,TRUE,0,Does 10d10 (10-100) hit points of damage to all monsters.
