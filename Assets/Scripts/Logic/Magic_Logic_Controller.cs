@@ -208,7 +208,12 @@ public class Magic_Logic_Controller : MonoBehaviour
         }
         if ( _spell == "kandi")
         {
-            _dungeon.ButtonPressReceived("kandi");
+            string _result = "By the power of KANDI, you mentally search this level for lost adventurers...\n\n";
+            for (int i = 0;i < GameManager.ROSTER.Count; i++)
+                if (GameManager.ROSTER[i].status == Enum._Status.lost)
+                    _result += "You Find someone!\n" + GameManager.ROSTER[i].name + " at (" + GameManager.ROSTER[i].lostXYL.x + ", " + GameManager.ROSTER[i].lostXYL.y + ")\n";
+            if (!_result.Contains("You Find someone!")) _result += "...but no one is found.";
+            _popUp.Show_Message(_result);
             return;
         }
         if (_spell == "loktofeit")
