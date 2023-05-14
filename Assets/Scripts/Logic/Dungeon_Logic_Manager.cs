@@ -1,9 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using BlobberEngine;
 
 public class Dungeon_Logic_Manager : MonoBehaviour
 {
-    public TMPro.TextMeshProUGUI Message, up_btn_txt, left_btn_txt, down_btn_txt, right_btn_txt, one_btn_txt, two_btn_txt,Debug;    
+    public TMPro.TextMeshProUGUI Message, up_btn_txt, left_btn_txt, down_btn_txt, right_btn_txt, one_btn_txt, two_btn_txt, feedback, Debug;
 
     public GameObject Camp_Screen, Light_Icon, Shield_Icon, Block_Icon;
 
@@ -17,7 +19,8 @@ public class Dungeon_Logic_Manager : MonoBehaviour
     [SerializeField]private DUMAPIC_Controller_Manager _dumapic;
     private Level_Logic_Template _level;
 
-    
+    private bool _feedbackdone = true;
+
     public void Start()
     {
         _level = FindObjectOfType<Level_Logic_Template>();
@@ -30,6 +33,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         right_btn_txt.fontSize = GameManager.FONT;
         one_btn_txt.fontSize = GameManager.FONT;
         two_btn_txt.fontSize = GameManager.FONT;
+        feedback.fontSize = GameManager.FONT;
         SetButtonText("u", "Up", "move_forward");
         SetButtonText("d", "down", "turn_around");
         SetButtonText("l", "left", "turn_left");
@@ -177,6 +181,30 @@ public class Dungeon_Logic_Manager : MonoBehaviour
 
         Message.text = _output;
     }
+    public void ShowFeedback(string _feedback)
+    {
+        if(_feedbackdone)
+            StartCoroutine(Feedback_CR(_feedback));
+    }
+    private IEnumerator Feedback_CR(string _feedback)
+    {
+        float wait = .03f;
+        _feedbackdone = false;
+        feedback.text = "<color=#404040>" + _feedback + "</color>";
+        yield return new WaitForSeconds(wait);
+        feedback.text = "<color=#808080>" + _feedback + "</color>";
+        yield return new WaitForSeconds(wait);
+        feedback.text = "<color=#808080>" + _feedback + "</color>";
+        yield return new WaitForSeconds(wait);
+        feedback.text = "<color=#FFFFFF>" + _feedback + "</color>";
+        yield return new WaitForSeconds(wait * 2);
+        feedback.text = "<color=#808080>" + _feedback + "</color>";
+        yield return new WaitForSeconds(wait);
+        feedback.text = "<color=#404040>" + _feedback + "</color>";
+        yield return new WaitForSeconds(wait);
+        feedback.text = "";
+        _feedbackdone = true;
+    }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     public void TimePass()
@@ -315,10 +343,12 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         }
         if(_command == "make_camp")
         {
+            ShowFeedback("Make Camp");
             Camp_Screen.SetActive(true);
         }
         if( _command == "inspect")
         {
+            ShowFeedback("Inspect for bodies");
             int x = _player.WhatRoomAmIin().Game_Coordinates.x,
                 y = _player.WhatRoomAmIin().Game_Coordinates.y,
                 z = GameManager.PARTY._PartyXYL.z;
@@ -326,10 +356,12 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         }
         if (_command == "check_wall")
         {
+            ShowFeedback("Kick Wall");
             _player.Check4SecretDoor();
         }
         if (_command == "open_door")
         {
+            ShowFeedback("Kick Door");
             _player.OpenDoor();
         }
         if(_command == "cancel")

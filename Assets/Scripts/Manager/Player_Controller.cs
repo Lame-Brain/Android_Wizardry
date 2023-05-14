@@ -205,7 +205,7 @@ public class Player_Controller : MonoBehaviour
         if(facing == Enum._Direction.south) pos_delta = Vector3.back;
         if(facing == Enum._Direction.west) pos_delta = Vector3.left;
         Vector3 _startPos = this.transform.position, _endPos = _startPos + pos_delta;
-
+        _dungeon.ShowFeedback("Move Forward");
         while (_timeElapsed < Move_Length)
         {
             this.transform.position = Vector3.Lerp(_startPos, _endPos, _timeElapsed / Move_Length);
@@ -240,6 +240,7 @@ public class Player_Controller : MonoBehaviour
         //var _endROT = this.transform.eulerAngles;
         if (d == 1)
         {
+            _dungeon.ShowFeedback("Turn Right");
             if (facing == Enum._Direction.north) _endROT = Quaternion.Euler(0, 90, 0);
             if (facing == Enum._Direction.east) _endROT = Quaternion.Euler(0, 180, 0);
             if (facing == Enum._Direction.south) _endROT = Quaternion.Euler(0, 270, 0);
@@ -247,6 +248,7 @@ public class Player_Controller : MonoBehaviour
         }
         if (d == -1)
         {
+            _dungeon.ShowFeedback("Turn Left");
             if (facing == Enum._Direction.north) _endROT = Quaternion.Euler(0, 270, 0);
             if (facing == Enum._Direction.east) _endROT = Quaternion.Euler(0, 0, 0);
             if (facing == Enum._Direction.south) _endROT = Quaternion.Euler(0, 90, 0);
@@ -254,6 +256,7 @@ public class Player_Controller : MonoBehaviour
         }
         if (d == 2)
         {
+            _dungeon.ShowFeedback("Turn Around");
             if (facing == Enum._Direction.north) _endROT = Quaternion.Euler(0, 180, 0);
             if (facing == Enum._Direction.east) _endROT = Quaternion.Euler(0, 270, 0);
             if (facing == Enum._Direction.south) _endROT = Quaternion.Euler(0, 0, 0);
