@@ -13,6 +13,7 @@ public class DUMAPIC_Controller_Manager : MonoBehaviour
 
     private Level_Logic_Template _level;
     private Player_Controller _player;
+    private int full_scale, half_scale;
 
     private void OnEnable()
     {
@@ -20,14 +21,15 @@ public class DUMAPIC_Controller_Manager : MonoBehaviour
         done_btn.fontSize = GameManager.FONT;
         _level = FindObjectOfType<Level_Logic_Template>();
         _player = FindObjectOfType<Player_Controller>();
-        tile = new Transform[7,7];
-        horz_panel = new Transform[7];
-        for (int y = 0; y < 7; y++)//for (int y = 6; y >= 0; y--)
-        {
-            //Debug.Log("on -> " + vert_panel[y].name);
-            for (int i = 0; i < 7; i++)
+        full_scale = 11;
+        half_scale = 5;
+        tile = new Transform[full_scale,full_scale];
+        horz_panel = new Transform[full_scale];
+        for (int y = 0; y < full_scale; y++)
+        {            
+            for (int i = 0; i < full_scale; i++)
                 horz_panel[i] = vert_panel[y].GetChild(i);
-            for (int x = 0; x < 7; x++)
+            for (int x = 0; x < full_scale; x++)
             {
                 tile[x,y] = horz_panel[x].transform;
             }
@@ -47,12 +49,12 @@ public class DUMAPIC_Controller_Manager : MonoBehaviour
         //Draw the map
         Vector2Int _loc = _player.WhatRoomAmIin().Game_Coordinates; //Debug.Log("my coords " + _player.WhatRoomAmIin().Map_Coordinates);
         Debug.Log("locX = " + _loc.x + ", locY = " + _loc.y);
-        for (int y = -3; y < 4; y++)//for (int y = 3; y >= -3; y--)
-            for (int x = -3; x < 4; x++)
+        for (int y = -half_scale; y <= half_scale; y++)//for (int y = 3; y >= -3; y--)
+            for (int x = -half_scale; x <= half_scale; x++)
             {
-                if (!tile[x + 3, y + 3].GetComponent<Image>())
-                    tile[x + 3, y + 3].gameObject.AddComponent<Image>().sprite = DUMAPIC_tile[0];
-                tile[x + 3, y + 3].gameObject.name = "Tile [" + (x + 3) + ", " + (y + 3) + "]";
+                if (!tile[x + half_scale, y + half_scale].GetComponent<Image>())
+                    tile[x + half_scale, y + half_scale].gameObject.AddComponent<Image>().sprite = DUMAPIC_tile[0];
+                tile[x + half_scale, y + half_scale].gameObject.name = "Tile [" + (x + half_scale) + ", " + (y + half_scale) + "]";
 
                 //draw tiles
                 int _newX = (_loc.x + x) + 1, _newY = -1 * (_loc.y + y) + 20;
@@ -61,64 +63,60 @@ public class DUMAPIC_Controller_Manager : MonoBehaviour
                     #region walls
                     if (_level.Map[_newX, _newY].Wall[0] == 4 || _level.Map[_newX, _newY].Wall[0] == 2)
                     {
-                        Debug.Log("north wall " + _level.Map[_newX, _newY].name + " at " + (x + 3) + ", " + (y + 3));
-                        GameObject _go = new GameObject("nwall[" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("nwall[" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 1, x, y);
                     }
                     if (_level.Map[_newX, _newY].Wall[1] == 4 || _level.Map[_newX, _newY].Wall[1] == 2)
                     {
-                        Debug.Log("east wall " + _level.Map[_newX, _newY].name + " at " + (x + 3) + ", " + (y + 3));
-                        GameObject _go = new GameObject("ewall" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("ewall" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 2, x, y);
                     }
                     if (_level.Map[_newX, _newY].Wall[2] == 4 || _level.Map[_newX, _newY].Wall[2] == 2)
                     {
-                        Debug.Log("south wall " + _level.Map[_newX, _newY].name + " at " + (x + 3) + ", " + (y + 3));
-                        GameObject _go = new GameObject("swall" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("swall" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 3, x, y);
                     }
                     if (_level.Map[_newX, _newY].Wall[3] == 4 || _level.Map[_newX, _newY].Wall[3] == 2)
                     {
-                        Debug.Log("west wall " + _level.Map[_newX, _newY].name + " at " + (x + 3) + ", " + (y + 3));
-                        GameObject _go = new GameObject("wwall" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("wwall" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 4, x, y);
                     }
                     #endregion
 
                     if (_level.Map[_newX, _newY].isSpecial || _level.Map[_newX, _newY].isWarp)
                     {
-                        GameObject _go = new GameObject("Special" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("Special" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 5, x, y);
                     }
 
                     #region doors
                     if (_level.Map[_newX, _newY].Wall[0] == 1 || _level.Map[_newX, _newY].Wall[0] == 3)
                     {
-                        GameObject _go = new GameObject("nwall[" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("nwall[" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 6, x, y);
                     }
                     if (_level.Map[_newX, _newY].Wall[1] == 1 || _level.Map[_newX, _newY].Wall[1] == 3)
                     {
-                        GameObject _go = new GameObject("ewall" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("ewall" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 7, x, y);
                     }
                     if (_level.Map[_newX, _newY].Wall[2] == 1 || _level.Map[_newX, _newY].Wall[2] == 3)
                     {
-                        GameObject _go = new GameObject("swall" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("swall" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 8, x, y);
                     }
                     if (_level.Map[_newX, _newY].Wall[3] == 1 || _level.Map[_newX, _newY].Wall[3] == 3)
                     {
-                        GameObject _go = new GameObject("wwall" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("wwall" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         SetTile(_go, 9, x, y);
                     }
                     #endregion
 
                     if (x == 0 && y == 0)
                     {
-                        GameObject _go = new GameObject("Center_Marker" + (x + 3) + ", " + (y + 3) + "]");
+                        GameObject _go = new GameObject("Center_Marker" + (x + half_scale) + ", " + (y + half_scale) + "]");
                         _go.tag = "DUMAPIC_tile";
-                        _go.transform.SetParent(tile[x + 3, y + 3]);
+                        _go.transform.SetParent(tile[x + half_scale, y + half_scale]);
                         _go.AddComponent<Image>().sprite = DUMAPIC_tile[10];
                         RectTransform _r = _go.GetComponent<RectTransform>();
                         if (_player.facing == BlobberEngine.Enum._Direction.north)
@@ -142,7 +140,7 @@ public class DUMAPIC_Controller_Manager : MonoBehaviour
     {
         //x += 3; y += 3;
         _go.tag = "DUMAPIC_tile";
-        _go.transform.SetParent(tile[x + 3, y + 3]);// Debug.Log(" w> " + _go.name);
+        _go.transform.SetParent(tile[x + half_scale, y + half_scale]);// Debug.Log(" w> " + _go.name);
         _go.AddComponent<Image>().sprite = DUMAPIC_tile[_tileNum];
         RectTransform _r = _go.GetComponent<RectTransform>();
         _r.SetLocalPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0));

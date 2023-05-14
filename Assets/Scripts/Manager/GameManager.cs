@@ -215,9 +215,15 @@ public class GameManager : MonoBehaviour
         {
             ROSTER[5].mageSpells[i] = 9;
             ROSTER[5].priestSpells[i] = 9;
-        }        
+        }
+
+        ROSTER.Add(new Character_Class());
+        ROSTER[ROSTER.Count - 1].name = "BRUTUS";
+        ROSTER[ROSTER.Count - 1].status = Enum._Status.lost;
+        ROSTER[ROSTER.Count - 1].lostXYL = new Vector3Int(1, 0, 1);
+
         //DEBUG
-        
+
     }
 
     public void LoadGame()

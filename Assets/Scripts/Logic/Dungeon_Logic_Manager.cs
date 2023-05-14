@@ -8,10 +8,11 @@ public class Dungeon_Logic_Manager : MonoBehaviour
     public GameObject Camp_Screen, Light_Icon, Shield_Icon, Block_Icon;
 
     public Castle_Pop_Up_Manager PopUp;
-    public Magic_Logic_Controller Magic;
+    public Magic_Logic_Controller Magic;    
     [HideInInspector]public Player_Controller _player;
 
     [SerializeField]private Elevator_Controller_Manager _elevator;
+    [SerializeField]private Inspect_Controller_Manager _inspect;
     [SerializeField]private MALOR_Controller_Manager _malor;
     [SerializeField]private DUMAPIC_Controller_Manager _dumapic;
     private Level_Logic_Template _level;
@@ -71,9 +72,9 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         int _faced = _player.WhatIsInFrontOfPlayer();
         if (_faced == 0) SetButtonText("1", "Inspect", "inspect");
         if (_faced == 1) SetButtonText("1", "Open Door", "open_door");
-        if (_faced == 2) SetButtonText("1", "Check Wall", "check_wall");
+        if (_faced == 2) SetButtonText("1", "Kick Wall", "check_wall");
         if (_faced == 3) SetButtonText("1", "Open Door", "open_door");
-        if (_faced == 4) SetButtonText("1", "Check Wall", "check_wall");
+        if (_faced == 4) SetButtonText("1", "Kick Wall", "check_wall");
     }
 
     public void SetButtonText(string _buttonNam, string _newText, string _command)
@@ -312,13 +313,18 @@ public class Dungeon_Logic_Manager : MonoBehaviour
         {
             _player.ReceiveCommand(_command);
         }
-
         if(_command == "make_camp")
         {
             Camp_Screen.SetActive(true);
         }
-        //"inspect
-        if(_command == "check_wall")
+        if( _command == "inspect")
+        {
+            int x = _player.WhatRoomAmIin().Game_Coordinates.x,
+                y = _player.WhatRoomAmIin().Game_Coordinates.y,
+                z = GameManager.PARTY._PartyXYL.z;
+            GameManager.PARTY._PartyXYL = new Vector3Int(x, y, z); _inspect.gameObject.SetActive(true);
+        }
+        if (_command == "check_wall")
         {
             _player.Check4SecretDoor();
         }
