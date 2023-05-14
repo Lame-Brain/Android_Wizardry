@@ -230,7 +230,7 @@ public class Character_Gen_Controller : MonoBehaviour
         _name = _val.ToUpper();
         Name_Text.text = "Tap Next to continue.";
         for (int i = 0; i < GameManager.ROSTER.Count; i++)
-            if (_name == GameManager.ROSTER[i].name.ToUpper() || _name == "")
+            if (_name == GameManager.ROSTER[i].name.ToUpper() || _name == "" || _name == "BOLTAC" || _name == "CANT" || _name == "GILGAMESH" || _name == "WERDNA" || _name == "TREBOR")
             {
                 good_name = false;
                 Name_Text.text = "That name is Taken, please enter another.";

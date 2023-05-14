@@ -663,10 +663,12 @@ public class Castle_Logic_Manager : MonoBehaviour
                 string _RosterName = GameManager.ROSTER[i].name.ToUpper();
                 if (_text == _RosterName)
                     _found = true;
+                if (_text == "BOLTAC" || _text == "CANT" || _text == "GILGAMESH" || _text == "WERDNA" || _text == "TREBOR")
+                    _found = true;
             }
             if (_found)
             {
-                _display.PopUp_Panel.Show_Message("Another character already has that name!");
+                _display.PopUp_Panel.Show_Message("That name is in use already!");
             }
             else
             {
@@ -677,6 +679,12 @@ public class Castle_Logic_Manager : MonoBehaviour
         }
         if(_text == "create_character")
         {
+            if(GameManager.ROSTER.Count > 20)
+            {
+                _display.PopUp_Panel.Show_Message("There are too many adventurers already!\nDelete some from the training ground to make more!");
+                return;
+            }
+
             Character_Generator_Flow.SetActive(true);
         }
 
