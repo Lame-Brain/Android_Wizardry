@@ -13,7 +13,7 @@ public class Dungeon_Logic_Manager : MonoBehaviour
 
     [SerializeField]private Elevator_Controller_Manager _elevator;
     [SerializeField]private MALOR_Controller_Manager _malor;
-    [SerializeField]private KANDI_Controller_Manager _kandi;
+    [SerializeField]private DUMAPIC_Controller_Manager _dumapic;
     private Level_Logic_Template _level;
 
     
@@ -386,13 +386,13 @@ public class Dungeon_Logic_Manager : MonoBehaviour
             _malor.gameObject.SetActive(true);
             return;
         }
-        if(_command == "kandi")
+        if(_command == "dumapic")
         {
             int x = _player.WhatRoomAmIin().Game_Coordinates.x,
                 y = _player.WhatRoomAmIin().Game_Coordinates.y,
                 z = GameManager.PARTY._PartyXYL.z;
             GameManager.PARTY._PartyXYL = new Vector3Int(x, y, z);
-            _kandi.gameObject.SetActive(true);
+            _dumapic.gameObject.SetActive(true);
             return;
         }
     }

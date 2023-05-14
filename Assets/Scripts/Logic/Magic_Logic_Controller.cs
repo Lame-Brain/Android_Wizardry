@@ -228,13 +228,8 @@ public class Magic_Logic_Controller : MonoBehaviour
         }
         if( _spell == "dumapic")
         {
-            _popUp.Show_Message("The party's location is revealed!\n\n" +
-                             "You are facing " + _dungeon._player.facing + ".\n" +
-                             "Relative to the stairs leading back up to the castle, you are:" +
-                             "   " + _myLoc.x + " steps east,\n" +
-                             "   " + _myLoc.y + " steps north,\n" +
-                             "   and\n" +
-                             "   " + GameManager.PARTY._PartyXYL.z + " levels down");
+            _dungeon.ButtonPressReceived("dumapic");
+            return;
         }
         if(_spell == "malor")
         {

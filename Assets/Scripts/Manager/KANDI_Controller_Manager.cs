@@ -104,8 +104,14 @@ public class KANDI_Controller_Manager : MonoBehaviour
                     }
                     #endregion
                     #region corners
+                    if ((_level.Map[_newX, _newY].Wall[0] != 0 && _newY - 1 > 0 && _level.Map[_newX, _newY - 1].Wall[3] != 0) ||
+                        (_level.Map[_newX, _newY].Wall[3] != 0 && _newX - 1 > 0 && _level.Map[_newX - 1, _newY].Wall[0] != 0))
+                    {
+                        GameObject _go = new GameObject("nw_corner[" + (x + 3) + ", " + (y + 3) + "]");
+                        SetTile(_go, 6, x, y);
+                    }
                     #endregion
-                    
+
                     if (x == 0 && y == 0)
                     {
                         GameObject _go = new GameObject("Center_Marker" + (x + 3) + ", " + (y + 3) + "]");
