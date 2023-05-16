@@ -13,8 +13,10 @@ public class GameManager : MonoBehaviour
     public static List<Character_Class> ROSTER = new List<Character_Class>();
     public static List<Spell_Class> SPELL = new List<Spell_Class>();
     public static List<Item_Class> ITEM = new List<Item_Class>();
+    public static List<Monster_Class> MONSTER = new List<Monster_Class>();
+    public static Monster_Class _monster_that_starts_battle;
     [SerializeField]
-    private TextAsset ItemListCSV, SpellListCSV;
+    private TextAsset ItemListCSV, SpellListCSV, MonsterListCSV;
     [HideInInspector] public string _Persistent_Message = "";
 
     public GameObject _initCanvas, _initPanel;
@@ -166,6 +168,79 @@ public class GameManager : MonoBehaviour
             _n = 8; _spl.learn_bonus = int.Parse(_splData[_n]);
 
             SPELL.Add(_spl);
+        }
+
+        //Monster List
+        string[] All_Monsters = MonsterListCSV.text.Split("\b");
+        for (int i = 0; i < All_Monsters.Length; i++)
+        {
+            string[] _spltData = All_Monsters[i].Split(",");
+            int _n; Monster_Class _mnstr = new Monster_Class();
+            _n = 0; _mnstr.index = int.Parse(_spltData[_n]);
+            _n++; _mnstr.pic = int.Parse(_spltData[_n]);
+            _n++; _mnstr.name_unk = _spltData[_n];
+            _n++; _mnstr.names_unk = _spltData[_n];
+            _n++; _mnstr.name = _spltData[_n];
+            _n++; _mnstr.names = _spltData[_n];
+            _n++; _mnstr.group_size = new Dice(int.Parse(_spltData[_n]), int.Parse(_spltData[_n]) + 1, int.Parse(_spltData[_n]) + 2);
+            _n+=3; _mnstr.HitDice = new Dice(int.Parse(_spltData[_n]), int.Parse(_spltData[_n]) + 1, int.Parse(_spltData[_n]) + 2);
+            _n+=3; string _class = _spltData[_n];
+            _n++; _mnstr.ArmorClass = int.Parse(_spltData[_n]);
+            _n++; string _attacks = _spltData[_n];
+            _n++; _mnstr.special = _spltData[_n];
+            _n++; _mnstr.reward1 = int.Parse(_spltData[_n]);
+            _n++; _mnstr.reward2 = int.Parse(_spltData[_n]);
+            _n++; _mnstr.partner_chance = int.Parse(_spltData[_n]);
+            _n++; _mnstr.partner_index = int.Parse(_spltData[_n]);
+            _n++; _mnstr.mage_spells = int.Parse(_spltData[_n]);
+            _n++; _mnstr.priest_spells = int.Parse(_spltData[_n]);
+            _n++; _mnstr.spell_resist = int.Parse(_spltData[_n]);
+            _n++; _mnstr.elem_resist = _spltData[_n];
+            _n++; _mnstr.abilities = _spltData[_n];
+            _n++; _mnstr.xp = int.Parse(_spltData[_n]);
+            _n++; _mnstr.weapon_style = _spltData[_n];
+            _n++; _mnstr.resist_friendly = _spltData[_n] == "TRUE" ? true : false;
+
+            //class
+            switch(_class)
+            {
+                case "Mage":
+                    _mnstr.monster_class = Enum._Class.mage; break;
+                case "Priest":
+                    _mnstr.monster_class = Enum._Class.priest; break;
+                case "Thief":
+                    _mnstr.monster_class = Enum._Class.thief; break;
+                case "Giant":
+                    _mnstr.monster_class = Enum._Class.giant; break;
+                case "Mythical":
+                    _mnstr.monster_class = Enum._Class.myth; break;
+                case "Dragon":
+                    _mnstr.monster_class = Enum._Class.dragon; break;
+                case "Animal":
+                    _mnstr.monster_class = Enum._Class.animal; break;
+                case "Were":
+                    _mnstr.monster_class = Enum._Class.were; break;
+                case "Undead":
+                    _mnstr.monster_class = Enum._Class.undead; break;
+                case "Demon":
+                    _mnstr.monster_class = Enum._Class.demon; break;
+                case "Insect":
+                    _mnstr.monster_class = Enum._Class.insect; break;
+                case "Enchanted":
+                    _mnstr.monster_class = Enum._Class.enchanted; break;
+                default:
+                    _mnstr.monster_class = Enum._Class.fighter; break;
+            }
+
+            //Attacks
+            string[] _all = _attacks.Split("|");
+            for (int a = 0; a < _all.Length; a++)
+            {
+                string[] _s = _all[a].Split(":");
+                _mnstr.attack.Add(new Dice(int.Parse(_s[0]), int.Parse(_s[1]), int.Parse(_s[2])));                    
+            }
+
+            MONSTER.Add(_mnstr);
         }
     }
 

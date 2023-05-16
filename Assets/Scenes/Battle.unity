@@ -3236,6 +3236,7 @@ GameObject:
   - component: {fileID: 5104332272438163502}
   - component: {fileID: 5104332272438163501}
   - component: {fileID: 5104332272438163500}
+  - component: {fileID: 5104332272438163504}
   m_Layer: 5
   m_Name: Battle_Canvas
   m_TagString: Untagged
@@ -3327,6 +3328,65 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &5104332272438163504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104332272438163499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c06d8672fc27f4db0c42a274d98ee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterStats: {fileID: 1529268154}
+  partyStats: {fileID: 5104332271001005852}
+  feedback: {fileID: 6444746190734812289}
+  fight_btn: {fileID: 5104332272653926431}
+  spell_btn: {fileID: 5104332270730989753}
+  parry_btn: {fileID: 5104332271551432377}
+  run_btn: {fileID: 5104332271682904848}
+  use_btn: {fileID: 5104332271009093382}
+  dispel_btn: {fileID: 5104332271235491985}
+  MonsterGroupPortrait:
+  - {fileID: 1871955722}
+  - {fileID: 1157155110}
+  - {fileID: 1805400294}
+  - {fileID: 2050928525}
+  ActionButton:
+  - {fileID: 5104332272536792502}
+  - {fileID: 5104332272670338580}
+  - {fileID: 5104332272037736883}
+  - {fileID: 5104332272648372318}
+  - {fileID: 5104332272203659595}
+  - {fileID: 5104332270725785916}
+  MonsterPortrait:
+  - {fileID: -355011274, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1981399881, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -1293211610, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1907547292, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1469651959, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -1058754453, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1339559369, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1475799655, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -1196683253, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 540598002, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1163266834, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 442922598, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 277399112, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -209559631, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -1108859269, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1502495220, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1568821348, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -599131815, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1317043672, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 509707514, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1227778234, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 253799292, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: 1663691421, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -346574515, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
+  - {fileID: -1865474521, guid: 3a0aa51fc4b0dd44ab97376bea70a526, type: 3}
 --- !u!1 &5104332272493945218
 GameObject:
   m_ObjectHideFlags: 0

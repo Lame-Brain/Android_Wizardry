@@ -486,7 +486,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ss_monster
+      name: ss_ninja
       rect:
         serializedVersion: 2
         x: 512
@@ -688,7 +688,7 @@ TextureImporter:
       ss_Samurai: 540598002
       ss_treasure: 509707514
       ss_goblin: -346574515
-      ss_monster: -599131815
+      ss_ninja: -599131815
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -22,4 +22,8 @@ public class Monster_Class
     public string special;
     public string weapon_style; //swings, thrusts, stabs, slashes, chops [or] tears, rips, gnaws, bites, claws [or both]
     public bool resist_friendly;
+    public int morale_level;
+    public int level;
+    public string groupName;
+    public List<Monster> monster = new List<Monster>();
 }

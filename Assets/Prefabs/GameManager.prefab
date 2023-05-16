@@ -410,6 +410,8 @@ MonoBehaviour:
   SetFloatDefault: 0
   ItemListCSV: {fileID: 4900000, guid: acdefca942848d14a9694d2d1b266cb0, type: 3}
   SpellListCSV: {fileID: 4900000, guid: 05b54e7e671347d43b68bbd0858e753c, type: 3}
+  MonsterListCSV: {fileID: 4900000, guid: 071307f501e0d8f4caac99eb8a1f567c, type: 3}
+  _Persistent_Message: 
   _initCanvas: {fileID: 9091939943060691034}
   _initPanel: {fileID: 9091939943724648877}
   Screen_Sizing_String: {fileID: 9091939944187214631}
@@ -435,3 +437,4 @@ MonoBehaviour:
   Party_Shield_Bonus: 0
   Party_Light_Timer: 0
   inBattle: 0
+  antiMagic: 0
