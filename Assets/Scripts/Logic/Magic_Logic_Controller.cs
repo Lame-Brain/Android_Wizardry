@@ -7,10 +7,19 @@ public class Magic_Logic_Controller : MonoBehaviour
 {
     private Castle_Pop_Up_Manager _popUp;
     private Dungeon_Logic_Manager _dungeon;
+    private BattleScreen_Logic _battle;
     private void Start()
     {
-        _dungeon = FindObjectOfType<Dungeon_Logic_Manager>();
-        _popUp = _dungeon.PopUp;
+        if (FindObjectOfType<Dungeon_Logic_Manager>())
+        {
+            _dungeon = FindObjectOfType<Dungeon_Logic_Manager>();
+            _popUp = _dungeon.PopUp;
+        }
+        if (FindObjectOfType<BattleScreen_Logic>())
+        {
+            _battle = FindObjectOfType<BattleScreen_Logic>();
+            _popUp = _battle.PopUp;
+        }
     }
 
     public Spell_Class CanCastSpell(Character_Class _caster, string _spell)

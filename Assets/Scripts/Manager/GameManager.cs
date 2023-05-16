@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public float SetFloatDefault;
+    public int Debug_Monster_Index;
     public static float FONT;
     public static Party_Class PARTY;
     public static List<Character_Class> ROSTER = new List<Character_Class>();
@@ -64,10 +65,11 @@ public class GameManager : MonoBehaviour
 
         PARTY.InitParty();
         LoadCSVs();
-        LoadGame();
+        LoadGame();       
 
         if(FindObjectOfType<Castle_Logic_Manager>()) FindObjectOfType<Castle_Logic_Manager>().Start();
         if(FindObjectOfType<Dungeon_Logic_Manager>()) FindObjectOfType<Dungeon_Logic_Manager>().Start();
+        //if(FindObjectOfType<BattleScreen_Logic>()) FindObjectOfType<BattleScreen_Logic>().Start();
     }
 
     private void LoadCSVs()
@@ -147,6 +149,7 @@ public class GameManager : MonoBehaviour
 
             ITEM.Add(_itm);
         }
+
         //Load up saved stock as default
         PARTY.BoltacStock = new int[ITEM.Count];
         for (int i = 0; i < ITEM.Count; i++) PARTY.BoltacStock[i] = ITEM[i].store_stock;
@@ -171,7 +174,7 @@ public class GameManager : MonoBehaviour
         }
 
         //Monster List
-        string[] All_Monsters = MonsterListCSV.text.Split("\b");
+        string[] All_Monsters = MonsterListCSV.text.Split("\n");
         for (int i = 0; i < All_Monsters.Length; i++)
         {
             string[] _spltData = All_Monsters[i].Split(",");
@@ -182,8 +185,8 @@ public class GameManager : MonoBehaviour
             _n++; _mnstr.names_unk = _spltData[_n];
             _n++; _mnstr.name = _spltData[_n];
             _n++; _mnstr.names = _spltData[_n];
-            _n++; _mnstr.group_size = new Dice(int.Parse(_spltData[_n]), int.Parse(_spltData[_n]) + 1, int.Parse(_spltData[_n]) + 2);
-            _n+=3; _mnstr.HitDice = new Dice(int.Parse(_spltData[_n]), int.Parse(_spltData[_n]) + 1, int.Parse(_spltData[_n]) + 2);
+            _n++; _mnstr.group_size = new Dice(int.Parse(_spltData[_n]), int.Parse(_spltData[_n+1]), int.Parse(_spltData[_n+2]));
+            _n+=3; _mnstr.HitDice = new Dice(int.Parse(_spltData[_n]), int.Parse(_spltData[_n+1]), int.Parse(_spltData[_n+2]));
             _n+=3; string _class = _spltData[_n];
             _n++; _mnstr.ArmorClass = int.Parse(_spltData[_n]);
             _n++; string _attacks = _spltData[_n];
@@ -242,6 +245,8 @@ public class GameManager : MonoBehaviour
 
             MONSTER.Add(_mnstr);
         }
+        //Debug.Log("debug monster index is " + Debug_Monster_Index + ", MONSTER list is " + MONSTER.Count + " long");
+        if (Debug_Monster_Index > -1) _monster_that_starts_battle = MONSTER[Debug_Monster_Index];
     }
 
     private void MakeDefaultRoster()

@@ -5,18 +5,26 @@ using UnityEngine.UI;
 
 public class BattleScreen_Logic : MonoBehaviour
 {
-    public TMPro.TextMeshProUGUI monsterStats, partyStats, feedback, fight_btn, spell_btn, parry_btn, run_btn, use_btn, dispel_btn;
+    public TMPro.TextMeshProUGUI action_output, partyStats, feedback, fight_btn, spell_btn, parry_btn, run_btn, use_btn, dispel_btn;
+    public TMPro.TextMeshProUGUI[] mg_btn;
     public GameObject[] MonsterGroupPortrait, ActionButton;
     public Sprite[] MonsterPortrait;
+    public Castle_Pop_Up_Manager PopUp;
 
     private Monster_Class[] monsterGroup;
     private int[,] monster_HP;
     private string[,] monster_Status;
     private string _feedbackText = "";
+    private string[] mg_button_command;
+    
+    //mnake these private after debugging
+    public List<string> player_command = new List<string>();
+    public List<string> monster_command = new List<string>();
+    public List<string> turn = new List<string>();
 
-    private void Start()
+    public void Start()
     {
-        monsterStats.fontSize = GameManager.FONT;
+        action_output.fontSize = GameManager.FONT;
         partyStats.fontSize = GameManager.FONT;
         feedback.fontSize = GameManager.FONT;
         fight_btn.fontSize = GameManager.FONT;
@@ -25,6 +33,11 @@ public class BattleScreen_Logic : MonoBehaviour
         run_btn.fontSize= GameManager.FONT;
         use_btn.fontSize= GameManager.FONT;
         dispel_btn.fontSize= GameManager.FONT;
+        for (int i = 0; i < mg_btn.Length; i++)
+        {
+            mg_btn[i].fontSize = GameManager.FONT;
+            mg_btn[i].text = "";
+        }
 
         BeginBattle();
     }
@@ -64,7 +77,7 @@ public class BattleScreen_Logic : MonoBehaviour
         StartCoroutine(Start_Feedback_CR(_input));
     }
 
-    public void ShowMonsterStatus(string _updateText = "")
+    public void ShowMonsterStatus()
     {
         //update portaits
         for (int i = 0; i < monsterGroup.Length; i++)
@@ -74,16 +87,24 @@ public class BattleScreen_Logic : MonoBehaviour
                 MonsterGroupPortrait[i].SetActive(true);
                 MonsterGroupPortrait[i].GetComponent<Image>().sprite = MonsterPortrait[monsterGroup[i].pic];
             }
+            else
+            {
+                MonsterGroupPortrait[i].SetActive(false);
+            }
         }
 
-        if(_updateText == "")
+        string enemyline = "";
+        for (int i = 0; i < monsterGroup.Length; i++)
         {
-
+            enemyline = "(";
+            int _ok_count = 0;
+            for(int j = 0; j < monsterGroup[i].monster.Count; j++)
+                if (monsterGroup[i].monster[j].myStatus == BlobberEngine.Enum._Status.OK) _ok_count++;
+            enemyline += _ok_count + ") " + monsterGroup[i].monster.Count + " " + monsterGroup[i].name;
+            mg_btn[i].text = enemyline;
         }
+        
 
-        _updateText = _updateText.ToUpper();
-        _updateText = _updateText.Replace("[D]", "d");
-        monsterStats.text = _updateText;
     }
     public void ShowPartyStatus(string _updateText = "")
     {
@@ -190,13 +211,19 @@ public class BattleScreen_Logic : MonoBehaviour
         //How many in each group?
         int[] num = new int[_total];
         for (int i = 0; i < _total; i++)
+        {
+            Debug.Log(monsterGroup[i].group_size.num + "d" + monsterGroup[i].group_size.sides + "+" + monsterGroup[i].group_size.bonus);
             num[i] = monsterGroup[i].group_size.Roll();
+            Debug.Log("roll = " + num[i]);
+            if(num[i] > GameManager.PARTY._PartyXYL.z + 4) num[i] = GameManager.PARTY._PartyXYL.z + 4;
+        }
 
         //calculate hp and set status to ok
         for (int i = 0; i < _total; i++)
         {
             monsterGroup[i].groupName = monsterGroup[i].names_unk; //set group name to plural unknown
             if (num[i] == 1) monsterGroup[i].groupName = monsterGroup[i].name_unk; //set to single unknown if only one
+            monsterGroup[i].identified = false; // default to false;
             monsterGroup[i].level = monsterGroup[i].HitDice.num; //set the level from the number of hitdice
             monsterGroup[i].monster.Clear(); //prepare the monster list for individuals
             for (int j = 0; j < num[i]; j++)
@@ -209,8 +236,33 @@ public class BattleScreen_Logic : MonoBehaviour
         }
         #endregion
 
+        Battle_Main_Loop();
+    }
+
+    public void Battle_Main_Loop()
+    {
+        //Get player actions
+        //Monsters advance
+        //determine monster actions
+        //determine initiative
+            ///Each round, each character has an initiative roll of 1d10. Initiative is further modified by agility.
+                ///3 = +2 
+                ///4 & 5 = +1
+                ///6 & 7 = 0
+                ///8 thru 14 = -1
+                ///15 = -2
+                ///16 = -3
+                ///17 = -4
+                ///18 = -5
+            ///Monsters’ initiatives are each set to 1d8+1. Everyone acts in order of initiative, from lowest to highest.
+        //run through initiative order, applying actions
+
         ShowMonsterStatus();
         ShowPartyStatus();
+    }
+
+    public void MonsterGroupButton_pushed(int _monstergroup)
+    {
 
     }
 

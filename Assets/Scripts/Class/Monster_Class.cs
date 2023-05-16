@@ -24,6 +24,7 @@ public class Monster_Class
     public bool resist_friendly;
     public int morale_level;
     public int level;
+    public bool identified;
     public string groupName;
     public List<Monster> monster = new List<Monster>();
 }
