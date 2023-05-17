@@ -18,7 +18,7 @@ public class Monster_Class
     public string elem_resist;
     public string abilities;
     public int xp;
-    public int unique;    
+    public int unique;
     public string special;
     public string weapon_style; //swings, thrusts, stabs, slashes, chops [or] tears, rips, gnaws, bites, claws [or both]
     public bool resist_friendly;
@@ -27,4 +27,21 @@ public class Monster_Class
     public bool identified;
     public string groupName;
     public List<Monster> monster = new List<Monster>();
+
+    public void MakeCopy(int _MONSTER_INDEX)
+    {
+        morale_level = GameManager.MONSTER[_MONSTER_INDEX].morale_level;
+        level = GameManager.MONSTER[_MONSTER_INDEX].level;
+        identified = GameManager.MONSTER[_MONSTER_INDEX].identified;
+        groupName = GameManager.MONSTER[_MONSTER_INDEX].groupName;
+        if (GameManager.MONSTER[_MONSTER_INDEX].monster.Count > 0)
+        { //I am doing this, in case a Monster_Class is ever copied to itself.
+            List<Monster> _newlist = new List<Monster>(); 
+            for (int i = 0; i < GameManager.MONSTER[_MONSTER_INDEX].monster.Count; i++)
+                _newlist.Add(GameManager.MONSTER[_MONSTER_INDEX].monster[i]);
+            GameManager.MONSTER[_MONSTER_INDEX].monster.Clear();
+            for (int i = 0; i < _newlist.Count; i++)
+                monster.Add(_newlist[i]);
+        }
+    }
 }

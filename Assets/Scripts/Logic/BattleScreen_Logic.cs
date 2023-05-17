@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BattleScreen_Logic : MonoBehaviour
 {
+    private float WAIT_TIME = 0.5f;
+
     public TMPro.TextMeshProUGUI action_output, partyStats, feedback, fight_btn, spell_btn, parry_btn, run_btn, use_btn, dispel_btn;
     public TMPro.TextMeshProUGUI[] mg_btn;
     public GameObject[] MonsterGroupPortrait, ActionButton;
@@ -16,11 +18,15 @@ public class BattleScreen_Logic : MonoBehaviour
     private string[,] monster_Status;
     private string _feedbackText = "";
     private string[] mg_button_command;
+    private int isSurprise; //-1 = monsters surprise players, 0 = no surprise round, 1 = players surprise monsters
+    private bool isFriendly;
+    private string phase;
     
     //mnake these private after debugging
     public List<string> player_command = new List<string>();
     public List<string> monster_command = new List<string>();
     public List<string> turn = new List<string>();
+    private int Current_Player_Slot;
 
     public void Start()
     {
@@ -37,6 +43,10 @@ public class BattleScreen_Logic : MonoBehaviour
         {
             mg_btn[i].fontSize = GameManager.FONT;
             mg_btn[i].text = "";
+        }
+        for (int i = 0; i < ActionButton.Length; i++)
+        {
+            ActionButton[i].SetActive(false);
         }
 
         BeginBattle();
@@ -235,48 +245,217 @@ public class BattleScreen_Logic : MonoBehaviour
             }
         }
         #endregion
+        #region enconter setup
+        // check if friendly, if there is only one group.
+        if(monsterGroup.Length == 1)
+        {
+            int _roll = Random.Range(0, 100) + 1, chance = 0;
+            switch (monsterGroup[0].monster_class)
+            {
+                case BlobberEngine.Enum._Class.fighter: chance = 11; break;
+                case BlobberEngine.Enum._Class.mage: chance = 6; break;
+                case BlobberEngine.Enum._Class.priest: chance = 16; break;
+                case BlobberEngine.Enum._Class.thief: chance = 4; break;
+                case BlobberEngine.Enum._Class.dragon: chance = 26; break;
+                default: chance = 1; break;
+            }
+            isFriendly = _roll <= chance ?  true :  false;
 
-        Battle_Main_Loop();
-    }
-
-    public void Battle_Main_Loop()
-    {
-        //Get player actions
-        //Monsters advance
-        //determine monster actions
-        //determine initiative
-            ///Each round, each character has an initiative roll of 1d10. Initiative is further modified by agility.
-                ///3 = +2 
-                ///4 & 5 = +1
-                ///6 & 7 = 0
-                ///8 thru 14 = -1
-                ///15 = -2
-                ///16 = -3
-                ///17 = -4
-                ///18 = -5
-            ///Monsters’ initiatives are each set to 1d8+1. Everyone acts in order of initiative, from lowest to highest.
-        //run through initiative order, applying actions
+            //check for surprise
+            isSurprise = 0;
+            if (Random.Range(0, 100)+1 <= 20)
+            {
+                isSurprise++;
+            }
+            else if (Random.Range(0, 100) + 1 <= 20)
+            {
+                isSurprise--;
+            }
+        }
+        #endregion
 
         ShowMonsterStatus();
         ShowPartyStatus();
+        if (isSurprise >= 0 && !isFriendly) GetPlayerCommands(0);
     }
+    
+    //Get player actions
+    public void GetPlayerCommands(int _Current_Player_Slot)
+    {
+        Current_Player_Slot = _Current_Player_Slot;
+        phase = "Get Player Commands";
+        
+        if (Current_Player_Slot == 0) player_command.Clear(); //clear player_command list if this is the first player (again)
+
+        if(Current_Player_Slot > 5)
+        {
+            Current_Player_Slot = 0;
+            // --> monsters advance
+            Monsters_Advance();
+            return;
+        }
+
+        if (GameManager.PARTY.EmptySlot(Current_Player_Slot))
+        {
+            GetPlayerCommands(Current_Player_Slot + 1);
+            return;
+        }
+
+        for (int i = 0; i < ActionButton.Length; i++) ActionButton[i].SetActive(false);
+
+        action_output.text = "What action will " + GameManager.PARTY.LookUp_PartyMember(Current_Player_Slot).name + " take?";
+
+        if (Current_Player_Slot < 3) ActionButton[0].SetActive(true);
+
+        if (isSurprise == 0) ActionButton[1].SetActive(true);
+
+        ActionButton[2].SetActive(true);
+
+        ActionButton[3].SetActive(true);
+
+        ActionButton[4].SetActive(true);
+
+        if (GameManager.PARTY.LookUp_PartyMember(Current_Player_Slot).character_class == BlobberEngine.Enum._Class.priest) ActionButton[5].SetActive(true);
+        if (GameManager.PARTY.LookUp_PartyMember(Current_Player_Slot).character_class == BlobberEngine.Enum._Class.bishop &&
+            GameManager.PARTY.LookUp_PartyMember(Current_Player_Slot).level > 3) ActionButton[5].SetActive(true);
+        if (GameManager.PARTY.LookUp_PartyMember(Current_Player_Slot).character_class == BlobberEngine.Enum._Class.lord &&
+            GameManager.PARTY.LookUp_PartyMember(Current_Player_Slot).level > 8) ActionButton[5].SetActive(true);
+    }
+
+
+    //Monsters advance
+    public void Monsters_Advance()
+    {
+        phase = "Monsters Advance";
+        if (monsterGroup.Length == 1)
+        {
+            DetermineMonsterAction();
+            return;
+        }
+        StartCoroutine(Monster_Advance_CR());
+    }
+
+    IEnumerator Monster_Advance_CR()
+    {
+
+        /* When monsters advance, each monster has a “strength” value determined by this formula:
+         * [Remaining HP] - 3 * (MageLevel + PriestLevel)
+         * 
+         * The group strength is the sum of all monsters’ strength in the group, only counting monsters with OK status.
+          * 
+          * After group strength is calculated for all groups, monster group 4 compares its strength to monster group 3, and performs this calculation:
+          * 20% * [Group 4 Strength] / [Group 3 Strength] + 31%
+          * This result is the probability that each group moves up a rank.
+          * 
+          * The process repeats for group 3 and group 2.
+          */        
+        int[] _strength = new int[monsterGroup.Length];
+        for (int y = 0; y < monsterGroup.Length; y++)
+            for (int x = 0; x < monsterGroup[y].monster.Count; x++)
+                if (monsterGroup[y].monster[x].myStatus == BlobberEngine.Enum._Status.OK) _strength[y] += monsterGroup[y].monster[x].myHP - 3;
+
+        if (monsterGroup.Length == 4)
+        {
+            float _prob = 20 * _strength[3] / _strength[2] + 31;
+            if (Random.Range(0f, 100f) <= _prob)
+            {
+                Monster_Class _temp = new Monster_Class();
+                _temp = GameManager.MONSTER[monsterGroup[2].index];
+                _temp.MakeCopy(monsterGroup[2].index);
+
+                monsterGroup[2] = new Monster_Class();
+                monsterGroup[2] = GameManager.MONSTER[monsterGroup[3].index];
+                monsterGroup[2].MakeCopy(monsterGroup[3].index);
+
+                monsterGroup[3] = new Monster_Class();
+                monsterGroup[3] = GameManager.MONSTER[_temp.index];
+                monsterGroup[3].MakeCopy(_temp.index);
+                action_output.text = monsterGroup[3].groupName + " advances!";
+                yield return new WaitForSeconds(WAIT_TIME);
+                ShowMonsterStatus();
+            }
+        }
+        if (monsterGroup.Length > 2)
+        {
+            float _prob = 20 * _strength[2] / _strength[1] + 31;
+            if (Random.Range(0f, 100f) <= _prob)
+            {
+                Monster_Class _temp = new Monster_Class();
+                _temp = GameManager.MONSTER[monsterGroup[1].index];
+                _temp.MakeCopy(monsterGroup[1].index);
+
+                monsterGroup[1] = new Monster_Class();
+                monsterGroup[1] = GameManager.MONSTER[monsterGroup[2].index];
+                monsterGroup[1].MakeCopy(monsterGroup[2].index);
+
+                monsterGroup[2] = new Monster_Class();
+                monsterGroup[2] = GameManager.MONSTER[_temp.index];
+                monsterGroup[2].MakeCopy(_temp.index);
+                action_output.text = monsterGroup[2].groupName + " advances!";
+                yield return new WaitForSeconds(WAIT_TIME);
+                ShowMonsterStatus();
+            }
+        }
+        if (monsterGroup.Length > 1)
+        {
+            float _prob = 20 * _strength[1] / _strength[0] + 31;
+            if (Random.Range(0f, 100f) <= _prob)
+            {
+                Monster_Class _temp = new Monster_Class();
+                _temp = GameManager.MONSTER[monsterGroup[0].index];
+                _temp.MakeCopy(monsterGroup[0].index);
+
+                monsterGroup[0] = new Monster_Class();
+                monsterGroup[0] = GameManager.MONSTER[monsterGroup[1].index];
+                monsterGroup[0].MakeCopy(monsterGroup[1].index);
+
+                monsterGroup[1] = new Monster_Class();
+                monsterGroup[1] = GameManager.MONSTER[_temp.index];
+                monsterGroup[1].MakeCopy(_temp.index);
+                action_output.text = monsterGroup[1].groupName + " advances!";
+                yield return new WaitForSeconds(WAIT_TIME);
+                ShowMonsterStatus();
+            }
+        }
+        DetermineMonsterAction();
+    }
+
+    //determine monster actions
+    public void DetermineMonsterAction()
+    {
+        phase = "Monster Actions";
+        //attack
+        //cast spells
+        //breath attack
+        //run
+    }
+
+
+    //determine initiative
+    ///Each round, each character has an initiative roll of 1d10. Initiative is further modified by agility.
+    ///3 = +2 
+    ///4 & 5 = +1
+    ///6 & 7 = 0
+    ///8 thru 14 = -1
+    ///15 = -2
+    ///16 = -3
+    ///17 = -4
+    ///18 = -5
+    ///Monsters’ initiatives are each set to 1d8+1. Everyone acts in order of initiative, from lowest to highest.
+    //run through initiative order, applying actions
+
+
 
     public void MonsterGroupButton_pushed(int _monstergroup)
     {
 
     }
 
-    /* When monsters advance, each monster has a “strength” value determined by this formula:
-     * [Remaining HP] - 3 * (MageLevel + PriestLevel)
-     * 
-     * The group strength is the sum of all monsters’ strength in the group, only counting monsters with OK status.
-     * 
-     * After group strength is calculated for all groups, monster group 4 compares its strength to monster group 3, and performs this calculation:
-     * 20% * [Group 4 Strength] / [Group 3 Strength] + 31%
-     * This result is the probability that each group moves up a rank.
-     * 
-     * The process repeats for group 3 and group 2.
-     */
+    public void ActionButtonPushed(string _action)
+    {
+        player_command.Add("Player:" + Current_Player_Slot + ":action:" + _action);
+        GetPlayerCommands(Current_Player_Slot+1);
+    }
 }
 
 
