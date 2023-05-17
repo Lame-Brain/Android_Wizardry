@@ -27,6 +27,10 @@ public class BattleScreen_Logic : MonoBehaviour
     public List<string> monster_command = new List<string>();
     public List<string> turn = new List<string>();
     private int Current_Player_Slot;
+    private int Current_Monster_Group;
+    private int Total_Party_Level;
+    private int Total_Monster_Morale;
+    private bool monsters_demoralized;
 
     public void Start()
     {
@@ -274,6 +278,12 @@ public class BattleScreen_Logic : MonoBehaviour
         }
         #endregion
 
+        //Calulate Total_Party_level
+        Total_Party_Level = 0;
+        for (int i = 0; i < 6; i++)
+            if (!GameManager.PARTY.EmptySlot(i)) 
+                Total_Party_Level += GameManager.PARTY.LookUp_PartyMember(i).level;
+
         ShowMonsterStatus();
         ShowPartyStatus();
         if (isSurprise >= 0 && !isFriendly) GetPlayerCommands(0);
@@ -329,7 +339,7 @@ public class BattleScreen_Logic : MonoBehaviour
         phase = "Monsters Advance";
         if (monsterGroup.Length == 1)
         {
-            DetermineMonsterAction();
+            DetermineMonsterAction(0);
             return;
         }
         StartCoroutine(Monster_Advance_CR());
@@ -417,17 +427,44 @@ public class BattleScreen_Logic : MonoBehaviour
                 ShowMonsterStatus();
             }
         }
-        DetermineMonsterAction();
+        DetermineMonsterAction(0);
     }
 
     //determine monster actions
-    public void DetermineMonsterAction()
+    public void DetermineMonsterAction(int _current_monster_group)
     {
+        Current_Monster_Group = _current_monster_group;
         phase = "Monster Actions";
-        //attack
-        //cast spells
+
+        if(Current_Monster_Group == monsterGroup.Length)
+        {
+            // -> Process actions ->
+            return;
+        }
+
+        //calculate morale level
+        if(Current_Monster_Group == 0)
+        {
+            monster_command.Clear();
+
+            for (int i = 0; i < monsterGroup.Length; i++)
+            {
+                int _counter = 0;
+                for (int c = 0; c < monsterGroup[i].monster.Count; c++)
+                    if (monsterGroup[i].monster[c].myStatus == BlobberEngine.Enum._Status.OK)
+                        _counter++;
+                Total_Monster_Morale += monsterGroup[i].level * _counter;
+            }
+            monsters_demoralized = false;
+            if (Total_Party_Level > Total_Monster_Morale) monsters_demoralized = true;
+        }
+
+        //run?
+        //Call for help?
+        //cast mage spell
+        //cast priest spell
         //breath attack
-        //run
+        //attack
     }
 
 
