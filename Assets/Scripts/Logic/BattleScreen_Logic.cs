@@ -25,12 +25,26 @@ public class BattleScreen_Logic : MonoBehaviour
     //mnake these private after debugging
     public List<string> player_command = new List<string>();
     public List<string> monster_command = new List<string>();
-    public List<string> turn = new List<string>();
+    //public List<string> turn = new List<string>();
+    [SerializeField]private List<InitElement> Initiative = new List<InitElement>();
     private int Current_Player_Slot;
     private int Current_Monster_Group;
     private int Total_Party_Level;
     private int Total_Monster_Morale;
     private bool monsters_demoralized;
+
+    private struct InitElement
+    {
+        public string action;
+        public int Init;
+
+        public InitElement(string _txt, int _int)
+        {
+            action = _txt;
+            Init = _int;
+        }
+    }
+
 
     public void Start()
     {
@@ -56,7 +70,7 @@ public class BattleScreen_Logic : MonoBehaviour
         BeginBattle();
     }
 
-    public void ShowFeedback(string _input)
+    private void ShowFeedback(string _input)
     {
 
         if (_feedbackText == "")
@@ -91,7 +105,7 @@ public class BattleScreen_Logic : MonoBehaviour
         StartCoroutine(Start_Feedback_CR(_input));
     }
 
-    public void ShowMonsterStatus()
+    private void ShowMonsterStatus()
     {
         //update portaits
         for (int i = 0; i < monsterGroup.Length; i++)
@@ -120,7 +134,7 @@ public class BattleScreen_Logic : MonoBehaviour
         
 
     }
-    public void ShowPartyStatus(string _updateText = "")
+    private void ShowPartyStatus(string _updateText = "")
     {
         if (_updateText == "")
         {
@@ -184,7 +198,7 @@ public class BattleScreen_Logic : MonoBehaviour
         partyStats.text = _updateText;
     }
 
-    public void BeginBattle()
+    private void BeginBattle()
     {
         #region Monster_Setup
         // Get the first monster        
@@ -192,7 +206,7 @@ public class BattleScreen_Logic : MonoBehaviour
         Monster_Class firstMonster = GameManager._monster_that_starts_battle,
                       secondMonster = null,
                       thirdMonster = null,
-                      fourthMonster = null;
+                      fourthMonster = null;        
 
         //check for second monster group
         if(Random.Range(0,100)+1 <= firstMonster.partner_chance)
@@ -215,6 +229,12 @@ public class BattleScreen_Logic : MonoBehaviour
             fourthMonster = GameManager.MONSTER[secondMonster.partner_index];
         }
 
+        //clear spell casting
+        firstMonster.mageSpellsCast = 0; firstMonster.priestSpellsCast = 0;
+        if (_total > 1) { secondMonster.mageSpellsCast = 0; secondMonster.priestSpellsCast = 0; }
+        if (_total > 2) { thirdMonster.mageSpellsCast = 0; thirdMonster.priestSpellsCast = 0; }
+        if (_total > 3) { fourthMonster.mageSpellsCast = 0; fourthMonster.priestSpellsCast = 0; }
+
         //now that they are generated, assign to array
         monsterGroup = new Monster_Class[_total];
         monsterGroup[0] = firstMonster;
@@ -226,9 +246,9 @@ public class BattleScreen_Logic : MonoBehaviour
         int[] num = new int[_total];
         for (int i = 0; i < _total; i++)
         {
-            Debug.Log(monsterGroup[i].group_size.num + "d" + monsterGroup[i].group_size.sides + "+" + monsterGroup[i].group_size.bonus);
+            //Debug.Log(monsterGroup[i].group_size.num + "d" + monsterGroup[i].group_size.sides + "+" + monsterGroup[i].group_size.bonus);
             num[i] = monsterGroup[i].group_size.Roll();
-            Debug.Log("roll = " + num[i]);
+            //Debug.Log("roll = " + num[i]);
             if(num[i] > GameManager.PARTY._PartyXYL.z + 4) num[i] = GameManager.PARTY._PartyXYL.z + 4;
         }
 
@@ -245,6 +265,7 @@ public class BattleScreen_Logic : MonoBehaviour
                 monsterGroup[i].monster.Add(new Monster()); //add a monster individual
                 monsterGroup[i].monster[j].myName = monsterGroup[i].name_unk + "(" + j + ")"; //name it the unknown single name
                 monsterGroup[i].monster[j].myHP = monsterGroup[i].HitDice.Roll(); // roll the hitdice for initial HP
+                monsterGroup[i].monster[j].myWounds = 0;
                 monsterGroup[i].monster[j].myStatus = BlobberEngine.Enum._Status.OK; // set the status to OK
             }
         }
@@ -264,6 +285,14 @@ public class BattleScreen_Logic : MonoBehaviour
                 default: chance = 1; break;
             }
             isFriendly = _roll <= chance ?  true :  false;
+
+            //override for evil party
+            for (int i = 0; i < 6; i++)
+                if(!GameManager.PARTY.EmptySlot(i) && GameManager.PARTY.LookUp_PartyMember(i).alignment != BlobberEngine.Enum._Alignment.neutral)
+                {
+                    if (GameManager.PARTY.LookUp_PartyMember(i).alignment == BlobberEngine.Enum._Alignment.evil) isFriendly = false;
+                    break;
+                }
 
             //check for surprise
             isSurprise = 0;
@@ -286,11 +315,12 @@ public class BattleScreen_Logic : MonoBehaviour
 
         ShowMonsterStatus();
         ShowPartyStatus();
-        if (isSurprise >= 0 && !isFriendly) GetPlayerCommands(0);
+        if (isSurprise >= 0 && !isFriendly) GetPlayerCommands(0); 
+        if (isSurprise < 0 && !isFriendly) DetermineMonsterAction(0);
     }
     
     //Get player actions
-    public void GetPlayerCommands(int _Current_Player_Slot)
+    private void GetPlayerCommands(int _Current_Player_Slot)
     {
         Current_Player_Slot = _Current_Player_Slot;
         phase = "Get Player Commands";
@@ -301,7 +331,8 @@ public class BattleScreen_Logic : MonoBehaviour
         {
             Current_Player_Slot = 0;
             // --> monsters advance
-            Monsters_Advance();
+            if (isSurprise == 0) Monsters_Advance();
+            if (isSurprise > 0) Determine_Initiative();
             return;
         }
 
@@ -334,7 +365,7 @@ public class BattleScreen_Logic : MonoBehaviour
 
 
     //Monsters advance
-    public void Monsters_Advance()
+    private void Monsters_Advance()
     {
         phase = "Monsters Advance";
         if (monsterGroup.Length == 1)
@@ -431,14 +462,15 @@ public class BattleScreen_Logic : MonoBehaviour
     }
 
     //determine monster actions
-    public void DetermineMonsterAction(int _current_monster_group)
+    private void DetermineMonsterAction(int _current_monster_group)
     {
         Current_Monster_Group = _current_monster_group;
         phase = "Monster Actions";
 
         if(Current_Monster_Group == monsterGroup.Length)
         {
-            // -> Process actions ->
+            // -> Determine Initiative ->
+            Determine_Initiative();
             return;
         }
 
@@ -459,29 +491,96 @@ public class BattleScreen_Logic : MonoBehaviour
             if (Total_Party_Level > Total_Monster_Morale) monsters_demoralized = true;
         }
 
-        //run?
-        //Call for help?
-        //cast mage spell
-        //cast priest spell
-        //breath attack
-        //attack
+        for (int c = 0; c < monsterGroup[Current_Monster_Group].monster.Count; c++)
+        {
+            bool _done = false;
+            //run?
+            if (!_done && monsters_demoralized && monsterGroup[Current_Monster_Group].abilities.Contains("Run") && Random.Range(0, 100) + 1 <= 65)
+            {
+                monster_command.Add("Monster:" + Current_Monster_Group + ":" + c + ":action:Run");
+                _done = true;
+            }
+            //Call for help?
+            if (!_done && monsterGroup[Current_Monster_Group].abilities.Contains("Call") && monsterGroup[Current_Monster_Group].monster.Count < 5 && Random.Range(0, 100) + 1 <= 75)
+            {
+                monster_command.Add("Monster:" + Current_Monster_Group + ":" + c + ":action:Call");
+                _done = true;
+            }
+            //breath attack
+            if (!_done && isSurprise == 0 && monsterGroup[Current_Monster_Group].special.Contains("breath") && Random.Range(0,100)+1 <= 60)
+            {
+                monster_command.Add("Monster:" + Current_Monster_Group + ":" + c + ":action:Breath");
+                _done = true;
+            }
+            //cast mage spell
+            if (!_done && monsterGroup[Current_Monster_Group].mage_spells - monsterGroup[Current_Monster_Group].mageSpellsCast > 0 && Random.Range(0, 100) + 1 <= 75)
+            {
+                monster_command.Add("Monster:" + Current_Monster_Group + ":" + c + ":action:CastMageSpell");
+                _done = true;
+            }
+            //cast priest spell
+            if (!_done && monsterGroup[Current_Monster_Group].priest_spells - monsterGroup[Current_Monster_Group].priestSpellsCast > 0 && Random.Range(0, 100) + 1 <= 75)
+            {
+                monster_command.Add("Monster:" + Current_Monster_Group + ":" + c + ":action:CastPriestSpell");
+                _done = true;
+            }
+            //attack
+            if(!_done) monster_command.Add("Monster:" + Current_Monster_Group + ":" + c + ":action:Attack");
+        }
+       
+        DetermineMonsterAction(Current_Monster_Group + 1);
     }
 
-
     //determine initiative
-    ///Each round, each character has an initiative roll of 1d10. Initiative is further modified by agility.
-    ///3 = +2 
-    ///4 & 5 = +1
-    ///6 & 7 = 0
-    ///8 thru 14 = -1
-    ///15 = -2
-    ///16 = -3
-    ///17 = -4
-    ///18 = -5
-    ///Monsters’ initiatives are each set to 1d8+1. Everyone acts in order of initiative, from lowest to highest.
+    private void Determine_Initiative()
+    {
+        phase = "Determine Initiative";
+        Initiative.Clear();
+        if (isSurprise >= 0) //Assign player commands to initiative list
+        {
+            for (int i = 0; i < player_command.Count; i++)
+            {
+                string[] _all = player_command[i].Split(':');
+                int _init = Random.Range(0, 9), _agi = GameManager.PARTY.LookUp_PartyMember(int.Parse(_all[1])).Agility;
+                if (_agi <= 3) _init += 3;
+                if (_agi == 4 || _agi == 5) _init += 2;
+                if (_agi == 6 || _agi == 7) _init += 1;
+                if (_agi == 15) _init += -1;
+                if (_agi == 16) _init += -2;
+                if (_agi == 17) _init += -3;
+                if (_agi == 18) _init += -4;
+                if (_init < 1) _init = 1;
+                Initiative.Add(new InitElement(player_command[i], 7));
+            }
+        }
+        if(isSurprise <= 0) //Assign monster commands to initiative list
+        {
+            for (int i = 0; i < monster_command.Count; i++)
+            {
+                Initiative.Add(new InitElement(monster_command[i], Random.Range(0, 7) + 2));
+            }
+        }
+        
+        isSurprise = 0; //Surprise round ends.
+
+        //Sort the initiative list
+        Initiative.Sort(SortByInitiative);
+        for (int i = 0; i < Initiative.Count; i++)
+            Debug.Log(Initiative[i].Init + ", " + Initiative[i].action);
+
+        RunActions();
+    }
+    private int SortByInitiative(InitElement p1, InitElement p2)
+    {
+        return p1.Init.CompareTo(p2.Init);
+    }
+    
+        
     //run through initiative order, applying actions
-
-
+    private void RunActions()
+    {
+        phase = "Action!"
+    }
 
     public void MonsterGroupButton_pushed(int _monstergroup)
     {

@@ -26,11 +26,12 @@ public class Monster_Class
     public int level;
     public bool identified;
     public string groupName;
+    public int mageSpellsCast, priestSpellsCast;
     public List<Monster> monster = new List<Monster>();
 
     public void MakeCopy(int _MONSTER_INDEX)
     {
-        morale_level = GameManager.MONSTER[_MONSTER_INDEX].morale_level;
+        //morale_level = GameManager.MONSTER[_MONSTER_INDEX].morale_level;
         level = GameManager.MONSTER[_MONSTER_INDEX].level;
         identified = GameManager.MONSTER[_MONSTER_INDEX].identified;
         groupName = GameManager.MONSTER[_MONSTER_INDEX].groupName;
