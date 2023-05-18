@@ -33,6 +33,8 @@ public class BattleScreen_Logic : MonoBehaviour
     private int Total_Monster_Morale;
     private bool monsters_demoralized;
 
+    private int[] hero_slot;
+
     private struct InitElement
     {
         public string action;
@@ -65,6 +67,14 @@ public class BattleScreen_Logic : MonoBehaviour
         for (int i = 0; i < ActionButton.Length; i++)
         {
             ActionButton[i].SetActive(false);
+        }
+        hero_slot = new int[6];
+        for (int i = 0; i < 6; i++)
+        {
+            if (GameManager.PARTY.EmptySlot(i))
+                hero_slot[i] = -1;
+            if (!GameManager.PARTY.EmptySlot(i))
+                hero_slot[i] = i;
         }
 
         BeginBattle();
@@ -143,9 +153,9 @@ public class BattleScreen_Logic : MonoBehaviour
             for (int i = 0; i < 6; i++)
             {
                 _partyText[i] = "";
-                if (!GameManager.PARTY.EmptySlot(i))
+                if (hero_slot[i] > 0)
                 {
-                    Character_Class me = GameManager.PARTY.LookUp_PartyMember(i);
+                    Character_Class me = GameManager.PARTY.LookUp_PartyMember(hero_slot[i]);
 
                     //Name replacement for spacing
                     string _tmpNam = me.name; while (_tmpNam.Length < 15) _tmpNam += " ";
@@ -579,9 +589,21 @@ public class BattleScreen_Logic : MonoBehaviour
     //run through initiative order, applying actions
     private void RunActions()
     {
-        phase = "Action!"
+        phase = "Action!";
+        StartCoroutine(RunActons_CR());
     }
+    IEnumerator RunActons_CR()
+    {
+        for (int _turn = 0; _turn < Initiative.Count; _turn++)
+        {
+            string[] _allterms = Initiative[_turn].action.Split(":");
 
+            yield return new WaitForSeconds(WAIT_TIME);
+         
+            ShowPartyStatus();
+            ShowMonsterStatus();
+        }
+    }
     public void MonsterGroupButton_pushed(int _monstergroup)
     {
 
